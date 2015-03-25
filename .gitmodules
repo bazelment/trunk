@@ -4,3 +4,6 @@
 [submodule "third_party/glog/upstream"]
 	path = third_party/glog/upstream
 	url = https://github.com/google/glog.git
+[submodule "third_party/gflags/upstream"]
+	path = third_party/gflags/upstream
+	url = https://github.com/gflags/gflags.git
