@@ -7,3 +7,6 @@
 [submodule "third_party/gflags/upstream"]
 	path = third_party/gflags/upstream
 	url = https://github.com/gflags/gflags.git
+[submodule "third_party/bazel/upstream"]
+	path = third_party/bazel/upstream
+	url = https://github.com/google/bazel
