@@ -10,3 +10,6 @@
 [submodule "third_party/bazel/upstream"]
 	path = third_party/bazel/upstream
 	url = https://github.com/google/bazel
+[submodule "third_party/protobuf/upstream"]
+	path = third_party/protobuf/upstream
+	url = https://github.com/google/protobuf.git
