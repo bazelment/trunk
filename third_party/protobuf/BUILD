@@ -1,7 +1,5 @@
 licenses(["notice"])
 
-load("/tools/build_rules/py_rules", "py_library", "py_binary")
-
 cc_library(
   visibility = ["//visibility:public"],
   deps = [
@@ -321,10 +319,8 @@ cc_binary(
 
 py_library(
   visibility = ["//visibility:public"],
-  deps = [
-    ":generate_py_descriptor_proto",
-  ],
   srcs = [
+    ":generate_py_descriptor_proto",
     "upstream/python/google/protobuf/internal/api_implementation.py",
     "upstream/python/google/protobuf/internal/containers.py",
     "upstream/python/google/protobuf/internal/cpp_message.py",
