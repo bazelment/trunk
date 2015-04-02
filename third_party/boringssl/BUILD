@@ -344,6 +344,7 @@ config_setting(
 
 cc_library(
   name = 'boringssl',
+  visibility = ["//visibility:public"],  
   srcs = select({
     ":linux32": boringssl_lib_sources + boringssl_linux_x86_sources,
     ":linux64": boringssl_lib_sources + boringssl_linux_x86_64_sources,
