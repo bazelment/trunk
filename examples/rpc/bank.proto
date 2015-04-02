@@ -1,0 +1,16 @@
+syntax = "proto2";
+
+message DepositRequest {
+  required string account = 1;
+  required double amount = 2;
+};
+
+message DepositReply {
+  required string account = 1;
+  required double balance = 2;
+};
+
+service Bank {
+  rpc Deposit(DepositRequest) returns (DepositReply) {
+  }
+}
