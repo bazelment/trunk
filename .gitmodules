@@ -16,3 +16,6 @@
 [submodule "third_party/boringssl/src"]
 	path = third_party/boringssl/src
 	url = https://boringssl.googlesource.com/boringssl
+[submodule "third_party/grpc/upstream"]
+	path = third_party/grpc/upstream
+	url = https://github.com/grpc/grpc.git
