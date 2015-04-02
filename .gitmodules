@@ -19,3 +19,9 @@
 [submodule "third_party/grpc/upstream"]
 	path = third_party/grpc/upstream
 	url = https://github.com/grpc/grpc.git
+[submodule "third_party/folly/upstream"]
+	path = third_party/folly/upstream
+	url = https://github.com/facebook/folly.git
+[submodule "third_party/snappy/upstream"]
+	path = third_party/snappy/upstream
+	url = https://github.com/google/snappy.git
