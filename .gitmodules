@@ -25,3 +25,9 @@
 [submodule "third_party/snappy/upstream"]
 	path = third_party/snappy/upstream
 	url = https://github.com/google/snappy.git
+[submodule "third_party/proxygen/upstream"]
+	path = third_party/proxygen/upstream
+	url = https://github.com/facebook/proxygen.git
+[submodule "third_party/libevent/upstream"]
+	path = third_party/libevent/upstream
+	url = https://github.com/libevent/libevent.git
