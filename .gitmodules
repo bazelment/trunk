@@ -31,3 +31,9 @@
 [submodule "third_party/libevent/upstream"]
 	path = third_party/libevent/upstream
 	url = https://github.com/libevent/libevent.git
+[submodule "third_party/gmock/upstream"]
+	path = third_party/gmock/upstream
+	url = https://chromium.googlesource.com/external/gmock
+[submodule "third_party/gtest/upstream"]
+	path = third_party/gtest/upstream
+	url = https://chromium.googlesource.com/external/googletest
