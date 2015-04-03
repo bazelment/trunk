@@ -118,10 +118,6 @@ cc_library(
     "upstream/folly/io/IOBuf.cpp",
     "upstream/folly/io/IOBufQueue.cpp",
     # These require libevent
-    # "upstream/folly/io/async/AsyncTimeout.cpp",
-    # "upstream/folly/io/async/EventBase.cpp",
-    # "upstream/folly/io/async/EventHandler.cpp",
-    # "upstream/folly/io/async/Request.cpp",
     "upstream/folly/json.cpp",
     "upstream/folly/detail/MemoryIdler.cpp",
     "upstream/folly/MacAddress.cpp",
@@ -149,6 +145,21 @@ cc_library(
   linkopts = [
     "-ldl",
   ],
+)
+
+cc_library(
+  name = "async",
+  visibility = ["//visibility:public"],
+  srcs = [
+    "upstream/folly/io/async/AsyncTimeout.cpp",
+    "upstream/folly/io/async/EventBase.cpp",
+    "upstream/folly/io/async/EventHandler.cpp",
+    "upstream/folly/io/async/Request.cpp",
+  ],
+  deps = [
+    ":folly",
+    "//third_party/libevent"
+  ]
 )
 
 cc_library(
