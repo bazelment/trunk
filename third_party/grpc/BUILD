@@ -109,7 +109,7 @@ cc_library(
     "upstream/src/core/support/time_win32.c",
   ],
   deps = [
-    "//third_party/boringssl:boringssl",
+    "//external:libssl",
   ]
 )
 
@@ -351,7 +351,7 @@ cc_library(
     "upstream/src/core/transport/transport.c",
   ],
   deps = [
-    "//third_party/boringssl:boringssl",
+    "//external:libssl",
     ":gpr",
   ]
 )
@@ -558,7 +558,7 @@ cc_library(
     "upstream/src/core/transport/transport.c",
   ],
   deps = [
-    "//third_party/boringssl:boringssl",
+    "//external:libssl",
     ":gpr",
   ]
 )
@@ -632,8 +632,8 @@ cc_library(
     "upstream/src/cpp/util/time.cc",
   ],
   deps = [
-    "//third_party/boringssl:boringssl",
-    "//third_party/protobuf:proto_lib",
+    "//external:libssl",
+    "//external:protobuf_clib",
     ":gpr",
     ":grpc",
   ]
@@ -706,8 +706,8 @@ cc_library(
     "upstream/src/cpp/util/time.cc",
   ],
   deps = [
-    "//third_party/boringssl:boringssl",
-    "//third_party/protobuf:proto_lib",
+    "//external:libssl",
+    "//external:protobuf_clib",
     ":gpr",
     ":grpc_unsecure",
   ]
@@ -738,8 +738,8 @@ cc_library(
     "upstream/src/compiler/ruby_generator.cc",
   ],
   deps = [
-    "//third_party/boringssl:boringssl",
-    "//third_party/protobuf:protoc_lib",
+    "//external:libssl",
+    "//external:protobuf_compiler",
   ]
 )
 
@@ -775,8 +775,8 @@ cc_binary(
     "upstream/src/compiler/cpp_plugin.cc",
   ],
   deps = [
-    "//third_party/boringssl:boringssl",
-    "//third_party/protobuf:protoc_lib",
+    "//external:libssl",
+    "//external:protobuf_compiler",
     ":grpc_plugin_support",
   ]
 )
@@ -793,8 +793,8 @@ cc_binary(
     "upstream/src/compiler/python_plugin.cc",
   ],
   deps = [
-    "//third_party/boringssl:boringssl",
-    "//third_party/protobuf:protoc_lib",
+    "//external:libssl",
+    "//external:protobuf_compiler",
     ":grpc_plugin_support",
   ]
 )
@@ -811,8 +811,8 @@ cc_binary(
     "upstream/src/compiler/ruby_plugin.cc",
   ],
   deps = [
-    "//third_party/boringssl:boringssl",
-    "//third_party/protobuf:protoc_lib",
+    "//external:libssl",
+    "//external:protobuf_compiler",
     ":grpc_plugin_support",
   ]
 )
