@@ -3,6 +3,12 @@ bind(
   actual = "//third_party/boringssl:boringssl",
 )
 
+# Protobuf compiler binary
+bind(
+  name = "protoc",
+  actual = "//third_party/protobuf:protoc"
+)
+
 # Library needed to build protobuf codegen plugin.
 bind(
   name = "protobuf_compiler",
@@ -14,4 +20,16 @@ bind(
 bind(
   name = "protobuf_clib",
   actual = "//third_party/protobuf:proto_lib",
+)
+
+# GRPC codegen plugin
+bind(
+  name = "grpc_cpp_plugin",
+  actual = "//third_party/grpc/upstream:grpc_cpp_plugin"
+)
+
+# GRPC C++ runtime library
+bind(
+  name = "grpc++",
+  actual = "//third_party/grpc/upstream:grpc++"
 )
