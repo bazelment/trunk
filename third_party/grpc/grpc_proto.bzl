@@ -6,41 +6,49 @@ def proto_library(name, src, deps = None,
                   has_service = True):
   if has_service:
     proto_cc_deps = [
-      "//third_party/protobuf:protoc",
-      "//third_party/grpc:grpc_cpp_plugin"
+      "//external:protoc",
+      "//external:grpc_cpp_plugin"
     ]
     cc_deps = [
-      "//third_party/protobuf:cc_proto",
-      "//third_party/grpc:grpc++"
+      "//external:protobuf_clib",
+      "//external:grpc++"
     ]
   else:
     proto_cc_deps = [
-      "//third_party/protobuf:protoc",
+      "//external:protoc",
     ]
     cc_deps = [
-      "//third_party/protobuf:cc_proto"
+      "//external:protobuf_clib"
     ]
-  command = "$(location //third_party/protobuf:protoc) --cpp_out=$(GENDIR)/"
+  command = "$(location //external:protoc) --cpp_out=$(GENDIR)/"
   if has_service:
-    command += " --grpc_out=$(GENDIR) --plugin=protoc-gen-grpc=$(location //third_party/grpc:grpc_cpp_plugin)"
+    command += " --grpc_out=$(GENDIR) --plugin=protoc-gen-grpc=$(location //external:grpc_cpp_plugin)"
   command += " $(location %s)" % (src)
 
   basename = src[0:-5]
   cc_proto_name = name + "_cc_proto"
+  header_outputs = [
+    basename + "pb.h",
+  ]
+  outputs = header_outputs + [
+    basename + "pb.cc",
+  ]
+  if has_service:
+    header_outputs += [basename + "grpc.pb.h"]
+    outputs += [
+      basename + "grpc.pb.h",
+      basename + "grpc.pb.cc",
+    ]
+      
   native.genrule(
     name = cc_proto_name,
     srcs = [ src ] + proto_cc_deps,
     cmd = command,
-    outs = [
-      basename + "pb.h",
-      basename + "pb.cc"
-    ],
+    outs = outputs,
   )
   native.cc_library(
     name = name,
-    hdrs = [
-      basename + "pb.h",
-    ],
+    hdrs = header_outputs,
     srcs = [
       ":" + cc_proto_name
     ],

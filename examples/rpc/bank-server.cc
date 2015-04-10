@@ -1,4 +1,4 @@
-#include "examples/rpc/bank.pb.h"
+#include "examples/rpc/bank.grpc.pb.h"
 
 #include <memory>
 #include <sstream>
