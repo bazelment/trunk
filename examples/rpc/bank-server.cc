@@ -8,6 +8,7 @@
 #include <grpc++/server.h>
 #include <grpc++/server_builder.h>
 #include <grpc++/server_context.h>
+#include <grpc++/server_credentials.h>
 #include <grpc++/status.h>
 
 #include "gflags/gflags.h"
@@ -42,7 +43,8 @@ static void RunServer() {
 
   LOG(INFO) << "Server listening on " << server_address.str();
   grpc::ServerBuilder builder;
-  builder.AddListeningPort(server_address.str(), nullptr, nullptr);
+  builder.AddListeningPort(server_address.str(),
+                           grpc::InsecureServerCredentials());
   builder.RegisterService(&service);
   std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
   server->Wait();
