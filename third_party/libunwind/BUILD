@@ -6,6 +6,7 @@ cc_library(
   includes = [
     "upstream/include",
     "upstream/include/tdep-x86_64",
+    "build/k8/include",
   ],
   srcs = [
     "upstream/src/dwarf/Gexpr.c",
@@ -106,6 +107,6 @@ cc_library(
     '-DHAVE_CONFIG_H',
     '-D_GNU_SOURCE',
     "-Ithird_party/libunwind/upstream/src",
-    "-Ithird_party/libunwind/build/k8/include",
+    "-Ithird_party/libunwind/build/k8/include/private",
   ]
 )
