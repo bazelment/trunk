@@ -1,5 +1,7 @@
 syntax = "proto2";
 
+package examples;
+
 message DepositRequest {
   required string account = 1;
   required double amount = 2;
