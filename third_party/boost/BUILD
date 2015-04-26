@@ -130,15 +130,18 @@ cc_library(
   hdrs = glob([
     "upstream/filesystem/include/boost/*.h",
   ]),
-  srcs = [
-  ],
+  srcs = glob([
+    "upstream/filesystem/src/*.cpp",
+  ]),
   deps = [
+    ":config",
     ":functional",
     ":io",
     ":iterator",
     ":range",
     ":smart_ptr",
     ":system",
+    ":type_traits",
   ],
 )
 
@@ -460,10 +463,13 @@ cc_library(
   hdrs = glob([
     "upstream/system/include/boost/*.h",
   ]),
-  srcs = [
-  ],
+  srcs = glob([
+    "upstream/system/src/*.cpp",
+  ]),
   deps = [
     ":assert",
+    ":config",
+    ":core",
     ":predef",
   ],
 )
