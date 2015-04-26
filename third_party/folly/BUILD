@@ -78,6 +78,10 @@ cc_library(
   deps = [
     "//third_party/glog",
     "//third_party/double-conversion",
+    "//third_party/boost:config",
+    "//third_party/boost:conversion",
+    "//third_party/boost:type_traits",
+    "//third_party/boost:utility",
   ],
 )
 
@@ -137,10 +141,17 @@ cc_library(
   deps = [
     ":base",
     "//third_party/double-conversion",
-    "//third_party/re2",
     "//third_party/glog",
     "//third_party/gflags",
     # "//third_party/libevent:libevent",
+    "//third_party/boost:algorithm",  # For boost/non_copyable
+    "//third_party/boost:core",  # For boost/non_copyable
+    "//third_party/boost:container",
+    "//third_party/boost:intrusive",
+    "//third_party/boost:iterator",
+    "//third_party/boost:multi_index",
+    "//third_party/boost:regex",
+    "//third_party/boost:utility",  # For boost/operators.hpp
   ],
   linkopts = [
     "-ldl",
@@ -158,7 +169,8 @@ cc_library(
   ],
   deps = [
     ":folly",
-    "//third_party/libevent"
+    "//third_party/libevent",
+    "//third_party/boost:iterator",
   ]
 )
 
@@ -175,6 +187,7 @@ cc_library(
   ],
   deps = [
     ":folly",
+    "//third_party/boost:filesystem",
   ],
 )
 
@@ -189,6 +202,8 @@ cc_library(
   ],
   deps = [
     ":base",
+    "//third_party/boost:filesystem",
+    "//third_party/boost:regex",
   ],
   testonly = 1
 )
@@ -204,6 +219,45 @@ cc_library(
   ],
   deps = [
     ":folly",
+    "//third_party/boost:function_types",
+    "//third_party/boost:regex",
   ],
   testonly = 1
+)
+
+cc_test(
+  name = "AsciiCaseInsensitiveTest",
+  srcs = [
+    "upstream/folly/test/AsciiCaseInsensitiveTest.cpp"
+  ],
+  deps = [
+    ":base",
+    "//third_party/gflags",
+    "//third_party/gtest",
+  ]
+)
+
+cc_test(
+  name = "ProducerConsumerQueueTest",
+  srcs = [
+    "upstream/folly/test/ProducerConsumerQueueTest.cpp"
+  ],
+  deps = [
+    ":base",
+    "//third_party/boost:core",
+    "//third_party/gtest:gtest_main",
+  ]
+)
+
+cc_test(
+  name = "StringTest",
+  srcs = [
+    "upstream/folly/test/StringTest.cpp"
+  ],
+  deps = [
+    ":base",
+    ":benchmark",
+    "//third_party/gflags",
+    "//third_party/gtest",
+  ]
 )
