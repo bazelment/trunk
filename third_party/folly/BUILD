@@ -97,6 +97,21 @@ cc_library(
   ],
 )
 
+# cc_library(
+#   name = "checksum",
+#   visibility = ["//visibility:public"],
+#   hdrs = [
+#     "upstream/folly/Checksum.h"
+#   ],
+#   srcs = [
+#     "upstream/folly/Checksum.cpp",
+#   ],
+#   deps = [
+#     ":base",
+#     "//third_party/boost:crc",
+#   ],
+# )
+
 cc_library(
   name = "folly",
   visibility = ["//visibility:public"],
@@ -237,6 +252,19 @@ cc_test(
   ]
 )
 
+# cc_test(
+#   name = "ChecksumTest",
+#   srcs = [
+#     "upstream/folly/test/ChecksumTest.cpp"
+#   ],
+#   deps = [
+#     ":checksum",
+#     ":benchmark",
+#     "//third_party/gflags",
+#     "//third_party/gtest",
+#   ]
+# )
+
 cc_test(
   name = "ProducerConsumerQueueTest",
   srcs = [
@@ -256,6 +284,63 @@ cc_test(
   ],
   deps = [
     ":base",
+    ":benchmark",
+    "//third_party/gflags",
+    "//third_party/gtest",
+  ]
+)
+
+cc_binary(
+  name = "subprocess_test_parent_death_helper",
+  srcs = [
+    "upstream/folly/test/SubprocessTestParentDeathHelper.cpp"
+  ],
+  deps = [
+    ":folly",
+    ":recordio",
+    "//third_party/gflags",
+  ],
+  testonly = 1,
+)
+
+cc_test(
+  name = "SubprocessTest",
+  srcs = [
+    "upstream/folly/test/SubprocessTest.cpp"
+  ],
+  deps = [
+    ":folly",
+    ":benchmark",
+    ":recordio",
+
+    "//third_party/gflags",
+    "//third_party/gtest:gtest_main",
+  ],
+  data = [
+    ":subprocess_test_parent_death_helper",
+  ]    
+)
+
+cc_test(
+  name = "UriTest",
+  srcs = [
+    "upstream/folly/test/UriTest.cpp"
+  ],
+  deps = [
+    ":folly",
+    ":benchmark",
+    "//third_party/gflags",
+    "//third_party/gtest",
+  ]
+)
+
+cc_test(
+  name = "VarintTest",
+  srcs = [
+    "upstream/folly/test/VarintTest.cpp"
+  ],
+  deps = [
+    ":folly",
     ":benchmark",
     "//third_party/gflags",
     "//third_party/gtest",
