@@ -488,6 +488,22 @@ cc_library(
 )
 
 cc_library(
+  name = "type_index",
+  visibility = ["//visibility:public"],
+  includes = [
+    "upstream/type_index/include",
+  ],
+  hdrs = glob([
+    "upstream/type_index/include/boost/*.h",
+  ]),
+  srcs = [
+  ],
+  deps = [
+    ":core",
+  ]
+)
+
+cc_library(
   name = "type_traits",
   visibility = ["//visibility:public"],
   includes = [
@@ -550,4 +566,20 @@ cc_library(
   ]),
   srcs = [
   ],
+)
+
+cc_library(
+  name = "variant",
+  visibility = ["//visibility:public"],
+  includes = [
+    "upstream/variant/include",
+  ],
+  hdrs = glob([
+    "upstream/variant/include/boost/*.h",
+  ]),
+  srcs = [
+  ],
+  deps = [
+    ":type_index",
+  ]
 )
