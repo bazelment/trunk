@@ -208,6 +208,22 @@ cc_library(
 )
 
 cc_library(
+  name = "heap",
+  visibility = ["//visibility:public"],
+  includes = [
+    "upstream/heap/include",
+  ],
+  hdrs = glob([
+    "upstream/heap/include/boost/*.h",
+  ]),
+  srcs = [
+  ],
+  deps = [
+    ":parameter",
+  ],
+)
+
+cc_library(
   name = "integer",
   visibility = ["//visibility:public"],
   includes = [
@@ -272,6 +288,20 @@ cc_library(
   ],
 )
 
+cc_library(
+  name = "math",
+  visibility = ["//visibility:public"],
+  includes = [
+    "upstream/math/include",
+  ],
+  hdrs = glob([
+    "upstream/math/include/boost/*.h",
+  ]),
+  srcs = [
+  ],
+  deps = [
+  ],
+)
 
 cc_library(
   name = "move",
@@ -334,6 +364,21 @@ cc_library(
     "upstream/optional/include/boost/*.h",
   ]),
   srcs = [
+  ],
+)
+
+cc_library(
+  name = "parameter",
+  visibility = ["//visibility:public"],
+  includes = [
+    "upstream/parameter/include",
+  ],
+  hdrs = glob([
+    "upstream/parameter/include/boost/*.h",
+  ]),
+  srcs = [
+  ],
+  deps = [
   ],
 )
 
@@ -580,6 +625,7 @@ cc_library(
   srcs = [
   ],
   deps = [
+    ":math",
     ":type_index",
   ]
 )

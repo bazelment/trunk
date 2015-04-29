@@ -130,6 +130,15 @@
 [submodule "third_party/boost/upstream/intrusive"]
 	path = third_party/boost/upstream/intrusive
 	url = https://github.com/boostorg/intrusive.git
+[submodule "third_party/boost/upstream/math"]
+	path = third_party/boost/upstream/math
+	url = https://github.com/boostorg/math.git
+[submodule "third_party/boost/upstream/heap"]
+	path = third_party/boost/upstream/heap
+	url = https://github.com/boostorg/heap.git
+[submodule "third_party/boost/upstream/parameter"]
+	path = third_party/boost/upstream/parameter
+	url = https://github.com/boostorg/parameter.git
 [submodule "third_party/boost/upstream/mpl"]
 	path = third_party/boost/upstream/mpl
 	url = https://github.com/boostorg/mpl.git
