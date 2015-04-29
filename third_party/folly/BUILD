@@ -190,6 +190,19 @@ cc_library(
 )
 
 cc_library(
+  name = "ssl",
+  visibility = ["//visibility:public"],
+  srcs = [
+    "upstream/folly/io/async/AsyncSSLSocket.cpp",
+    "upstream/folly/io/async/SSLContext.cpp",
+  ],
+  deps = [
+    ":async",
+    "//external:libssl",
+  ]
+)
+
+cc_library(
   name = "recordio",
   visibility = ["//visibility:public"],
   hdrs = [
