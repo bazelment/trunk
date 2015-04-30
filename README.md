@@ -22,7 +22,7 @@ Currently C++ projects can be only built on Linux x64 system.
   * [libevent](http://libevent.org/): version 1
   * [libunwind](http://www.nongnu.org/libunwind)
   * [protobuf](https://github.com/google/protobuf)
-  * [re2](https://github.com/google/snappy)
+  * [re2](https://github.com/google/re2)
   * [snappy](https://github.com/google/snappy)
   
   * [folly](https://www.facebook.com/notes/facebook-engineering/folly-the-facebook-open-source-library/10150864656793920) and supporting libraries.
