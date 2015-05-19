@@ -18,6 +18,7 @@ Currently C++ projects can be only built on Linux x64 system.
   * [glog](https://github.com/google/glog)
   * [googlemock](https://code.google.com/p/googlemock/)
   * [googletest](https://code.google.com/p/googletest/)
+  * [gperftools](https://code.google.com/p/gperftools/) tcmalloc, heap-checker, heap-profiler and cpu-profiler.
   * [grpc](http://www.grpc.io/)
   * [libevent](http://libevent.org/): version 1
   * [libunwind](http://www.nongnu.org/libunwind)
