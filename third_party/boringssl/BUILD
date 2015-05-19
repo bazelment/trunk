@@ -94,6 +94,7 @@ boringssl_lib_sources = [
    'src/crypto/cipher/e_ssl3.c',
    'src/crypto/cipher/e_tls.c',
    'src/crypto/cipher/tls_cbc.c',
+   'src/crypto/cmac/cmac.c',
    'src/crypto/conf/conf.c',
    'src/crypto/cpu-arm.c',
    'src/crypto/cpu-intel.c',
@@ -116,19 +117,21 @@ boringssl_lib_sources = [
    'src/crypto/ec/ec_key.c',
    'src/crypto/ec/ec_montgomery.c',
    'src/crypto/ec/oct.c',
+   'src/crypto/ec/p256-64.c',
    'src/crypto/ec/simple.c',
+   'src/crypto/ec/util-64.c',
    'src/crypto/ec/wnaf.c',
    'src/crypto/ecdh/ecdh.c',
    'src/crypto/ecdsa/ecdsa.c',
    'src/crypto/ecdsa/ecdsa_asn1.c',
    'src/crypto/engine/engine.c',
    'src/crypto/err/err.c',
-   'src/crypto/err/err_impl.c',
    'src/crypto/evp/algorithm.c',
    'src/crypto/evp/asn1.c',
    'src/crypto/evp/digestsign.c',
    'src/crypto/evp/evp.c',
    'src/crypto/evp/evp_ctx.c',
+   'src/crypto/evp/p_dsa_asn1.c',
    'src/crypto/evp/p_ec.c',
    'src/crypto/evp/p_ec_asn1.c',
    'src/crypto/evp/p_hmac.c',
@@ -138,7 +141,6 @@ boringssl_lib_sources = [
    'src/crypto/evp/pbkdf.c',
    'src/crypto/evp/sign.c',
    'src/crypto/ex_data.c',
-   'src/crypto/ex_data_impl.c',
    'src/crypto/hkdf/hkdf.c',
    'src/crypto/hmac/hmac.c',
    'src/crypto/lhash/lhash.c',
@@ -167,6 +169,7 @@ boringssl_lib_sources = [
    'src/crypto/poly1305/poly1305.c',
    'src/crypto/poly1305/poly1305_arm.c',
    'src/crypto/poly1305/poly1305_vec.c',
+   'src/crypto/rand/hwrand.c',
    'src/crypto/rand/rand.c',
    'src/crypto/rand/urandom.c',
    'src/crypto/rand/windows.c',
@@ -181,6 +184,7 @@ boringssl_lib_sources = [
    'src/crypto/sha/sha512.c',
    'src/crypto/stack/stack.c',
    'src/crypto/thread.c',
+   'src/crypto/thread_none.c',
    'src/crypto/thread_pthread.c',
    'src/crypto/thread_win.c',
    'src/crypto/time_support.c',
@@ -282,7 +286,7 @@ boringssl_lib_sources = [
    'src/ssl/ssl_algs.c',
    'src/ssl/ssl_asn1.c',
    'src/ssl/ssl_cert.c',
-   'src/ssl/ssl_ciph.c',
+   'src/ssl/ssl_cipher.c',
    'src/ssl/ssl_lib.c',
    'src/ssl/ssl_rsa.c',
    'src/ssl/ssl_sess.c',
@@ -325,6 +329,7 @@ boringssl_linux_x86_64_sources = [
    'linux-x86_64/crypto/md5/md5-x86_64.S',
    'linux-x86_64/crypto/modes/aesni-gcm-x86_64.S',
    'linux-x86_64/crypto/modes/ghash-x86_64.S',
+   'linux-x86_64/crypto/rand/rdrand-x86_64.S',
    'linux-x86_64/crypto/rc4/rc4-md5-x86_64.S',
    'linux-x86_64/crypto/rc4/rc4-x86_64.S',
    'linux-x86_64/crypto/sha/sha1-x86_64.S',
@@ -366,39 +371,12 @@ cc_library(
 )
 
 cc_test(
-  name = 'boringssl_aead_test',
-  deps = [
-    ':boringssl',
-  ],
-  srcs = [
-    'src/crypto/cipher/aead_test.c',
-  ],
-)
-cc_test(
-  name = 'boringssl_cipher_test',
-  deps = [
-    ':boringssl',
-  ],
-  srcs = [
-    'src/crypto/cipher/cipher_test.c',
-  ],
-)
-cc_test(
   name = 'boringssl_constant_time_test',
   deps = [
     ':boringssl',
   ],
   srcs = [
     'src/crypto/constant_time_test.c',
-  ],
-)
-cc_test(
-  name = 'boringssl_dh_test',
-  deps = [
-    ':boringssl',
-  ],
-  srcs = [
-    'src/crypto/dh/dh_test.c',
   ],
 )
 cc_test(
@@ -411,30 +389,12 @@ cc_test(
   ],
 )
 cc_test(
-  name = 'boringssl_ec_test',
-  deps = [
-    ':boringssl',
-  ],
-  srcs = [
-    'src/crypto/ec/ec_test.c',
-  ],
-)
-cc_test(
   name = 'boringssl_example_mul',
   deps = [
     ':boringssl',
   ],
   srcs = [
     'src/crypto/ec/example_mul.c',
-  ],
-)
-cc_test(
-  name = 'boringssl_ecdsa_test',
-  deps = [
-    ':boringssl',
-  ],
-  srcs = [
-    'src/crypto/ecdsa/ecdsa_test.c',
   ],
 )
 cc_test(
@@ -462,15 +422,6 @@ cc_test(
   ],
   srcs = [
     'src/crypto/modes/gcm_test.c',
-  ],
-)
-cc_test(
-  name = 'boringssl_pkcs12_test',
-  deps = [
-    ':boringssl',
-  ],
-  srcs = [
-    'src/crypto/pkcs8/pkcs12_test.c',
   ],
 )
 cc_test(
@@ -511,18 +462,12 @@ cc_test(
 )
 
 boringssl_test_targets = [
-  'boringssl_aead_test',
-  'boringssl_cipher_test',
   'boringssl_constant_time_test',
-  'boringssl_dh_test',
   'boringssl_dsa_test',
-  'boringssl_ec_test',
-  'boringssl_ecdsa_test',
   'boringssl_example_mul',
   'boringssl_gcm_test',
   'boringssl_hkdf_test',
   'boringssl_lhash_test',
-  'boringssl_pkcs12_test',
   'boringssl_pkcs7_test',
   'boringssl_pqueue_test',
   'boringssl_rsa_test',
