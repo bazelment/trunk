@@ -160,3 +160,6 @@
 [submodule "third_party/re2"]
 	path = third_party/re2
 	url = https://github.com/google/re2.git
+[submodule "third_party/gperftools/upstream"]
+	path = third_party/gperftools/upstream
+	url = https://github.com/mzhaom/gperftools.git
