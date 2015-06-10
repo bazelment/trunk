@@ -179,9 +179,10 @@ with open(sys.path[0]) as f:
 par_signature = m.hexdigest()
 
 zf = zipfile.ZipFile(sys.path[0], 'r')
+real_main_file = '${real_main_file}'
 source_map = {
   '_par_bootstrap_': zf.read('__main__.py'),
-  '__main__': zf.read('__run__.py'),
+  '__main__': zf.read(real_main_file),
   }
 
 # Overwrite the default loader.
@@ -194,10 +195,10 @@ sys.path_importer_cache[zf.filename] = ParImporter(zf.filename)
 runtime_pymagic = imp.get_magic() + '\000\000\000\000'
 if runtime_pymagic != compile_pymagic:
   log_warning('runtime / linktime mismatch - ignoring .pyc files')
-  run_py = zf.read('__run__.py')
-  run_code = compile(run_py, '__run__.py', 'exec')
+  run_py = zf.read(real_main_file)
+  run_code = compile(run_py, real_main_file, 'exec')
 else:
-  run_pyc = zf.read('__run__.pyc')
+  run_pyc = zf.read(real_main_file[0:-3] + '.pyc')
   run_code = marshal.loads(run_pyc[len(runtime_pymagic):])
 zf.close()
 
@@ -220,9 +221,10 @@ tracer = 'plink-tracer-19810319'
 zipmagic = '\x50\x4B\x03\x04'
 compile_pymagic = imp.get_magic() + '\000\000\000\000'
 
-def mkbootstrap():
+def mkbootstrap(main_file):
   tmpl = string.Template(bootstrap_src_tmpl)
-  return tmpl.substitute(tracer=tracer, compile_pymagic=repr(compile_pymagic))
+  return tmpl.substitute(tracer=tracer, compile_pymagic=repr(compile_pymagic),
+                         real_main_file=main_file)
 
 # Takes a directory and makes a zip file containing any files therein
 # that are (normally) loadable by Python.
@@ -341,15 +343,11 @@ if __name__ == '__main__':
   if options.system_module:
     prepare_sys_packages(options.system_module, options.pkg_dir)
     
-  bootstrap_src = mkbootstrap()
+  bootstrap_src = mkbootstrap(options.main_file)
   log_debug('\n'.join(['%03d  %s' % (i+1, line) for (i, line) in enumerate( bootstrap_src.split('\n'))]))
 
-  with open(options.main_file) as f:
-    main_src = f.read()        
   with open(os.path.join(zip_root, '__main__.py'), 'w') as f:
     f.write(bootstrap_src)
-  with open(os.path.join(zip_root, '__run__.py'), 'w') as f:
-    f.write(main_src)
 
   zipdata = zipdir(zip_root, args, options)
 
