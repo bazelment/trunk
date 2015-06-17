@@ -22,6 +22,11 @@ bind(
   actual = "//third_party/protobuf:proto_lib",
 )
 
+bind(
+  name = "protobuf_java_lib",
+  actual = "//third_party/protobuf:java_proto",
+)
+
 # GRPC codegen plugin
 bind(
   name = "grpc_cpp_plugin",
