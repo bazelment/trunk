@@ -163,3 +163,9 @@
 [submodule "third_party/gperftools/upstream"]
 	path = third_party/gperftools/upstream
 	url = https://github.com/mzhaom/gperftools.git
+[submodule "third_party/java/guava/upstream"]
+	path = third_party/java/guava/upstream
+	url = https://github.com/google/guava
+[submodule "third_party/java/error-prone"]
+	path = third_party/java/error-prone
+	url = https://github.com/google/error-prone.git
