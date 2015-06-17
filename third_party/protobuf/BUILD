@@ -10,36 +10,39 @@ cc_library(
 
 java_library(
   visibility = ["//visibility:public"],
-  deps = [
-    ":generate_java_descriptor_proto",
-  ],
   name = "java_proto",
   srcs = glob([
     "upstream/java/src/main/java/com/google/protobuf/*.java"
-  ]),
+  ]) + [
+    ":generate_java_descriptor_proto",
+  ]
 )
 
 genrule(
   name = "generate_java_descriptor_proto",
-  srcs = [
+  tools = [
     ":protoc",
+  ],
+  srcs = [
     "upstream/src/google/protobuf/descriptor.proto",
   ],
-  cmd = "$(location :protoc) --java_out=$(GENDIR)/third_party/protobuf/java -Ithird_party/protobuf/upstream/src $(location upstream/src/google/protobuf/descriptor.proto)",
+  cmd = "$(location :protoc) --java_out=$(GENDIR)/third_party/protobuf/java -Ithird_party/protobuf/upstream/src $<",
   outs = [ "java/com/google/protobuf/DescriptorProtos.java" ],
 )
 
 genrule(
   name = "generate_py_descriptor_proto",
-  srcs = [
+  tools = [
     ":protoc",
+  ],
+  srcs = [
     "upstream/src/google/protobuf/descriptor.proto",
     "upstream/src/google/protobuf/compiler/plugin.proto",
   ],
-  cmd = "$(location :protoc) --python_out=$(GENDIR)/third_party/protobuf/python -Ithird_party/protobuf/upstream/src $(location upstream/src/google/protobuf/descriptor.proto) $(location upstream/src/google/protobuf/compiler/plugin.proto)",
+  cmd = "$(location :protoc) --python_out=$(@D) -Ithird_party/protobuf/upstream/src $(SRCS)",
   outs = [
-    "python/google/protobuf/descriptor_pb2.py",
-    "python/google/protobuf/compiler/plugin_pb2.py",
+    "google/protobuf/descriptor_pb2.py",
+    "google/protobuf/compiler/plugin_pb2.py",
   ],
 )
 
