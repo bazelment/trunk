@@ -25,7 +25,13 @@ Currently C++ projects can be only built on Linux x64 system.
   * [protobuf](https://github.com/google/protobuf)
   * [re2](https://github.com/google/snappy)
   * [snappy](https://github.com/google/snappy)
-  
+
   * [folly](https://www.facebook.com/notes/facebook-engineering/folly-the-facebook-open-source-library/10150864656793920) and supporting libraries.
   * [double-conversion](https://github.com/floitsch/double-conversion/)
   * A selection of [boost](http://www.boost.org/) modules, mostly for building folly.
+
+##Java
+  * [guava](https://github.com/google/guava) Guava: Google Core Libraries for Java
+  * [netty](https://netty.io/) Netty is a NIO client server framework
+    which enables quick and easy development of network applications
+    such as protocol servers and clients.
