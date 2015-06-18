@@ -169,3 +169,21 @@
 [submodule "third_party/java/error-prone"]
 	path = third_party/java/error-prone
 	url = https://github.com/google/error-prone.git
+[submodule "third_party/java/netty"]
+	path = third_party/java/netty
+	url = https://github.com/LuminateWireless/netty.git
+[submodule "third_party/java/commons-logging/upstream"]
+	path = third_party/java/commons-logging/upstream
+	url = git://git.apache.org/commons-logging.git
+[submodule "third_party/java/log4j/upstream"]
+	path = third_party/java/log4j/upstream
+	url = git://git.apache.org/log4j.git
+[submodule "third_party/java/slf4j/upstream"]
+	path = third_party/java/slf4j/upstream
+	url = https://github.com/qos-ch/slf4j.git
+[submodule "third_party/java/javassit/upstream"]
+	path = third_party/java/javassit/upstream
+	url = https://github.com/jboss-javassist/javassist.git
+[submodule "third_party/java/javassist/upstream"]
+	path = third_party/java/javassist/upstream
+	url = https://github.com/jboss-javassist/javassist.git

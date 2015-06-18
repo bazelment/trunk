@@ -38,3 +38,73 @@ bind(
   name = "grpc++",
   actual = "//third_party/grpc/upstream:grpc++"
 )
+
+bind(
+  name = "apache-commons-logging",
+  actual = "//third_party/java/commons-logging"
+)
+
+bind(
+  name = "apache-log4j",
+  actual = "//third_party/java/log4j"
+)
+
+maven_jar(
+  name = "hpack-maven",
+  artifact = "com.twitter:hpack:v1.0.1"
+)
+
+bind(
+  name = "hpack",
+  actual = "@hpack-maven//jar"
+)
+
+bind(
+  name = "javassist",
+  actual = "//third_party/java/javassist",
+)
+
+maven_jar(
+  name = "jetty-alpn-maven",
+  artifact = "org.eclipse.jetty.alpn:alpn-api:1.1.2.v20150522"
+)
+
+bind(
+  name = "jetty-alpn",
+  actual = "@jetty-alpn-maven//jar"
+)
+
+maven_jar(
+  name = "jetty-npn-maven",
+  artifact = "org.mortbay.jetty.npn:npn-boot:1.1.11.v20150415"
+)
+
+bind(
+  name = "jetty-npn",
+  actual = "@jetty-npn-maven//jar"
+)
+
+maven_jar(
+  name = "jzlib-maven",
+  artifact = "com.jcraft:jzlib:1.1.3"
+)
+
+bind(
+  name = "jzlib",
+  actual = "@jzlib-maven//jar"
+)
+
+maven_jar(
+  name = "netty-tcnative-maven",
+  artifact = "io.netty:netty-tcnative:1.1.33.Fork2"
+)
+
+bind(
+  name = "netty-tcnative",
+  actual = "@netty-tcnative-maven//jar"
+)
+
+bind(
+  name = "slf4j",
+  actual = "//third_party/java/slf4j"
+)
