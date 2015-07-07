@@ -1,5 +1,35 @@
 package(default_visibility = ["//visibility:public"])
 
+# This can used to enable some conditional setting based on when
+# asan/msan/tsan/ubsan is used.
+config_setting(
+  name = "asan_enabled",
+  values = {
+    "copt" : "-fsanitize=address",
+  }
+)
+
+config_setting(
+  name = "msan_enabled",
+  values = {
+    "copt" : "-fsanitize=memory",
+  }
+)
+
+config_setting(
+  name = "tsan_enabled",
+  values = {
+    "copt" : "-fsanitize=thread",
+  }
+)
+
+config_setting(
+  name = "ubsan_enabled",
+  values = {
+    "copt" : "-fsanitize=undefined",
+  }
+)
+
 # TODO(bazel-team): The MacOS tools give an error if there is no object file on
 # the command line to libtool, so we use an empty .cc file here. We should find
 # a better way to handle this case.
