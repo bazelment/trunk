@@ -15,3 +15,15 @@ cc_binary(
     "//third_party/gflags"
   ]
 )
+
+cc_binary(
+  name = "bank-client",
+  srcs = [
+    "bank-client.cc"
+  ],
+  deps = [
+    ":bank",
+    "//third_party/glog",
+    "//third_party/gflags"
+  ]
+)
