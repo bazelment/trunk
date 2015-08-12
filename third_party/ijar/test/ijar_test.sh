@@ -1,0 +1,377 @@
+#!/bin/bash -eu
+#
+# Copyright 2015 Google Inc. All rights reserved.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+
+# TODO(bazel-team) test that modifying the source in a non-interface
+#   changing way results in the same -interface.jar.
+
+
+DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
+## Inputs
+JAVAC=$1
+shift
+JAVA=$1
+shift
+JAR=$1
+shift
+JAVAP=$1
+shift
+IJAR=$TEST_SRCDIR/$1
+shift
+LANGTOOLS8=$TEST_SRCDIR/$1
+shift
+UNZIP=$1
+shift
+ZIP=$1
+shift
+
+## Test framework
+source ${DIR}/testenv.sh || { echo "testenv.sh not found!" >&2; exit 1; }
+
+
+## Tools
+# Ensure that javac is absolute
+[[ "$JAVAC" =~ ^/ ]] || JAVAC="$PWD/$JAVAC"
+
+IJAR_SRCDIR=$(dirname ${IJAR})
+A_JAR=$TEST_TMPDIR/A.jar
+A_INTERFACE_JAR=$TEST_TMPDIR/A-interface.jar
+A_ZIP_JAR=$TEST_TMPDIR/A_zip.jar
+A_ZIP_INTERFACE_JAR=$TEST_TMPDIR/A_zip-interface.jar
+W_JAR=$TEST_TMPDIR/W.jar
+BOTTLES_JAR=$TEST_TMPDIR/bottles.jar
+JAR_WRONG_CENTRAL_DIR=$IJAR_SRCDIR/test/libwrongcentraldir.jar
+IJAR_WRONG_CENTRAL_DIR=$TEST_TMPDIR/wrongcentraldir_interface.jar
+OBJECT_JAVA=$IJAR_SRCDIR/test/Object.java
+OBJECT_JAR=$TEST_TMPDIR/object.jar
+OBJECT_IJAR=$TEST_TMPDIR/object_interface.jar
+TYPEANN2_JAR=$IJAR_SRCDIR/test/libtypeannotations2.jar
+TYPEANN2_IJAR=$TEST_TMPDIR/typeannotations2_interface.jar
+TYPEANN2_JAVA=$IJAR_SRCDIR/test/TypeAnnotationTest2.java
+INVOKEDYNAMIC_JAR=$IJAR_SRCDIR/test/libinvokedynamic.jar
+INVOKEDYNAMIC_IJAR=$TEST_TMPDIR/invokedynamic_interface.jar
+
+#### Setup
+
+# set_file_length FILE SIZE
+#
+# Sets the file size for FILE, truncating if necessary, creating a
+# sparse file if possible, preserving original contents if they fit.
+function set_file_length() {
+  perl -e 'open(FH, ">>$ARGV[0]") && truncate(FH, $ARGV[1]) or fail $!' "$@" &&
+  [[ "$(statfmt $1)" == "$2" ]] ||
+  fail "set_file_length failed"
+}
+
+# check_consistent_file_contents FILE
+#
+# Checks that all files created with the given filename have identical contents.
+expected_output=""
+function check_consistent_file_contents() {
+  local actual="$(cat $1 | ${MD5SUM} | awk '{ print $1; }')"
+  local filename="$(echo $1 | ${MD5SUM} | awk '{ print $1; }')"
+  local expected="$actual"
+  if $(echo "${expected_output}" | grep -q "^${filename} "); then
+    echo "${expected_output}" | grep -q "^${filename} ${actual}$" || {
+      ls -l "$1"
+      fail "output file contents differ"
+    }
+  else
+    expected_output="$expected_output$filename $actual
+"
+  fi
+}
+
+function set_up() {
+  mkdir -p $TEST_TMPDIR/classes
+}
+
+function tear_down() {
+  rm -fr $TEST_TMPDIR/classes
+}
+
+#### Tests
+function test_output_bigger_than_input() {
+  # Tests that ijar does not crash when output ijar is bigger than the input jar
+  $JAVAC -g -d $TEST_TMPDIR/classes \
+    $IJAR_SRCDIR/test/WellCompressed*.java ||
+    fail "javac failed"
+  $JAR cf $W_JAR -C $TEST_TMPDIR/classes . || fail "jar failed"
+
+  W_INTERFACE_JAR=$TEST_TMPDIR/W-interface.jar
+  $IJAR $W_JAR $W_INTERFACE_JAR || fail "ijar failed"
+  # Check that the interface jar is bigger than the original jar.
+  W_JAR_SIZE=$(statfmt $W_JAR)
+  W_INTERFACE_JAR_SIZE=$(statfmt $W_INTERFACE_JAR)
+  [[ $W_INTERFACE_JAR_SIZE -gt $W_JAR_SIZE ]] || fail "interface jar should be bigger"
+}
+
+function test_class_more_64k() {
+  # Tests that ijar can handle class bodies longer than 64K
+  # First, generate the input file
+  BOTTLES_JAVA=$TEST_TMPDIR/BottlesOnTheWall.java
+  echo "public class BottlesOnTheWall {" > $BOTTLES_JAVA
+  for i in $(seq 1 16384); do
+    echo "  public int getBottleOnTheWall${i}() { return ${i}; }" >> $BOTTLES_JAVA
+  done
+
+  echo "}" >> $BOTTLES_JAVA
+
+  $JAVAC -g -d $TEST_TMPDIR/classes $BOTTLES_JAVA || fail "javac failed"
+  BOTTLES_INTERFACE_JAR=$TEST_TMPDIR/bottles-interface.jar
+
+  # Test ijar calls
+  for flag0 in '' '0'; do
+    $JAR c"${flag0}"f $BOTTLES_JAR -C $TEST_TMPDIR/classes . || fail "jar failed"
+    $IJAR $BOTTLES_JAR $BOTTLES_INTERFACE_JAR || fail "ijar failed"
+    check_consistent_file_contents $BOTTLES_INTERFACE_JAR
+  done
+
+  # Check that ijar can produce class files with a body longer than 64K by
+  # calling ijar itself on the output file to make sure that it is valid
+  BOTTLES_INTERFACE_INTERFACE_JAR=$TEST_TMPDIR/bottles-interface-interface.jar
+  $IJAR $BOTTLES_INTERFACE_JAR $BOTTLES_INTERFACE_INTERFACE_JAR ||
+    fail "ijar cannot produce class files with body longer than 64K"
+}
+
+function test_ijar_output() {
+  # Numerous check on the output created by ijar.
+
+  # Compiles A.java, builds A.jar and A-interface.jar
+  $JAVAC -g -d $TEST_TMPDIR/classes $IJAR_SRCDIR/test/A.java ||
+    fail "javac failed"
+  $JAR cf $A_JAR -C $TEST_TMPDIR/classes . || fail "jar failed"
+  $IJAR $A_JAR $A_INTERFACE_JAR || fail "ijar failed."
+
+  # Check that the number of entries is 5:
+  #  A, A.PrivateInner, A.PublicInner, A.MyAnnotation,
+  #  A.RuntimeAnnotation
+  # (Note: even private inner classes are retained, so we don't need to change
+  # the types of members.)
+  expected=5
+  lines=$($JAR tvf $A_INTERFACE_JAR | wc -l)
+  check_eq $expected $lines "Interface jar should have $expected entries!"
+
+  # Check that no private class members are found:
+  lines=$($JAVAP -private -classpath $A_JAR A | grep priv | wc -l)
+  check_eq 2 $lines "Input jar should have 2 private members!"
+  lines=$($JAVAP -private -classpath $A_INTERFACE_JAR A | grep priv | wc -l)
+  check_eq 0 $lines "Interface jar should have no private members!"
+  lines=$($JAVAP -private -classpath $A_INTERFACE_JAR A | grep clinit | wc -l)
+  check_eq 0 $lines "Interface jar should have no class initializers!"
+
+
+  # Check that no code is found:
+  lines=$($JAVAP -c -private -classpath $A_JAR A | grep Code: | wc -l)
+  check_eq 5 $lines "Input jar should have 5 method bodies!"
+  lines=$($JAVAP -c -private -classpath $A_INTERFACE_JAR A | grep Code: | wc -l)
+  check_eq 0 $lines "Interface jar should have no method bodies!"
+
+  # Check that constants from code are no longer present:
+  $JAVAP -c -private -classpath $A_JAR A | grep -sq foofoofoofoo ||
+    fail "Input jar should have code constants!"
+  $JAVAP -c -private -classpath $A_INTERFACE_JAR A | grep -sq foofoofoofoo &&
+    fail "Interface jar should have no code constants!"
+
+
+  # Check (important, this!) that the interface jar is still sufficient
+  # for compiling:
+  $JAVAC -Xlint -classpath $A_INTERFACE_JAR -g -d $TEST_TMPDIR/classes \
+    $IJAR_SRCDIR/test/B.java 2>$TEST_log || fail "Can't compile B!"
+
+  # Test compilation of B yielded deprecation message:
+  expect_log 'deprecatedMethod.*in A has been deprecated' \
+    "ijar has lost @Deprecated annotation!"
+
+  # Run the dynamic checks in B.main().
+  $JAVA -classpath $TEST_TMPDIR/classes B || exit 1
+
+  # Check idempotence of ijar transformation:
+  A_INTERFACE_INTERFACE_JAR=$TEST_TMPDIR/A-interface-interface.jar
+  $IJAR $A_INTERFACE_JAR $A_INTERFACE_INTERFACE_JAR || fail "ijar failed."
+  cmp $A_INTERFACE_JAR $A_INTERFACE_INTERFACE_JAR ||
+    fail "ijar transformation is not idempotent"
+
+
+  # Check that -interface.jar contains nothing but .class files:
+  check_eq 0 $($JAR tf $A_INTERFACE_JAR | grep -v \\.class$ | wc -l) \
+    "Interface jar should contain only .class files!"
+
+
+  # Check that -interface.jar timestamps are all zeros:
+  check_eq 0 $(TZ=UTC $JAR tvf $A_INTERFACE_JAR |
+               grep -v 'Fri Nov 30 00:00:00 UTC 1979' | wc -l) \
+   "Interface jar contained non-zero timestamps!"
+
+
+  # Check that compile-time constants in A are still annotated as such in ijar:
+  $JAVAP -classpath $TEST_TMPDIR/classes -c B | grep -sq ldc2_w.*123 ||
+    fail "ConstantValue not propagated to class B!"
+
+
+  # Check that a jar compressed with zip results in the same interface jar as a
+  # jar compressed with jar
+  rm -fr $TEST_TMPDIR/classes
+  mkdir -p $TEST_TMPDIR/classes || fail "mkdir $TEST_TMPDIR/classes failed"
+  $JAVAC -g -d $TEST_TMPDIR/classes $IJAR_SRCDIR/test/A.java ||
+    fail "javac failed"
+  $JAR cf $A_JAR $TEST_TMPDIR/classes/A.class || fail "jar failed"
+  $ZIP $A_ZIP_JAR $TEST_TMPDIR/classes/A.class || fail "zip failed"
+
+  $IJAR $A_JAR $A_INTERFACE_JAR || fail "ijar failed"
+  $IJAR $A_ZIP_JAR $A_ZIP_INTERFACE_JAR || fail "ijar failed"
+  cmp $A_INTERFACE_JAR $A_ZIP_INTERFACE_JAR || \
+    fail "ijars from jar and zip are different"
+}
+
+function do_test_large_file() {
+  # Compiles A.java, builds A.jar and A-interface.jar
+  $JAVAC -g -d $TEST_TMPDIR/classes $IJAR_SRCDIR/test/A.java ||
+    fail "javac failed"
+
+  # First a check without large file to have something to compare to.
+  for flag0 in '' '0'; do
+    $JAR c"${flag0}"f $A_JAR -C $TEST_TMPDIR/classes . || fail "jar failed"
+    $IJAR $A_JAR $A_INTERFACE_JAR || fail "ijar failed."
+    check_consistent_file_contents $A_INTERFACE_JAR
+  done
+
+  # Then create larges files
+  extra_args=""
+  if [[ -n "${1-}" ]]; then
+    for file in $(find $TEST_TMPDIR/classes -name '*.class'); do
+      set_file_length "$file" "$1"
+    done
+  fi
+  if [[ -n "${2-}" ]]; then
+    set_file_length $TEST_TMPDIR/zeroes.data "$2"
+    extra_args="-C $TEST_TMPDIR zeroes.data"
+  fi
+
+  for flag0 in '' '0'; do
+    $JAR c"${flag0}"f $A_JAR $extra_args -C $TEST_TMPDIR/classes . || fail "jar failed"
+    $IJAR $A_JAR $A_INTERFACE_JAR || fail "ijar failed."
+    check_consistent_file_contents $A_INTERFACE_JAR
+  done
+}
+
+function test_large_files() {
+  # Ensure input files larger than INITIAL_BUFFER_SIZE work.
+  # TODO(martinrb): remove maximum .class file size limit (MAX_BUFFER_SIZE)
+  for size in $((1024*1024)) $((15*1024*1024)); do
+      do_test_large_file $size
+  done
+}
+
+# Create a huge (~2.2Gb) input jar to test "large file" correctness
+function test_z_2gb_plus_data_file() {
+  # This is slow because only writing a 2.2Gb file on a SSD drive is >10s and
+  # jaring it takes >16s.
+  # The z letter in the function name is to ensure that method is last in the
+  # method list so it has more chance to be alone on a shard.
+  do_test_large_file '' $((22*102*1024*1024))
+}
+
+# Create an output jar with upper bound on size > 2GB
+function test_upper_bound_up_2gb() {
+  DIR=$TEST_TMPDIR/ManyLargeClasses
+  mkdir -p $DIR/classes
+  for i in $(seq 200); do
+    printf "class C${i} {}\n" > $DIR/C${i}.java
+  done
+  (cd $DIR && $JAVAC -d classes *.java)
+  for i in $(seq 200); do
+    set_file_length $DIR/classes/C${i}.class $((15*1024*1024))
+  done
+  $JAR cf $DIR/ManyLargeClasses.jar -C $DIR/classes . || fail "jar failed"
+  $IJAR $DIR/ManyLargeClasses.jar $DIR/ManyLargeClasses.ijar || fail "ijar failed."
+}
+
+function test_empty_jar() {
+  # Regression test for jar file without classes (javac doesn't like an empty ijar).
+  >$TEST_TMPDIR/empty
+  $ZIP $TEST_TMPDIR/noclasses.jar $TEST_TMPDIR/empty >/dev/null 2>&1
+  $IJAR $TEST_TMPDIR/noclasses.jar || fail "ijar failed"
+  $UNZIP -qql $TEST_TMPDIR/noclasses-interface.jar 2>/dev/null | grep -q . ||
+    fail "noclasses-interface.jar is completely empty!"
+  $JAVAC -classpath $TEST_TMPDIR/noclasses-interface.jar \
+    -d $TEST_TMPDIR/classes \
+    $IJAR_SRCDIR/test/A.java ||
+    fail "javac noclasses-interface.jar failed"
+  rm $TEST_TMPDIR/{empty,noclasses.jar,noclasses-interface.jar}
+}
+
+function test_wrong_centraldir() {
+  # Check that a JAR file can be parsed even if the central directory file count
+  # is wrong
+  $IJAR $JAR_WRONG_CENTRAL_DIR $IJAR_WRONG_CENTRAL_DIR || fail "ijar failed"
+  IJAR_FILES=$($UNZIP -qql $IJAR_WRONG_CENTRAL_DIR | wc -l | xargs echo)
+  if [[ $IJAR_FILES != 2 ]]; then
+    fail "ijar removed files"
+  fi
+}
+
+function test_type_annotation() {
+  # Check that constant pool references used by JSR308 type annotations are
+  # preserved
+  $IJAR $TYPEANN2_JAR $TYPEANN2_IJAR || fail "ijar failed"
+  $JAVAP -classpath $TYPEANN2_IJAR -v Util >& $TEST_log || fail "javap failed"
+  expect_log "RuntimeVisibleTypeAnnotations" "RuntimeVisibleTypeAnnotations not preserved!"
+  cp $TYPEANN2_JAVA $TEST_TMPDIR/TypeAnnotationTest2.java
+  $JAVAC -J-Xbootclasspath/p:$LANGTOOLS8 $TEST_TMPDIR/TypeAnnotationTest2.java -cp $TYPEANN2_IJAR ||
+    fail "javac failed"
+}
+
+function test_invokedynamic() {
+  # Check that ijar works on classes with invokedynamic
+  $IJAR $INVOKEDYNAMIC_JAR $INVOKEDYNAMIC_IJAR || fail "ijar failed"
+  lines=$($JAVAP -c -private -classpath $INVOKEDYNAMIC_JAR ClassWithLambda | grep Code: | wc -l)
+  check_eq 4 $lines "Input jar should have 4 method bodies!"
+  lines=$($JAVAP -c -private -classpath $INVOKEDYNAMIC_IJAR ClassWithLambda | grep Code: | wc -l)
+  check_eq 0 $lines "Interface jar should have no method bodies!"
+}
+
+function test_object_class() {
+  # Check that Object.class can be processed
+  mkdir -p $TEST_TMPDIR/java/lang
+  cp $OBJECT_JAVA $TEST_TMPDIR/java/lang/.
+  $JAVAC $TEST_TMPDIR/java/lang/Object.java || fail "javac failed"
+  $JAR cf $OBJECT_JAR -C $TEST_TMPDIR java/lang/Object.class || fail "jar failed"
+
+  $IJAR $OBJECT_JAR $OBJECT_IJAR || fail "ijar failed"
+}
+
+function test_corrupted_end_of_centraldir() {
+  # Check that the tool detects and reports a corrupted end of central directory
+  # record condition
+  CORRUPTED_JAR=$TEST_TMPDIR/corrupted.jar
+
+  # First make the jar one byte longer
+  cp $JAR_WRONG_CENTRAL_DIR $CORRUPTED_JAR
+  chmod +w $CORRUPTED_JAR
+  echo >> $CORRUPTED_JAR
+  echo "Abort trap is expected"  # Show on the log that we expect failure.
+  $IJAR $CORRUPTED_JAR 2> $TEST_log && fail "ijar should have failed" || status=$?
+  check_ne 0 $status
+  expect_log "missing end of central directory record"
+
+  # Then make the jar one byte shorter than the original one
+  let "NEW_SIZE = `statfmt $CORRUPTED_JAR` - 2"
+  set_file_length $CORRUPTED_JAR $NEW_SIZE
+  $IJAR $CORRUPTED_JAR 2> $TEST_log && fail "ijar should have failed" || status=$?
+  check_ne 0 $status
+  expect_log "missing end of central directory record"
+}
+
+run_suite "ijar tests"
