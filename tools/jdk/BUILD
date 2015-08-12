@@ -76,11 +76,20 @@ java_toolchain(
     jvm_opts = ["-client"],
     source_version = "7",
     target_version = "7",
+    misc = [
+        "-extra_checks:off",
+    ],
+)
+
+filegroup(
+    name = "ijar",
+    srcs = [
+        "//third_party/ijar:ijar",
+    ],
 )
 
 exports_files([
     "JavaBuilder_deploy.jar",
-    "ijar",
     "SingleJar_deploy.jar",
 ])
 
