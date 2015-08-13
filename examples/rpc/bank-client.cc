@@ -22,7 +22,7 @@ namespace examples {
 
 static void RunClient() {
   LOG(INFO) << "Start the client.";
-  std::shared_ptr<ChannelInterface> 
+  std::shared_ptr<ChannelInterface>
     channel(grpc::CreateChannel("localhost:10000",
                                 grpc::InsecureCredentials(),
                                 ChannelArguments()));
@@ -32,8 +32,8 @@ static void RunClient() {
   request.set_amount(25);
   ClientContext context;
   DepositReply response;
-  Status status = stub->Deposit(&context, request, &response); 
-  if (status.IsOk()) {
+  Status status = stub->Deposit(&context, request, &response);
+  if (status.ok()) {
     LOG(INFO) << response.account() << " balance:" << response.balance();
   } else {
     LOG(INFO) << "Rpc failed";
