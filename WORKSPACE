@@ -101,7 +101,7 @@ bind(
 
 maven_jar(
   name = "netty-tcnative-maven",
-  artifact = "io.netty:netty-tcnative:1.1.33.Fork2"
+  artifact = "io.netty:netty-tcnative:1.1.33.Fork5"
 )
 
 bind(
