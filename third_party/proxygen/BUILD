@@ -38,11 +38,11 @@ genrule(
   cmd = "mkdir -p $(GENDIR)/third_party/proxygen/http/proxygen/lib/http && " +
     "HEADERS_LIST=$(location upstream/proxygen/lib/http/HTTPCommonHeaders.txt) " +
     "INSTALL_DIR=$(GENDIR)/third_party/proxygen/http/proxygen/lib/http " +
-    "FBCODE_DIR=third_party/proxygen/upstream " + 
+    "FBCODE_DIR=third_party/proxygen/upstream " +
     "$(location upstream/proxygen/lib/http/gen_HTTPCommonHeaders.h.sh) && " +
     "HEADERS_LIST=$(location upstream/proxygen/lib/http/HTTPCommonHeaders.txt) " +
     "INSTALL_DIR=$(GENDIR)/third_party/proxygen/http/proxygen/lib/http " +
-    "FBCODE_DIR=third_party/proxygen/upstream " + 
+    "FBCODE_DIR=third_party/proxygen/upstream " +
     "$(location upstream/proxygen/lib/http/gen_HTTPCommonHeaders.cpp.sh) ",
 
   outs = [
@@ -102,10 +102,10 @@ genrule(
   cmd = "mkdir -p $(GENDIR)/third_party/proxygen/trace && " +
     "python $(location upstream/proxygen/lib/utils/gen_trace_event_constants.py) " +
     "--output_type=cpp " +
-    "--input_files=upstream/proxygen/lib/utils/TraceEventType.txt,upstream/proxygen/lib/utils/TraceFieldType.txt " +
+    "--input_files=third_party/proxygen/upstream/proxygen/lib/utils/TraceEventType.txt,third_party/proxygen/upstream/proxygen/lib/utils/TraceFieldType.txt " +
     "--output_scope=proxygen " +
     "--header_path=proxygen/lib/utils " +
-    "--fbcode_dir=. " + 
+    "--fbcode_dir=. " +
     "--install_dir=$(GENDIR)/third_party/proxygen/trace/proxygen/lib/utils",
   outs = [
     "trace/proxygen/lib/utils/TraceEventType.h",
@@ -114,7 +114,7 @@ genrule(
     "trace/proxygen/lib/utils/TraceFieldType.cpp",
   ]
 )
-  
+
 cc_library(
   name = "utils",
   copts = [
@@ -123,6 +123,9 @@ cc_library(
   includes = [
     "upstream",
   ],
+  hdrs = glob([
+    "upstream/proxygen/lib/utils/*.h",
+  ]),
   srcs = [
     "upstream/proxygen/lib/utils/AsyncTimeoutSet.cpp",
     "upstream/proxygen/lib/utils/CryptUtil.cpp",
@@ -199,5 +202,4 @@ cc_binary(
     ":httpserver",
     ":echo_handler",
   ],
-)  
-
+)
