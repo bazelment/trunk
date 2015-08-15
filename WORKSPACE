@@ -114,6 +114,82 @@ bind(
   actual = "//third_party/java/slf4j"
 )
 
+# grpc-java dependencies
+bind(
+  name = "jsr305",
+  actual = "//third_party/java/jsr305"
+)
+
+maven_jar(
+  name = "google-auth-library-oauth2-http-maven",
+  artifact = "com.google.auth:google-auth-library-oauth2-http:0.2.0"
+)
+
+bind(
+  name = "google-auth-library-oauth2-http",
+  actual = "@google-auth-library-oauth2-http-maven//jar"
+)
+
+maven_jar(
+  name = "google-auth-library-credentials-maven",
+  artifact = "com.google.auth:google-auth-library-credentials:0.2.0"
+)
+
+bind(
+  name = "google-auth-library-credentials",
+  actual = "@google-auth-library-credentials-maven//jar"
+)
+
+maven_jar(
+  name = "hamcrest_maven",
+  artifact = "org.hamcrest:hamcrest-core:1.3",
+)
+
+bind(
+  name = "hamcrest",
+  actual = "@hamcrest_maven//jar"
+)
+
+maven_jar(
+  name = "junit_maven",
+  artifact = "junit:junit:4.11"
+)
+
+bind(
+  name = "junit",
+  actual = "@junit_maven//jar"
+)
+
+maven_jar(
+  name = "mockito_maven",
+  artifact = "org.mockito:mockito-core:1.10.19",
+)
+
+bind(
+  name = "mockito",
+  actual = "@mockito_maven//jar"
+)
+
+maven_jar(
+  name = "okhttp_maven",
+  artifact = "com.squareup.okhttp:okhttp:2.4.0",
+)
+
+bind(
+  name = "okhttp",
+  actual = "@okhttp_maven//jar"
+)
+
+maven_jar(
+  name = "okio_maven",
+  artifact = "com.squareup.okio:okio:1.5.0",
+)
+
+bind(
+  name = "okio",
+  actual = "@okio_maven//jar"
+)
+
 # Disable loading of any android depenedency rule
 bind(name = "android/aar_generator")
 bind(name = "android/incremental_split_stub_application")
