@@ -190,6 +190,16 @@ bind(
   actual = "@okio_maven//jar"
 )
 
+maven_jar(
+  name = "commons-cli_maven",
+  artifact = "commons-cli:commons-cli:1.2",
+)
+
+bind(
+  name = "commons-cli",
+  actual = "@commons-cli_maven//jar"
+)
+
 # Disable loading of any android depenedency rule
 bind(name = "android/aar_generator")
 bind(name = "android/incremental_split_stub_application")
