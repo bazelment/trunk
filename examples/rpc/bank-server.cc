@@ -8,8 +8,6 @@
 #include <grpc++/server.h>
 #include <grpc++/server_builder.h>
 #include <grpc++/server_context.h>
-#include <grpc++/server_credentials.h>
-#include <grpc++/status.h>
 
 #include "gflags/gflags.h"
 #include "glog/logging.h"
@@ -22,7 +20,7 @@ namespace examples {
 class BankImpl : public Bank::Service {
  public:
   virtual grpc::Status Deposit(grpc::ServerContext* context,
-                               const DepositRequest* request, 
+                               const DepositRequest* request,
                                DepositReply* response) {
     double balance = balances_[request->account()];
     balance += request->amount();

@@ -4,15 +4,13 @@
 #include "glog/logging.h"
 
 #include <grpc/grpc.h>
-#include <grpc++/channel_arguments.h>
-#include <grpc++/channel_interface.h>
+#include <grpc++/channel.h>
 #include <grpc++/client_context.h>
 #include <grpc++/create_channel.h>
-#include <grpc++/credentials.h>
-#include <grpc++/status.h>
+#include <grpc++/security/credentials.h>
+#include <grpc++/support/status.h>
 
-using grpc::ChannelArguments;
-using grpc::ChannelInterface;
+using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
 
@@ -22,10 +20,9 @@ namespace examples {
 
 static void RunClient() {
   LOG(INFO) << "Start the client.";
-  std::shared_ptr<ChannelInterface>
+  std::shared_ptr<Channel>
     channel(grpc::CreateChannel("localhost:10000",
-                                grpc::InsecureCredentials(),
-                                ChannelArguments()));
+                                    grpc::InsecureCredentials()));
   std::unique_ptr<Bank::Stub> stub(Bank::NewStub(channel));
   DepositRequest request;
   request.set_account("xucheng");
