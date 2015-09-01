@@ -17,9 +17,8 @@
 # This is almost equivalent to
 # bazel run --script_path "name" --run_under "under" "command"
 def _run_under_impl(ctx):
-  bin_dir = ctx.data_configuration.bin_dir
+  bin_dir = ctx.configuration.bin_dir
   build_directory = str(bin_dir)[:-len('[derived]')] + '/'
-  print(build_directory)
   under = ctx.executable.under
   command = ctx.executable.command
   exe = ctx.outputs.executable
@@ -34,9 +33,11 @@ exec %s %s \\
        " ".join(ctx.attr.under_args),
        build_directory + command.short_path,
        " ".join(ctx.attr.args)))
-  runfiles = [command, under] + ctx.files.data
+  runfiles = [command, under] + ctx.files.data + list(
+    ctx.attr.under.default_runfiles.files) + list(
+    ctx.attr.under.default_runfiles.symlinks)
   return struct(
-    runfiles=ctx.runfiles(files=runfiles)
+    runfiles=ctx.runfiles(files=runfiles),
   )
 
 run_under_attr = {
