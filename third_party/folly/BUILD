@@ -63,6 +63,8 @@ cc_library(
     "linux-k8",
   ],
   hdrs = [
+    "upstream/folly/Range.h",
+    "upstream/folly/String.h",
   ],
   srcs = [
     ":generate_format_tables",
@@ -72,6 +74,7 @@ cc_library(
     "upstream/folly/Format.cpp",
     "upstream/folly/Malloc.cpp",
     "upstream/folly/Range.cpp",
+    "upstream/folly/StringBase.cpp",
     "upstream/folly/String.cpp",
     "upstream/folly/Unicode.cpp",
   ],
@@ -203,6 +206,27 @@ cc_library(
 )
 
 cc_library(
+  name = "symbolizer",
+  visibility = ["//visibility:public"],
+  srcs = glob([
+    "upstream/folly/experimental/symbolizer/*.cpp",
+  ]),
+  copts = [
+    #'-DHAVE_LINK_H=1'
+  ],
+  deps = [
+    ":base",
+    "//third_party/boost:assert",
+    "//third_party/boost:container",
+    "//third_party/boost:functional",
+    "//third_party/boost:intrusive",
+    "//third_party/boost:throw_exception",
+    "//third_party/boost:type_index",
+    "//third_party/boost:variant",
+  ],
+)
+
+cc_library(
   name = "recordio",
   visibility = ["//visibility:public"],
   hdrs = [
@@ -331,7 +355,7 @@ cc_test(
   ],
   data = [
     ":subprocess_test_parent_death_helper",
-  ]    
+  ]
 )
 
 cc_test(
