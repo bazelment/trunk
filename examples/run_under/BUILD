@@ -11,4 +11,7 @@ run_under_test(
   name = 'hello_test',
   under = ':env',
   command = '//examples:hello',
+  data = [
+    ':env'
+  ],
 )

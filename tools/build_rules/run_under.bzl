@@ -33,11 +33,11 @@ exec %s %s \\
        " ".join(ctx.attr.under_args),
        build_directory + command.short_path,
        " ".join(ctx.attr.args)))
-  runfiles = [command, under] + ctx.files.data + list(
-    ctx.attr.under.default_runfiles.files) + list(
-    ctx.attr.under.default_runfiles.symlinks)
+  runfiles = [command, under] + ctx.files.data
   return struct(
-    runfiles=ctx.runfiles(files=runfiles),
+    runfiles=ctx.runfiles(files=runfiles,
+                          collect_data=True,
+                          collect_default=True),
   )
 
 run_under_attr = {
