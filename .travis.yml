@@ -1,0 +1,25 @@
+# Use container based environment, slightly faster than standard
+sudo: false
+
+language: cpp
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - wget
+      # Package list from http://bazel.io/docs/install.html
+      - oraclejdk8
+      - pkg-config
+      - zip
+      - zlib1g-dev
+
+install:
+  - ./install-bazel.sh
+
+script:
+  - bazel build //examples/...:all
+  - bazel test //examples/...:all
+
+notifications:
+  email: false
