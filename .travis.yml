@@ -1,12 +1,14 @@
 # Use container based environment, slightly faster than standard
 sudo: false
 
-language: cpp
+# language: cpp
 addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
     packages:
+      - gcc-4.8
+      - g++-4.8
       - wget
       # Package list from http://bazel.io/docs/install.html
       - oraclejdk8
