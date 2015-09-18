@@ -30,6 +30,30 @@ config_setting(
   }
 )
 
+config_setting(
+  name = "debug_enabled",
+  values = {
+    "compilation_mode": "dbg"
+  }
+)
+
+# This can used to enable some conditional setting for ARM CPU
+config_setting(
+  name = "arm",
+  values = {
+    "cpu": "arm",
+  }
+)
+
+# This can used to enable some conditional setting for X86 32 bit CPU
+config_setting(
+  name = "x86_32",
+  values = {
+    "cpu": "piii",
+  }
+)
+
+
 # TODO(bazel-team): The MacOS tools give an error if there is no object file on
 # the command line to libtool, so we use an empty .cc file here. We should find
 # a better way to handle this case.
