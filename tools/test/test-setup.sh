@@ -20,6 +20,7 @@ exec 2>&1
 # Executing the test log will page it.
 echo 'exec ${PAGER:-/usr/bin/less} "$0" || exit 1'
 
+export HEAPCHECK=normal
 DIR="$TEST_SRCDIR"
 
 # normal commands are run in the exec-root where they have access to
