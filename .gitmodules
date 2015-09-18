@@ -190,3 +190,6 @@
 [submodule "third_party/zlib/upstream"]
 	path = third_party/zlib/upstream
 	url = https://github.com/madler/zlib.git
+[submodule "third_party/wangle/upstream"]
+	path = third_party/wangle/upstream
+	url = https://github.com/facebook/wangle.git

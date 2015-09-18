@@ -152,9 +152,6 @@ cc_library(
     "upstream/folly/ThreadCachedArena.cpp",
     "upstream/folly/TimeoutQueue.cpp",
     "upstream/folly/Uri.cpp",
-    # "upstream/folly/wangle/InlineExecutor.cpp",
-    # "upstream/folly/wangle/ManualExecutor.cpp",
-    # "upstream/folly/wangle/ThreadGate.cpp",
   ],
   deps = [
     ":base",
@@ -183,7 +180,10 @@ cc_library(
     "upstream/folly/io/async/AsyncTimeout.cpp",
     "upstream/folly/io/async/EventBase.cpp",
     "upstream/folly/io/async/EventHandler.cpp",
-    "upstream/folly/io/async/Request.cpp",
+  ],
+  hdrs = [
+    "upstream/folly/io/async/AsyncTimeout.h",
+    "upstream/folly/io/async/Request.h",
   ],
   deps = [
     ":folly",
