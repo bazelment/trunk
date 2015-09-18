@@ -139,12 +139,15 @@ cc_library(
     "upstream/folly/io/Compression.cpp",
     "upstream/folly/io/IOBuf.cpp",
     "upstream/folly/io/IOBufQueue.cpp",
+    "upstream/folly/io/ShutdownSocketSet.cpp",
     # These require libevent
     "upstream/folly/json.cpp",
     "upstream/folly/detail/MemoryIdler.cpp",
     "upstream/folly/MacAddress.cpp",
     "upstream/folly/Random.cpp",
     "upstream/folly/SafeAssert.cpp",
+    "upstream/folly/Singleton.cpp",
+    "upstream/folly/SocketAddress.cpp",
     "upstream/folly/SpookyHashV1.cpp",
     "upstream/folly/SpookyHashV2.cpp",
     "upstream/folly/stats/Instantiations.cpp",
@@ -177,9 +180,15 @@ cc_library(
   name = "async",
   visibility = ["//visibility:public"],
   srcs = [
+    "upstream/folly/io/async/AsyncSignalHandler.cpp",
+    "upstream/folly/io/async/AsyncSocket.cpp",
+    "upstream/folly/io/async/AsyncServerSocket.cpp",
+    "upstream/folly/io/async/AsyncUDPSocket.cpp",
     "upstream/folly/io/async/AsyncTimeout.cpp",
     "upstream/folly/io/async/EventBase.cpp",
+    "upstream/folly/io/async/EventBaseManager.cpp",
     "upstream/folly/io/async/EventHandler.cpp",
+    "upstream/folly/io/async/HHWheelTimer.cpp",
   ],
   hdrs = [
     "upstream/folly/io/async/AsyncTimeout.h",
@@ -189,6 +198,24 @@ cc_library(
     ":folly",
     "//third_party/libevent",
     "//third_party/boost:iterator",
+  ]
+)
+
+cc_library(
+  name = "futures",
+  visibility = ["//visibility:public"],
+  srcs = glob([
+    "upstream/folly/futures/*.cpp",
+    "upstream/folly/futures/detail/*.cpp",
+    "upstream/folly/experimental/fibers/*.cpp",
+  ]),
+  hdrs = glob([
+    "upstream/folly/futures/*.h",
+  ]),
+  deps = [
+    ":async",
+    ":folly",
+    "//third_party/boost:context",
   ]
 )
 
