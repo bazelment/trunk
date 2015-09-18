@@ -20,8 +20,10 @@ install:
   - ./install-bazel.sh
 
 script:
-  - bazel build //examples/...:all
-  - bazel test //examples/...:all
+  # The kernel used by travis is too old to allow namespace creation
+  # for normal account, so we disable it.
+  - bazel build --spawn_strategy=standalone --genrule_strategy=standalone //examples/...:all
+  - bazel test --spawn_strategy=standalone//examples/...:all
 
 notifications:
   email: false
