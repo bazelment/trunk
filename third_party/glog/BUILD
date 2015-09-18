@@ -13,8 +13,6 @@ cc_library(
   ],
   copts = [
     "-DNO_FRAME_POINTER",
-    "-fno-sanitize=thread",
-    "-fno-sanitize=address",
     "-Ithird_party/glog/build/k8/src",
   ],
   srcs = [
@@ -75,4 +73,3 @@ cc_test(
     "-Ithird_party/glog/build/k8/src"
   ],
 )
-

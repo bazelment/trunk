@@ -101,8 +101,6 @@ cc_library(
     "build/k8/include/libunwind-common.h",
   ],
   copts = [
-    "-fno-sanitize=thread",
-    "-fno-sanitize=address",
     "-Wno-error",
     '-DHAVE_CONFIG_H',
     '-D_GNU_SOURCE',
