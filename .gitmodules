@@ -154,6 +154,9 @@
 [submodule "third_party/boost/upstream/variant"]
 	path = third_party/boost/upstream/variant
 	url = https://github.com/boostorg/variant.git
+[submodule "third_party/boost/upstream/context"]
+	path = third_party/boost/upstream/context
+	url = https://github.com/boostorg/context.git
 [submodule "third_party/double-conversion"]
 	path = third_party/double-conversion
 	url = https://github.com/floitsch/double-conversion.git

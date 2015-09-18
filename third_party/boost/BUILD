@@ -82,6 +82,32 @@ cc_library(
   ],
 )
 
+CONTEXT_K8_LINUX_ASM = [
+  "upstream/context/src/asm/jump_x86_64_sysv_elf_gas.S",
+  "upstream/context/src/asm/make_x86_64_sysv_elf_gas.S",
+]
+
+cc_library(
+  name = "context",
+  visibility = ["//visibility:public"],
+  includes = [
+    "upstream/context/include",
+  ],
+  hdrs = glob([
+    "upstream/context/include/boost/*.h",
+  ]),
+  srcs = [
+    "upstream/context/src/execution_context.cpp",
+  ] + CONTEXT_K8_LINUX_ASM,
+  deps = [
+    ":config"
+  ],
+  copts = [
+    "-fsplit-stack",
+    "-DBOOST_USE_SEGMENTED_STACKS",
+  ],
+)
+
 cc_library(
   name = "conversion",
   visibility = ["//visibility:public"],
