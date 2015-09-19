@@ -22,7 +22,8 @@ cc_library(
     "upstream/proxygen/httpserver/*.cpp",
   ]),
   deps = [
-    ":http"
+    ":http",
+    "//third_party/wangle",
   ]
 )
 
@@ -63,17 +64,21 @@ cc_library(
     "upstream/proxygen/lib/http/*.cpp",
     "upstream/proxygen/lib/http/codec/*.cpp",
     "upstream/proxygen/lib/http/codec/compress/*.cpp",
+    "upstream/proxygen/lib/http/codec/compress/experimental/hpack9/*.cpp",
+    "upstream/proxygen/lib/http/codec/experimental/*.cpp",
     "upstream/proxygen/lib/http/session/*.cpp",
   ]) + [
     ":gen_http_common_headers",
   ],
   deps = [
+    ":ParseURL",
     ":utils",
     ":service",
     "//third_party/boost:heap",
     "//third_party/boost:variant",
     "//third_party/folly",
     "//third_party/folly:async",
+    "//third_party/zlib",
   ],
 )
 
@@ -88,6 +93,7 @@ cc_library(
   ],
   deps = [
     "//third_party/folly:async",
+    "//third_party/wangle:acceptor",
   ]
 )
 
@@ -129,16 +135,21 @@ cc_library(
   srcs = [
     "upstream/proxygen/lib/utils/AsyncTimeoutSet.cpp",
     "upstream/proxygen/lib/utils/CryptUtil.cpp",
+    "upstream/proxygen/lib/utils/ChromeUtils.cpp",
     "upstream/proxygen/lib/utils/Exception.cpp",
     "upstream/proxygen/lib/utils/HTTPTime.cpp",
     "upstream/proxygen/lib/utils/Logging.cpp",
     "upstream/proxygen/lib/utils/TraceEventContext.cpp",
     "upstream/proxygen/lib/utils/TraceEvent.cpp",
+    "upstream/proxygen/lib/utils/ZlibStreamCompressor.cpp",
+    "upstream/proxygen/lib/utils/ZlibStreamDecompressor.cpp",
     ":gen_trace_event_constants",
   ],
   deps = [
     "//third_party/folly",
     "//third_party/folly:async",
+    "//third_party/boost:variant",
+    "//third_party/zlib",
     "//external:libssl",
   ],
 )
