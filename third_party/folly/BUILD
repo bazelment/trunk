@@ -243,9 +243,11 @@ cc_library(
   ],
   deps = [
     ":base",
+    ":folly",
     "//third_party/boost:assert",
     "//third_party/boost:container",
     "//third_party/boost:functional",
+    "//third_party/boost:iterator",
     "//third_party/boost:intrusive",
     "//third_party/boost:throw_exception",
     "//third_party/boost:type_index",
