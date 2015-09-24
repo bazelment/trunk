@@ -7,7 +7,7 @@ AM_CXXFLAGS = [
   "-Ithird_party/gperftools/upstream/src",
   "-Wall",
   "-Wwrite-strings",
-  "-Woverloaded-virtual",
+  # "-Woverloaded-virtual",
   "-Wno-sign-compare",
   "-fno-builtin-malloc",
   "-fno-builtin-free",
@@ -145,49 +145,6 @@ TCMALLOC_CFLAGS = [
 ] + AM_CXXFLAGS
 
 cc_library(
-  name = "malloc_extension",
-  hdrs = [
-    "upstream/src/gperftools/malloc_extension.h",
-    "upstream/src/gperftools/malloc_extension_c.h",
-  ],
-  copts = [
-    "-DNO_HEAP_CHECK",
-  ] + TCMALLOC_CFLAGS,
-  srcs = [
-    "upstream/src/malloc_extension.cc",
-  ],
-  deps = [
-    ":maybe_threads"
-  ]
-)
-
-cc_library(
-  name = "malloc_extension_heapcheck",
-  copts = TCMALLOC_CFLAGS,
-  srcs = [
-    "upstream/src/malloc_extension.cc",
-  ],
-  deps = [
-    ":maybe_threads"
-  ]
-)
-
-cc_library(
-  name = "malloc_hook",
-  copts = TCMALLOC_CFLAGS,
-  hdrs = [
-    "upstream/src/gperftools/malloc_hook.h",
-    "upstream/src/gperftools/malloc_hook_c.h",
-  ],
-  srcs = [
-  ],
-  deps = [
-    ":maybe_threads",
-    ":spinlock"
-  ]
-)
-
-cc_library(
   name = "profiler",
   visibility = ["//visibility:public"],
   copts = TCMALLOC_CFLAGS,
@@ -284,6 +241,11 @@ HEAP_CHECKER_SRCS = [
 # `_ZN4base8internal10new_hooks_E' can not be used when making a
 # shared object
 MALLOC_HOOK_SRCS = [
+  "upstream/src/gperftools/malloc_extension.h",
+  "upstream/src/gperftools/malloc_extension_c.h",
+  "upstream/src/malloc_extension.cc",
+  "upstream/src/gperftools/malloc_hook.h",
+  "upstream/src/gperftools/malloc_hook_c.h",
   "upstream/src/malloc_hook.cc",
   "upstream/src/base/low_level_alloc.cc",
   "upstream/src/memory_region_map.cc",
@@ -295,14 +257,35 @@ MALLOC_HOOK_SRCS = [
 cc_library(
   name = "tcmalloc",
   visibility = ["//visibility:public"],
+  deps = select({
+    # tcmalloc is not compitable with asan/tsan/msan, so we remove it.
+    "//tools/cpp:opt_enabled": [ ":tcmalloc_opt"],
+    "//conditions:default": [":tcmalloc_debug"],
+  })
+)
+
+cc_library(
+  name = "tcmalloc_heapcheck",
+  visibility = ["//visibility:public"],
+  testonly = 1,
+  deps = select({
+    # tcmalloc is not compitable with asan/tsan/msan, so we remove it.
+    "//tools/cpp:opt_enabled": [ ":tcmalloc_opt_heapcheck"],
+    "//conditions:default": [":tcmalloc_debug_heapcheck"],
+  })
+)
+
+# opt version
+cc_library(
+  name = "tcmalloc_opt",
   srcs = [
     "upstream/src/tcmalloc.cc",
   ] + MALLOC_HOOK_SRCS,
-  copts = TCMALLOC_CFLAGS,
+  copts = TCMALLOC_CFLAGS + [
+    "-DNO_HEAP_CHECK",
+  ],
   deps = [
     ":internal",
-    ":malloc_hook",
-    ":malloc_extension",
     ":raw_printer",
   ],
   alwayslink = 1,
@@ -310,16 +293,13 @@ cc_library(
 
 # tcmalloc with heap checker
 cc_library(
-  name = "tcmalloc_heapcheck",
-  visibility = ["//visibility:public"],
+  name = "tcmalloc_opt_heapcheck",
   srcs = [
     "upstream/src/tcmalloc.cc",
   ] + MALLOC_HOOK_SRCS + HEAP_CHECKER_SRCS,
   copts = TCMALLOC_CFLAGS,
   deps = [
     ":internal",
-    ":malloc_hook",
-    ":malloc_extension_heapcheck",
     ":thread_lister",
     ":raw_printer",
   ],
@@ -332,25 +312,22 @@ cc_library(
 # API.  Luckily, we can reuse everything else from tcmalloc_minimal.
 cc_library(
   name = "tcmalloc_debug",
-  visibility = ["//visibility:public"],
   srcs = [
-    "upstream/src/malloc_hook.cc",
     "upstream/src/debugallocation.cc",
-  ],
+  ] +  MALLOC_HOOK_SRCS,
   copts = TCMALLOC_CFLAGS + [
+    "-DNO_HEAP_CHECK",
     "-DTCMALLOC_FOR_DEBUGALLOCATION",
   ],
   deps = [
     ":internal",
-    ":malloc_hook",
-    ":malloc_extension",
+    ":raw_printer",
   ],
   alwayslink = 1,
 )
 
 cc_library(
   name = "tcmalloc_debug_heapcheck",
-  visibility = ["//visibility:public"],
   srcs = [
     "upstream/src/debugallocation.cc",
   ] + MALLOC_HOOK_SRCS + HEAP_CHECKER_SRCS,
@@ -359,8 +336,6 @@ cc_library(
   ],
   deps = [
     ":internal",
-    ":malloc_hook",
-    ":malloc_extension_heapcheck",
     ":raw_printer",
     ":thread_lister",
   ],
@@ -391,17 +366,39 @@ cc_test(
   ]
 )
 
-# cc_test(
-#   name = "sampler_test",
-#   srcs = [
-#     "upstream/src/tests/sampler_test.cc",
-#   ],
-#   copts = AM_CXXFLAGS,
-#   deps = [
-#     ":internal",
-#     ":malloc_extension",
-#   ]
-# )
+cc_test(
+  name = "atomicops_unittest",
+  srcs = [
+    "upstream/src/tests/atomicops_unittest.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":spinlock",
+  ]
+)
+
+cc_test(
+  name = "current_allocated_bytes_test",
+  srcs = [
+    "upstream/src/tests/current_allocated_bytes_test.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":tcmalloc",
+  ]
+)
+
+cc_test(
+  name = "sampler_test",
+  srcs = [
+    "upstream/src/tests/sampler_test.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":internal",
+    ":tcmalloc",
+  ]
+)
 
 cc_test(
   name = "stacktrace_unittest",
@@ -434,7 +431,7 @@ cc_test(
   ],
   copts = AM_CXXFLAGS,
   deps = [
-    ":tcmalloc_debug_heapcheck",
+    ":tcmalloc_heapcheck",
   ],
   linkstatic = 1,
 )
