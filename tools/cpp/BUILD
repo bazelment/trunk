@@ -37,6 +37,13 @@ config_setting(
   }
 )
 
+config_setting(
+  name = "opt_enabled",
+  values = {
+    "compilation_mode": "opt"
+  }
+)
+
 # This can used to enable some conditional setting for ARM CPU
 config_setting(
   name = "arm",
