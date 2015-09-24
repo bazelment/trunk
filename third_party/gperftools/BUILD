@@ -193,8 +193,6 @@ cc_library(
     "upstream/src/stack_trace_table.h",
     "upstream/src/base/thread_annotations.h",
     "upstream/src/common.cc",
-    "upstream/src/internal_logging.cc",
-    "upstream/src/memfs_malloc.cc",
     "upstream/src/central_freelist.cc",
     "upstream/src/page_heap.cc",
     "upstream/src/sampler.cc",
@@ -216,6 +214,7 @@ cc_library(
     "-lm",
     "-pthread",
   ],
+  linkstatic = 1,
 )
 
 cc_library(
@@ -241,16 +240,18 @@ HEAP_CHECKER_SRCS = [
 # `_ZN4base8internal10new_hooks_E' can not be used when making a
 # shared object
 MALLOC_HOOK_SRCS = [
+  "upstream/src/base/low_level_alloc.cc",
   "upstream/src/gperftools/malloc_extension.h",
   "upstream/src/gperftools/malloc_extension_c.h",
-  "upstream/src/malloc_extension.cc",
   "upstream/src/gperftools/malloc_hook.h",
   "upstream/src/gperftools/malloc_hook_c.h",
-  "upstream/src/malloc_hook.cc",
-  "upstream/src/base/low_level_alloc.cc",
-  "upstream/src/memory_region_map.cc",
   "upstream/src/heap-profile-table.cc",
   "upstream/src/heap-profiler.cc",
+  "upstream/src/internal_logging.cc",
+  "upstream/src/malloc_extension.cc",
+  "upstream/src/malloc_hook.cc",
+  "upstream/src/memfs_malloc.cc",
+  "upstream/src/memory_region_map.cc",
 ]
 
 # thread-caching malloc
@@ -389,13 +390,273 @@ cc_test(
 )
 
 cc_test(
+  name = "debugallocation_test",
+  srcs = [
+    "upstream/src/tests/debugallocation_test.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":tcmalloc_debug",
+  ]
+)
+
+cc_test(
+  name = "heap-checker_unittest",
+  srcs = [
+    "upstream/src/tests/heap-checker_unittest.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":tcmalloc_heapcheck",
+  ],
+  linkstatic = 1,
+)
+
+sh_binary(
+  name = "heap-checker_unittest_sh",
+  srcs = [
+    "runtest.sh",
+  ],
+  data = [
+    "upstream/src/tests/heap-checker_unittest.sh",
+    "upstream/src/pprof",
+    ":heap-checker_unittest",
+  ],
+  args = [
+    "./upstream/src/tests/heap-checker_unittest.sh",
+  ]
+)
+
+cc_test(
+  name = "heap-profiler_unittest",
+  srcs = [
+    "upstream/src/tests/heap-profiler_unittest.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":tcmalloc",
+  ],
+  linkstatic = 1,
+)
+
+cc_test(
+  name = "large_heap_fragmentation_unittest",
+  srcs = [
+    "upstream/src/tests/large_heap_fragmentation_unittest.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    # tcmalloc_debug is too slow to run this test.
+    ":tcmalloc_opt",
+  ],
+)
+
+cc_test(
+  name = "low_level_alloc_unittest",
+  srcs = [
+    "upstream/src/tests/low_level_alloc_unittest.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":tcmalloc",
+  ],
+)
+
+cc_test(
+  name = "malloc_extension_c_test",
+  srcs = [
+    "upstream/src/tests/malloc_extension_c_test.c",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    # tcmalloc_debug may perform new operation inside free function,
+    # that's not expected in this test.
+    ":tcmalloc_opt",
+  ],
+)
+
+cc_test(
+  name = "malloc_extension_test",
+  srcs = [
+    "upstream/src/tests/malloc_extension_test.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":tcmalloc",
+  ],
+)
+
+cc_test(
+  name = "malloc_hook_test",
+  srcs = [
+    "upstream/src/tests/malloc_hook_test.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":testutil",
+    ":tcmalloc",
+  ],
+)
+
+cc_test(
+  name = "markidle_unittest",
+  srcs = [
+    "upstream/src/tests/markidle_unittest.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":testutil",
+    ":tcmalloc",
+  ],
+)
+
+cc_test(
+  name = "memalign_unittest",
+  srcs = [
+    "upstream/src/tests/memalign_unittest.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":testutil",
+    ":tcmalloc",
+  ],
+)
+
+cc_test(
+  name = "packed-cache_test",
+  srcs = [
+    "upstream/src/tests/packed-cache_test.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":testutil",
+    ":tcmalloc",
+  ],
+)
+
+cc_test(
+  name = "page_heap_test",
+  srcs = [
+    "upstream/src/tests/page_heap_test.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":tcmalloc",
+  ],
+)
+
+cc_test(
+  name = "pagemap_unittest",
+  srcs = [
+    "upstream/src/tests/pagemap_unittest.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":tcmalloc",
+  ],
+)
+
+cc_test(
+  name = "profiledata_unittest",
+  srcs = [
+    "upstream/src/tests/profiledata_unittest.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":profiler",
+    ":tcmalloc",
+  ],
+)
+
+cc_test(
+  name = "profile-handler_unittest",
+  srcs = [
+    "upstream/src/tests/profile-handler_unittest.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":profiler",
+    ":tcmalloc",
+  ],
+)
+
+cc_binary(
+  name = "profiler_unittest",
+  srcs = [
+    "upstream/src/tests/profiler_unittest.cc",
+  ],
+  testonly = 1,
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":testutil",
+    ":profiler",
+    ":tcmalloc",
+  ],
+)
+
+cc_test(
+  name = "raw_printer_test",
+  srcs = [
+    "upstream/src/tests/raw_printer_test.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":tcmalloc",
+  ]
+)
+
+cc_test(
+  name = "realloc_unittest",
+  srcs = [
+    "upstream/src/tests/realloc_unittest.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":tcmalloc",
+  ]
+)
+
+cc_test(
   name = "sampler_test",
   srcs = [
     "upstream/src/tests/sampler_test.cc",
   ],
   copts = AM_CXXFLAGS,
   deps = [
-    ":internal",
+    ":tcmalloc",
+  ]
+)
+
+cc_binary(
+  name = "sampling_test",
+  testonly = 1,
+  srcs = [
+    "upstream/src/tests/sampling_test.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":tcmalloc",
+  ]
+)
+
+cc_test(
+  name = "simple_compat_test",
+  srcs = [
+    "upstream/src/tests/simple_compat_test.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":tcmalloc",
+  ]
+)
+
+cc_test(
+  name = "stack_trace_table_test",
+  srcs = [
+    "upstream/src/tests/stack_trace_table_test.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
     ":tcmalloc",
   ]
 )
@@ -413,6 +674,17 @@ cc_test(
 )
 
 cc_test(
+  name = "system-alloc_unittest",
+  srcs = [
+    "upstream/src/tests/system-alloc_unittest.cc",
+  ],
+  copts = AM_CXXFLAGS,
+  deps = [
+    ":tcmalloc",
+  ]
+)
+
+cc_test(
   name = "tcmalloc_unittest",
   srcs = [
     "upstream/src/tests/tcmalloc_unittest.cc",
@@ -420,18 +692,34 @@ cc_test(
   copts = ["-fno-builtin"] + AM_CXXFLAGS,
   deps = [
     ":testutil",
-    ":tcmalloc",
-  ]
+    # tcmalloc_debug is doing something unexpected than the test(like
+    # realloc)
+    ":tcmalloc_opt",
+  ],
+  linkstatic = 1,
 )
 
 cc_test(
-  name = "heap-checker_unittest",
+  name = "tcmalloc_large_unittest",
   srcs = [
-    "upstream/src/tests/heap-checker_unittest.cc",
+    "upstream/src/tests/tcmalloc_large_unittest.cc",
+  ],
+  copts = ["-fno-builtin"] + AM_CXXFLAGS,
+  deps = [
+    ":testutil",
+    ":tcmalloc",
+  ],
+  linkstatic = 1,
+)
+
+cc_test(
+  name = "thread_dealloc_unittest",
+  srcs = [
+    "upstream/src/tests/thread_dealloc_unittest.cc",
   ],
   copts = AM_CXXFLAGS,
   deps = [
-    ":tcmalloc_heapcheck",
-  ],
-  linkstatic = 1,
+    ":testutil",
+    ":tcmalloc",
+  ]
 )
