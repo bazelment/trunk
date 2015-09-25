@@ -85,7 +85,7 @@ cc_library(
   deps = [
     ":logging",
     ":sysinfo",
-  ]
+  ],
 )
 
 cc_library(
@@ -412,7 +412,7 @@ cc_test(
   linkstatic = 1,
 )
 
-sh_binary(
+sh_test(
   name = "heap-checker_unittest_sh",
   srcs = [
     "runtest.sh",
@@ -423,7 +423,7 @@ sh_binary(
     ":heap-checker_unittest",
   ],
   args = [
-    "./upstream/src/tests/heap-checker_unittest.sh",
+    "heap-checker_unittest.sh",
   ]
 )
 
@@ -437,6 +437,21 @@ cc_test(
     ":tcmalloc",
   ],
   linkstatic = 1,
+)
+
+sh_test(
+  name = "heap-profiler_unittest_sh",
+  srcs = [
+    "runtest.sh",
+  ],
+  data = [
+    "upstream/src/tests/heap-profiler_unittest.sh",
+    "upstream/src/pprof",
+    ":heap-profiler_unittest",
+  ],
+  args = [
+    "heap-profiler_unittest.sh",
+  ]
 )
 
 cc_test(
@@ -580,17 +595,93 @@ cc_test(
   ],
 )
 
+# profiler1-4 are used by profiler_unittest_sh
 cc_binary(
-  name = "profiler_unittest",
+  name = "profiler1_unittest",
   srcs = [
     "upstream/src/tests/profiler_unittest.cc",
   ],
   testonly = 1,
-  copts = AM_CXXFLAGS,
+  copts = AM_CXXFLAGS + [
+    "-g",
+    "-DNO_THREADS",
+  ],
   deps = [
     ":testutil",
     ":profiler",
     ":tcmalloc",
+  ],
+)
+
+cc_binary(
+  name = "profiler2_unittest",
+  srcs = [
+    "upstream/src/tests/profiler_unittest.cc",
+  ],
+  testonly = 1,
+  copts = AM_CXXFLAGS + [
+    "-g",
+    "-DNO_THREADS",
+  ],
+  deps = [
+    ":testutil",
+    ":profiler",
+    ":tcmalloc",
+  ],
+)
+
+cc_binary(
+  name = "profiler3_unittest",
+  srcs = [
+    "upstream/src/tests/profiler_unittest.cc",
+  ],
+  testonly = 1,
+  copts = AM_CXXFLAGS + [
+    "-g",
+    "-pthread",
+  ],
+  deps = [
+    ":testutil",
+    ":profiler",
+    ":tcmalloc",
+  ],
+)
+
+cc_binary(
+  name = "profiler4_unittest",
+  srcs = [
+    "upstream/src/tests/profiler_unittest.cc",
+  ],
+  testonly = 1,
+  copts = AM_CXXFLAGS + [
+    "-g",
+    "-pthread",
+  ],
+  deps = [
+    ":testutil",
+    ":profiler",
+    ":tcmalloc",
+  ],
+)
+
+sh_test(
+  name = "profiler_unittest_sh",
+  srcs = [
+    "runtest.sh",
+  ],
+  data = [
+    "upstream/src/tests/profiler_unittest.sh",
+    "upstream/src/pprof",
+    ":profiler1_unittest",
+    ":profiler2_unittest",
+    ":profiler3_unittest",
+    ":profiler4_unittest",
+  ],
+  args = [
+    "profiler_unittest.sh",
+  ],
+  tags = [
+    "manual",  # Broken
   ],
 )
 
@@ -639,6 +730,21 @@ cc_binary(
   ]
 )
 
+sh_test(
+  name = "sampling_test_sh",
+  srcs = [
+    "runtest.sh",
+  ],
+  data = [
+    "upstream/src/tests/sampling_test.sh",
+    "upstream/src/pprof",
+    ":sampling_test",
+  ],
+  args = [
+    "sampling_test.sh",
+  ]
+)
+
 cc_test(
   name = "simple_compat_test",
   srcs = [
@@ -681,7 +787,8 @@ cc_test(
   copts = AM_CXXFLAGS,
   deps = [
     ":tcmalloc",
-  ]
+  ],
+  linkstatic = 1,
 )
 
 cc_test(
@@ -697,6 +804,21 @@ cc_test(
     ":tcmalloc_opt",
   ],
   linkstatic = 1,
+)
+
+sh_test(
+  name = "tcmalloc_unittest_sh",
+  srcs = [
+    "runtest.sh",
+  ],
+  data = [
+    "upstream/src/tests/tcmalloc_unittest.sh",
+    "upstream/src/pprof",
+    ":tcmalloc_unittest",
+  ],
+  args = [
+    "tcmalloc_unittest.sh",
+  ]
 )
 
 cc_test(
