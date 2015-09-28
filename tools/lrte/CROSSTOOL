@@ -1,0 +1,192 @@
+# See https://github.com/google/bazel/blob/master/src/main/protobuf/crosstool_config.proto
+# for available settings.
+major_version: "local"
+minor_version: ""
+default_target_cpu: "same_as_host"
+default_toolchain {
+  cpu: "k8"
+  toolchain_identifier: "crosstool_v2_gcc"
+}
+
+# Crosstool v2 gcc to work with LRTE
+# https://github.com/mzhaom/lrte
+toolchain {
+  abi_version: "local"
+  abi_libc_version: "local"
+
+  builtin_sysroot: "/usr/lrte/v1"
+  compiler: "gcc"
+  host_system_name: "local"
+  needsPic: true
+  supports_gold_linker: true
+  supports_incremental_linker: true
+  supports_fission: true
+  supports_interface_shared_objects: true
+  supports_normalizing_ar: false
+  supports_start_end_lib: true
+  supports_thin_archives: true
+  target_libc: "glibc-2.19"
+  target_cpu: "k8"
+  target_system_name: "local"
+  toolchain_identifier: "crosstool_v2_gcc"
+
+  tool_path { name: "ar" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/ar" }
+  tool_path { name: "compat-ld" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/ld.bfd" }
+  tool_path { name: "cpp" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/cpp" }
+  tool_path { name: "dwp" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/dwp" }
+  tool_path { name: "gcc" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/gcc" }
+  tool_path { name: "gcov" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/gcov" }
+  tool_path { name: "ld" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/ld.gold" }
+  tool_path { name: "nm" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/nm" }
+  tool_path { name: "objcopy" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/objcopy" }
+  tool_path { name: "objdump" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/objdump" }
+  tool_path { name: "strip" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/strip" }
+
+  # All warnings are enabled
+  # TODO: enable -Werror like repobuild
+  compiler_flag: "-Wall"
+  compiler_flag: "-Wno-sign-compare"
+  compiler_flag: "-Wno-unused-local-typedefs"
+  compiler_flag: "-Wno-error=unused-local-typedefs"
+  cxx_flag: "-std=c++11"
+
+  # Setting the ld to ld.gold doesn't work, we need to ask gcc to
+  # use gold linker explicitly
+  linker_flag: "-fuse-ld=gold"
+
+  compilation_mode_flags {
+    mode: FASTBUILD
+    # https://gcc.gnu.org/ml/gcc-patches/2011-04/msg02075.html
+    # -gmlt, that produces level 1 debug info
+    # plus line number tables and inlined subroutine information. (The option
+    # is short for "minimum line tables")
+    compiler_flag: "-gmlt"
+  }
+  compilation_mode_flags {
+    mode: DBG
+    cxx_flag: "-g3"
+  }
+  compilation_mode_flags {
+    mode: OPT
+    compiler_flag: "-g0"
+    compiler_flag: "-O3"
+    compiler_flag: "-DNDEBUG"
+    # Removal of unused code and data at link time (can this increase binary size in some cases?).
+    compiler_flag: "-ffunction-sections"
+    compiler_flag: "-fdata-sections"
+
+    # So glog can report stacktrace on crash
+    compiler_flag: "-fno-omit-frame-pointer"
+
+    # For a backtrace with file and line info, using recent GCC
+    # versions, with -gmlt option (minimal line table)
+    compiler_flag: "-gmlt"
+
+    linker_flag: "-Wl,--gc-sections"
+    linker_flag: "-Wl,--build-id=sha1"
+    linker_flag: "-Wl,--hash-style=gnu"
+    linker_flag: "-pass-exit-codes"
+    # Gold linker only
+    # Warn if the stack is executable
+    linker_flag: "-Wl,--warn-execstack"
+    # Look for violations of the C++ One Definition Rule
+    linker_flag: "-Wl,--detect-odr-violations"
+  }
+
+  linker_flag: "-lstdc++"
+  # linker_flag: "-B/usr/bin/"
+
+  cxx_builtin_include_directory: "%sysroot%/include"
+  cxx_builtin_include_directory: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/lib/gcc/x86_64-unknown-linux-gnu"
+  cxx_builtin_include_directory: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/include/c++"
+
+  unfiltered_cxx_flag: "-isystem%sysroot%/include"
+
+  objcopy_embed_flag: "-I"
+  objcopy_embed_flag: "binary"
+}
+
+# Crosstool v2 clang to work with LRTE
+toolchain {
+  abi_version: "local"
+  abi_libc_version: "local"
+
+  builtin_sysroot: "/usr/lrte/v1"
+  compiler: "clang"
+  host_system_name: "local"
+  needsPic: true
+  supports_gold_linker: false
+  supports_incremental_linker: true
+  supports_fission: true
+  supports_interface_shared_objects: true
+  supports_normalizing_ar: false
+  supports_start_end_lib: true
+  supports_thin_archives: true
+  target_libc: "glibc-2.19"
+  target_cpu: "k8"
+  target_system_name: "local"
+  toolchain_identifier: "crosstool_v2_clang"
+
+  tool_path { name: "ar" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/ar" }
+  tool_path { name: "cpp" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/cpp" }
+  tool_path { name: "dwp" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/llvm-dwarfdump" }
+  tool_path { name: "gcc" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/clang" }
+  tool_path { name: "gcov" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/llvm-cov" }
+  tool_path { name: "ld" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/ld.gold" }
+  tool_path { name: "nm" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/nm" }
+  tool_path { name: "objcopy" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/objcopy" }
+  tool_path { name: "objdump" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/objdump" }
+  tool_path { name: "strip" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/strip" }
+
+  compiler_flag: "-Wall"
+  compiler_flag: "-Wno-sign-compare"
+  compiler_flag: "-Qunused-arguments"
+  cxx_flag: "-std=c++11"
+
+  compilation_mode_flags {
+    mode: FASTBUILD
+    compiler_flag: "-gmlt"
+    # Strip the debug sections when linking.
+    # linker_flag: "-Wl,-S"
+  }
+  compilation_mode_flags {
+    mode: DBG
+    cxx_flag: "-g"
+  }
+  compilation_mode_flags {
+    mode: OPT
+    compiler_flag: "-g0"
+    compiler_flag: "-O3"
+    compiler_flag: "-DNDEBUG"
+    # Removal of unused code and data at link time (can this increase binary size in some cases?).
+    compiler_flag: "-ffunction-sections"
+    compiler_flag: "-fdata-sections"
+
+    # So glog can report stacktrace on crash
+    compiler_flag: "-fno-omit-frame-pointer"
+
+    # For a backtrace with file and line info, using recent GCC
+    # versions, with -gmlt option (minimal line table)
+    compiler_flag: "-gmlt"
+
+    linker_flag: "-Wl,--gc-sections"
+    linker_flag: "-Wl,--build-id=sha1"
+    linker_flag: "-Wl,--hash-style=gnu"
+    # Gold linker only
+    # Warn if the stack is executable
+    linker_flag: "-Wl,--warn-execstack"
+    # Look for violations of the C++ One Definition Rule
+    linker_flag: "-Wl,--detect-odr-violations"
+  }
+
+  linker_flag: "-lstdc++"
+
+  cxx_builtin_include_directory: "%sysroot%/include"
+  cxx_builtin_include_directory: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/lib/clang"
+  cxx_builtin_include_directory: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/include/c++"
+
+  unfiltered_cxx_flag: "-isystem%sysroot%/include"
+
+  objcopy_embed_flag: "-I"
+  objcopy_embed_flag: "binary"
+}
