@@ -14,7 +14,7 @@ toolchain {
   abi_version: "local"
   abi_libc_version: "local"
 
-  builtin_sysroot: "/usr/lrte/v1"
+  builtin_sysroot: "/usr/lrte/v2"
   compiler: "gcc"
   host_system_name: "local"
   needsPic: true
@@ -111,7 +111,7 @@ toolchain {
   abi_version: "local"
   abi_libc_version: "local"
 
-  builtin_sysroot: "/usr/lrte/v1"
+  builtin_sysroot: "/usr/lrte/v2"
   compiler: "clang"
   host_system_name: "local"
   needsPic: true
