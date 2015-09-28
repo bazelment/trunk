@@ -1,5 +1,5 @@
 # Use container based environment, slightly faster than standard
-sudo: false
+sudo: true
 
 # language: cpp
 addons:
@@ -7,8 +7,8 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - gcc-4.8
-      - g++-4.8
+      #- gcc-4.8
+      #- g++-4.8
       - wget
       # Package list from http://bazel.io/docs/install.html
       - oraclejdk8
@@ -18,12 +18,13 @@ addons:
 
 install:
   - ./install-bazel.sh
+  - wget https://raw.githubusercontent.com/mzhaom/lrte/master/install-release.sh && sudo bash install-release.sh
 
 script:
   # The kernel used by travis is too old to allow namespace creation
   # for normal account, so we disable it.
-  - bazel build --spawn_strategy=standalone --genrule_strategy=standalone //examples/...:all
-  - bazel test --spawn_strategy=standalone//examples/...:all
+  - bazel build --crosstool_top=//tools/lrte:toolchain --spawn_strategy=standalone --genrule_strategy=standalone //examples/...:all
+  - bazel test --crosstool_top=//tools/lrte:toolchain --spawn_strategy=standalone //examples/...:all
 
 notifications:
   email: false
