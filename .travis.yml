@@ -24,7 +24,7 @@ script:
   # The kernel used by travis is too old to allow namespace creation
   # for normal account, so we disable it.
   - bazel --batch build --crosstool_top=//tools/lrte:toolchain --spawn_strategy=standalone --genrule_strategy=standalone //examples/...:all
-  - bazel --batch test --crosstool_top=//tools/lrte:toolchain --spawn_strategy=standalone //examples/...:all
+  - bazel --batch test --crosstool_top=//tools/lrte:toolchain --spawn_strategy=standalone //examples/...:all //third_party/gperftools:all
 
 notifications:
   email: false
