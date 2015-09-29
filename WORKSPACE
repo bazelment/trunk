@@ -29,7 +29,7 @@ bind(
 
 bind(
   name = "protobuf_java_lib",
-  actual = "//third_party/protobuf:java_proto",
+  actual = "//third_party/protobuf/upstream:java_proto",
 )
 
 # GRPC codegen plugin
@@ -101,7 +101,7 @@ bind(
 
 maven_jar(
   name = "netty-tcnative-maven",
-  artifact = "io.netty:netty-tcnative:1.1.33.Fork5"
+  artifact = "io.netty:netty-tcnative:1.1.33.Fork7"
 )
 
 bind(
@@ -158,6 +158,16 @@ maven_jar(
 bind(
   name = "junit",
   actual = "@junit_maven//jar"
+)
+
+maven_jar(
+  name = "objenesis_maven",
+  artifact = "org.objenesis:objenesis:2.1",
+)
+
+bind(
+  name = "objenesis",
+  actual = "@objenesis_maven//jar"
 )
 
 maven_jar(
