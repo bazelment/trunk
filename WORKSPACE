@@ -44,6 +44,26 @@ bind(
   actual = "//third_party/grpc/upstream:grpc++"
 )
 
+maven_jar(
+  name = "apache-commons-lang2-maven",
+  artifact = "commons-lang:commons-lang:2.6"
+)
+
+bind(
+  name = "apache-commons-lang2",
+  actual = "@apache-commons-lang2-maven//jar"
+)
+
+maven_jar(
+  name = "apache-commons-lang3-maven",
+  artifact = "org.apache.commons:commons-lang3:3.4"
+)
+
+bind(
+  name = "apache-commons-lang3",
+  actual = "@apache-commons-lang3-maven//jar"
+)
+
 bind(
   name = "apache-commons-logging",
   actual = "//third_party/java/commons-logging"
@@ -88,6 +108,17 @@ bind(
   name = "jetty-npn",
   actual = "@jetty-npn-maven//jar"
 )
+
+maven_jar(
+  name = "joda-time-maven",
+  artifact = "joda-time:joda-time:2.3"
+)
+
+bind(
+  name = "joda-time",
+  actual = "@joda-time-maven//jar"
+)
+
 
 maven_jar(
   name = "jzlib-maven",
