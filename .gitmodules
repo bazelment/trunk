@@ -196,3 +196,6 @@
 [submodule "third_party/wangle/upstream"]
 	path = third_party/wangle/upstream
 	url = https://github.com/facebook/wangle.git
+[submodule "third_party/java/grpc-java/upstream"]
+	path = third_party/java/grpc-java/upstream
+	url = https://github.com/grpc/grpc-java.git
