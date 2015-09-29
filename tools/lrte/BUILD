@@ -42,7 +42,12 @@ cc_toolchain(
   objcopy_files = ":empty",
   static_runtime_libs = [":empty"],
   strip_files = ":empty",
-  supports_param_files = 0,
+  # Instead parsing all compiler/linker options through command line,
+  # enabling this option will make bazel write most of the options to
+  # a param file, and invoke the toolchain with the param file, which
+  # avoids potential issue when the list becomes longer than the
+  # system limit.
+  supports_param_files = 1,
 )
 
 cc_toolchain(
@@ -56,7 +61,7 @@ cc_toolchain(
   objcopy_files = ":empty",
   static_runtime_libs = [":empty"],
   strip_files = ":empty",
-  supports_param_files = 0,
+  supports_param_files = 1,
 )
 
 
