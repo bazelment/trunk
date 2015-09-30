@@ -199,3 +199,9 @@
 [submodule "third_party/java/grpc-java/upstream"]
 	path = third_party/java/grpc-java/upstream
 	url = https://github.com/grpc/grpc-java.git
+[submodule "third_party/java/animal-sniffer/upstream"]
+	path = third_party/java/animal-sniffer/upstream
+	url = https://github.com/mojohaus/animal-sniffer.git
+[submodule "third_party/java/j2objc/upstream"]
+	path = third_party/java/j2objc/upstream
+	url = https://github.com/google/j2objc.git
