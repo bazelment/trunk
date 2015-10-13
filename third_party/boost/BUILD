@@ -1,13 +1,15 @@
 licenses(["notice"])
 
+boost_path = "upstream"
+
 cc_library(
   name = "algorithm",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/algorithm/include",
+    boost_path + "/algorithm/include",
   ],
   hdrs = glob([
-    "upstream/algorithm/include/boost/*.h",
+    boost_path + "/algorithm/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -21,10 +23,10 @@ cc_library(
   name = "assert",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/assert/include",
+    boost_path + "/assert/include",
   ],
   hdrs = glob([
-    "upstream/assert/include/boost/*.h",
+    boost_path + "/assert/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -34,10 +36,10 @@ cc_library(
   name = "bind",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/bind/include",
+    boost_path + "/bind/include",
   ],
   hdrs = glob([
-    "upstream/bind/include/boost/*.h",
+    boost_path + "/bind/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -47,10 +49,10 @@ cc_library(
   name = "concept_check",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/concept_check/include",
+    boost_path + "/concept_check/include",
   ],
   hdrs = glob([
-    "upstream/concept_check/include/boost/*.h",
+    boost_path + "/concept_check/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -60,10 +62,10 @@ cc_library(
   name = "config",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/config/include",
+    boost_path + "/config/include",
   ],
   hdrs = glob([
-    "upstream/config/include/boost/*.h",
+    boost_path + "/config/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -73,31 +75,31 @@ cc_library(
   name = "container",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/container/include",
+    boost_path + "/container/include",
   ],
   hdrs = glob([
-    "upstream/container/include/boost/*.h",
+    boost_path + "/container/include/boost/*.h",
   ]),
   srcs = [
   ],
 )
 
 CONTEXT_K8_LINUX_ASM = [
-  "upstream/context/src/asm/jump_x86_64_sysv_elf_gas.S",
-  "upstream/context/src/asm/make_x86_64_sysv_elf_gas.S",
+  boost_path + "/context/src/asm/jump_x86_64_sysv_elf_gas.S",
+  boost_path + "/context/src/asm/make_x86_64_sysv_elf_gas.S",
 ]
 
 cc_library(
   name = "context",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/context/include",
+    boost_path + "/context/include",
   ],
   hdrs = glob([
-    "upstream/context/include/boost/*.h",
+    boost_path + "/context/include/boost/*.h",
   ]),
   srcs = [
-    "upstream/context/src/execution_context.cpp",
+    boost_path + "/context/src/execution_context.cpp",
   ] + CONTEXT_K8_LINUX_ASM,
   deps = [
     ":config"
@@ -112,10 +114,10 @@ cc_library(
   name = "conversion",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/conversion/include",
+    boost_path + "/conversion/include",
   ],
   hdrs = glob([
-    "upstream/conversion/include/boost/*.h",
+    boost_path + "/conversion/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -125,10 +127,10 @@ cc_library(
   name = "core",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/core/include",
+    boost_path + "/core/include",
   ],
   hdrs = glob([
-    "upstream/core/include/boost/*.h",
+    boost_path + "/core/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -138,10 +140,10 @@ cc_library(
   name = "detail",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/detail/include",
+    boost_path + "/detail/include",
   ],
   hdrs = glob([
-    "upstream/detail/include/boost/*.h",
+    boost_path + "/detail/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -151,13 +153,13 @@ cc_library(
   name = "filesystem",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/filesystem/include",
+    boost_path + "/filesystem/include",
   ],
   hdrs = glob([
-    "upstream/filesystem/include/boost/*.h",
+    boost_path + "/filesystem/include/boost/*.h",
   ]),
   srcs = glob([
-    "upstream/filesystem/src/*.cpp",
+    boost_path + "/filesystem/src/*.cpp",
   ]),
   deps = [
     ":config",
@@ -175,10 +177,10 @@ cc_library(
   name = "foreach",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/foreach/include",
+    boost_path + "/foreach/include",
   ],
   hdrs = glob([
-    "upstream/foreach/include/boost/*.h",
+    boost_path + "/foreach/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -190,10 +192,10 @@ cc_library(
   name = "function",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/function/include",
+    boost_path + "/function/include",
   ],
   hdrs = glob([
-    "upstream/function/include/boost/*.h",
+    boost_path + "/function/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -206,10 +208,10 @@ cc_library(
   name = "function_types",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/function_types/include",
+    boost_path + "/function_types/include",
   ],
   hdrs = glob([
-    "upstream/function_types/include/boost/*.h",
+    boost_path + "/function_types/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -221,10 +223,10 @@ cc_library(
   name = "functional",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/functional/include",
+    boost_path + "/functional/include",
   ],
   hdrs = glob([
-    "upstream/functional/include/boost/*.h",
+    boost_path + "/functional/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -237,10 +239,10 @@ cc_library(
   name = "heap",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/heap/include",
+    boost_path + "/heap/include",
   ],
   hdrs = glob([
-    "upstream/heap/include/boost/*.h",
+    boost_path + "/heap/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -253,10 +255,10 @@ cc_library(
   name = "integer",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/integer/include",
+    boost_path + "/integer/include",
   ],
   hdrs = glob([
-    "upstream/integer/include/boost/*.h",
+    boost_path + "/integer/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -269,10 +271,10 @@ cc_library(
   name = "iterator",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/iterator/include",
+    boost_path + "/iterator/include",
   ],
   hdrs = glob([
-    "upstream/iterator/include/boost/*.h",
+    boost_path + "/iterator/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -286,10 +288,10 @@ cc_library(
   name = "intrusive",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/intrusive/include",
+    boost_path + "/intrusive/include",
   ],
   hdrs = glob([
-    "upstream/intrusive/include/boost/*.h",
+    boost_path + "/intrusive/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -303,10 +305,10 @@ cc_library(
   name = "io",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/io/include",
+    boost_path + "/io/include",
   ],
   hdrs = glob([
-    "upstream/io/include/boost/*.h",
+    boost_path + "/io/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -318,10 +320,10 @@ cc_library(
   name = "math",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/math/include",
+    boost_path + "/math/include",
   ],
   hdrs = glob([
-    "upstream/math/include/boost/*.h",
+    boost_path + "/math/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -333,10 +335,10 @@ cc_library(
   name = "move",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/move/include",
+    boost_path + "/move/include",
   ],
   hdrs = glob([
-    "upstream/move/include/boost/*.h",
+    boost_path + "/move/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -348,10 +350,10 @@ cc_library(
   name = "mpl",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/mpl/include",
+    boost_path + "/mpl/include",
   ],
   hdrs = glob([
-    "upstream/mpl/include/boost/*.h",
+    boost_path + "/mpl/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -365,10 +367,10 @@ cc_library(
   name = "multi_index",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/multi_index/include",
+    boost_path + "/multi_index/include",
   ],
   hdrs = glob([
-    "upstream/multi_index/include/boost/*.h",
+    boost_path + "/multi_index/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -384,10 +386,10 @@ cc_library(
   name = "optional",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/optional/include",
+    boost_path + "/optional/include",
   ],
   hdrs = glob([
-    "upstream/optional/include/boost/*.h",
+    boost_path + "/optional/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -397,10 +399,10 @@ cc_library(
   name = "parameter",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/parameter/include",
+    boost_path + "/parameter/include",
   ],
   hdrs = glob([
-    "upstream/parameter/include/boost/*.h",
+    boost_path + "/parameter/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -412,10 +414,10 @@ cc_library(
   name = "predef",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/predef/include",
+    boost_path + "/predef/include",
   ],
   hdrs = glob([
-    "upstream/predef/include/boost/*.h",
+    boost_path + "/predef/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -425,10 +427,10 @@ cc_library(
   name = "preprocessor",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/preprocessor/include",
+    boost_path + "/preprocessor/include",
   ],
   hdrs = glob([
-    "upstream/preprocessor/include/boost/*.h",
+    boost_path + "/preprocessor/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -438,10 +440,10 @@ cc_library(
   name = "range",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/range/include",
+    boost_path + "/range/include",
   ],
   hdrs = glob([
-    "upstream/range/include/boost/*.h",
+    boost_path + "/range/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -455,16 +457,16 @@ cc_library(
   name = "regex",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/regex/include",
+    boost_path + "/regex/include",
   ],
   defines = [
     "BOOST_FALLTHROUGH"
   ],
   hdrs = glob([
-    "upstream/regex/include/*.h",
+    boost_path + "/regex/include/*.h",
   ]),
   srcs = glob([
-    "upstream/regex/src/*.cpp",
+    boost_path + "/regex/src/*.cpp",
   ]),
   deps = [
     ":assert",
@@ -482,10 +484,10 @@ cc_library(
   name = "serialization",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/serialization/include",
+    boost_path + "/serialization/include",
   ],
   hdrs = glob([
-    "upstream/serialization/include/boost/*.h",
+    boost_path + "/serialization/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -497,10 +499,10 @@ cc_library(
   name = "smart_ptr",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/smart_ptr/include",
+    boost_path + "/smart_ptr/include",
   ],
   hdrs = glob([
-    "upstream/smart_ptr/include/boost/*.h",
+    boost_path + "/smart_ptr/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -516,10 +518,10 @@ cc_library(
   name = "static_assert",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/static_assert/include",
+    boost_path + "/static_assert/include",
   ],
   hdrs = glob([
-    "upstream/static_assert/include/boost/*.h",
+    boost_path + "/static_assert/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -529,13 +531,13 @@ cc_library(
   name = "system",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/system/include",
+    boost_path + "/system/include",
   ],
   hdrs = glob([
-    "upstream/system/include/boost/*.h",
+    boost_path + "/system/include/boost/*.h",
   ]),
   srcs = glob([
-    "upstream/system/src/*.cpp",
+    boost_path + "/system/src/*.cpp",
   ]),
   deps = [
     ":assert",
@@ -549,10 +551,10 @@ cc_library(
   name = "throw_exception",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/throw_exception/include",
+    boost_path + "/throw_exception/include",
   ],
   hdrs = glob([
-    "upstream/throw_exception/include/boost/*.h",
+    boost_path + "/throw_exception/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -562,10 +564,10 @@ cc_library(
   name = "type_index",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/type_index/include",
+    boost_path + "/type_index/include",
   ],
   hdrs = glob([
-    "upstream/type_index/include/boost/*.h",
+    boost_path + "/type_index/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -578,10 +580,10 @@ cc_library(
   name = "type_traits",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/type_traits/include",
+    boost_path + "/type_traits/include",
   ],
   hdrs = glob([
-    "upstream/type_traits/include/boost/*.h",
+    boost_path + "/type_traits/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -596,10 +598,10 @@ cc_library(
   name = "tuple",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/tuple/include",
+    boost_path + "/tuple/include",
   ],
   hdrs = glob([
-    "upstream/tuple/include/boost/*.h",
+    boost_path + "/tuple/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -611,13 +613,13 @@ cc_library(
   name = "tr1",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/tr1/include",
+    boost_path + "/tr1/include",
   ],
   defines = [
     "BOOST_FALLTHROUGH"
   ],
   hdrs = glob([
-    "upstream/tr1/include/boost/tr1/*.h",
+    boost_path + "/tr1/include/boost/tr1/*.h",
   ]),
   srcs = [
   ],
@@ -630,10 +632,10 @@ cc_library(
   name = "utility",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/utility/include",
+    boost_path + "/utility/include",
   ],
   hdrs = glob([
-    "upstream/utility/include/boost/*.h",
+    boost_path + "/utility/include/boost/*.h",
   ]),
   srcs = [
   ],
@@ -643,10 +645,10 @@ cc_library(
   name = "variant",
   visibility = ["//visibility:public"],
   includes = [
-    "upstream/variant/include",
+    boost_path + "/variant/include",
   ],
   hdrs = glob([
-    "upstream/variant/include/boost/*.h",
+    boost_path + "/variant/include/boost/*.h",
   ]),
   srcs = [
   ],
