@@ -172,6 +172,26 @@ bind(
 )
 
 maven_jar(
+  name = "guice_maven",
+  artifact = "com.google.inject:guice:4.0",
+)
+
+bind(
+  name = "guice",
+  actual = "@guice_maven//jar"
+)
+
+maven_jar(
+  name = "guice-multibindings_maven",
+  artifact = "com.google.inject.extensions:guice-multibindings:4.0",
+)
+
+bind(
+  name = "guice-multibindings",
+  actual = "@guice-multibindings_maven//jar"
+)
+
+maven_jar(
   name = "hamcrest_maven",
   artifact = "org.hamcrest:hamcrest-core:1.3",
 )
