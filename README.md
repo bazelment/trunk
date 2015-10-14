@@ -1,5 +1,8 @@
 #trunk
 
+[![Build Status](https://travis-ci.org/mzhaom/trunk.svg?branch=master)](https://travis-ci.org/mzhaom/trunk)
+
+
 A collection of C++/Java opensource projects with BUILD files so they
 can be easily built with [bazel](http://bazel.io).
 
@@ -31,6 +34,7 @@ Currently C++ projects can be only built on Linux x64 system.
   * A selection of [boost](http://www.boost.org/) modules, mostly for building folly.
 
 ##Java
+  * [grpc-java](http://www.grpc.io) gRPC in Java
   * [guava](https://github.com/google/guava) Guava: Google Core Libraries for Java
   * [netty](https://netty.io/) Netty is a NIO client server framework
     which enables quick and easy development of network applications
