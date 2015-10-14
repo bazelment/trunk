@@ -177,10 +177,10 @@
 	url = https://github.com/LuminateWireless/netty.git
 [submodule "third_party/java/commons-logging/upstream"]
 	path = third_party/java/commons-logging/upstream
-	url = git://git.apache.org/commons-logging.git
+	url = git://github.com/apache/commons-logging.git
 [submodule "third_party/java/log4j/upstream"]
 	path = third_party/java/log4j/upstream
-	url = git://git.apache.org/log4j.git
+	url = git://github.com/apache/log4j.git
 [submodule "third_party/java/slf4j/upstream"]
 	path = third_party/java/slf4j/upstream
 	url = https://github.com/qos-ch/slf4j.git
