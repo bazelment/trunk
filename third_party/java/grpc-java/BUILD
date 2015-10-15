@@ -43,6 +43,9 @@ java_library(
   srcs = glob([
     'upstream/netty/src/main/java/**/*.java'
   ]),
+  resources = glob([
+    'upstream/netty/src/main/resources/**/*',
+  ]),
   deps = [
     ':core',
     '//external:jsr305',
@@ -72,6 +75,9 @@ java_library(
   srcs = glob([
     'upstream/okhttp/src/main/java/**/*.java'
   ]),
+  resources = glob([
+    'upstream/okhttp/src/main/resources/**/*',
+  ]),
   deps = [
     ':core',
     '//external:jsr305',
@@ -98,7 +104,7 @@ java_library(
   exports = [
     ':auth',
     ':core',
-    ':okhttp',
+    ':netty',
     ':protobuf',
     ':stub',
     '//external:jsr305',
