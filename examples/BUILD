@@ -10,3 +10,13 @@ cc_binary(
     "//third_party/glog",
   ],
 )
+
+cc_test(
+  name = "hello_test",
+  srcs = [
+    "hello_test.cc",
+  ],
+  deps = [
+    "//third_party/gtest:gtest_main",
+  ],
+)
