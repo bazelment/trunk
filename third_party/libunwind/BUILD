@@ -6,7 +6,7 @@ cc_library(
   includes = [
     "upstream/include",
     "upstream/include/tdep-x86_64",
-    "build/k8/include",
+    "libunwind_build/k8/include",
   ],
   srcs = [
     "upstream/src/dwarf/Gexpr.c",
@@ -97,14 +97,14 @@ cc_library(
     "upstream/src/x86_64/init.h",
     "upstream/src/x86_64/ucontext_i.h",
     "upstream/src/x86_64/unwind_i.h",
-    "build/k8/include/libunwind.h",
-    "build/k8/include/libunwind-common.h",
+    "libunwind_build/k8/include/libunwind.h",
+    "libunwind_build/k8/include/libunwind-common.h",
   ],
   copts = [
     "-Wno-error",
     '-DHAVE_CONFIG_H',
     '-D_GNU_SOURCE',
     "-Ithird_party/libunwind/upstream/src",
-    "-Ithird_party/libunwind/build/k8/include/private",
+    "-Ithird_party/libunwind/libunwind_build/k8/include/private",
   ]
 )

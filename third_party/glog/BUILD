@@ -8,12 +8,12 @@ cc_library(
     "//third_party/gflags:gflags",
   ],
   includes = [
-    "build/k8/include",
+    "glog_build/k8/include",
     "upstream/src",
   ],
   copts = [
     "-DNO_FRAME_POINTER",
-    "-Ithird_party/glog/build/k8/src",
+    "-Ithird_party/glog/glog_build/k8/src",
   ],
   srcs = [
     "upstream/src/demangle.cc",
@@ -44,7 +44,7 @@ cc_test(
     "upstream/src/demangle_unittest.cc",
   ],
   copts = [
-    "-Ithird_party/glog/build/k8/src"
+    "-Ithird_party/glog/glog_build/k8/src"
   ],
 )
 
@@ -57,7 +57,7 @@ cc_test(
     "upstream/src/logging_unittest.cc",
   ],
   copts = [
-    "-Ithird_party/glog/build/k8/src"
+    "-Ithird_party/glog/glog_build/k8/src"
   ],
 )
 
@@ -70,6 +70,6 @@ cc_test(
     "upstream/src/symbolize_unittest.cc",
   ],
   copts = [
-    "-Ithird_party/glog/build/k8/src"
+    "-Ithird_party/glog/glog_build/k8/src"
   ],
 )

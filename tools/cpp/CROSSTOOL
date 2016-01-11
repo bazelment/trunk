@@ -128,6 +128,7 @@ toolchain {
   # to be fixed, maybe with auto-detection?
   cxx_builtin_include_directory: "/usr/lib/gcc/"
   cxx_builtin_include_directory: "/usr/local/include"
+  cxx_builtin_include_directory: "/usr/lib/x86_64-linux-gnu/"
   cxx_builtin_include_directory: "/usr/include"
   tool_path { name: "gcov" path: "/usr/bin/gcov" }
 
@@ -531,6 +532,7 @@ toolchain {
   cxx_builtin_include_directory: "/usr/lib/gcc/"
   cxx_builtin_include_directory: "/usr/local/include"
   cxx_builtin_include_directory: "/usr/include"
+  cxx_builtin_include_directory: "/usr/lib/x86_64-linux-gnu/"
   tool_path { name: "gcov" path: "C:/Program Files (x86)/LLVM/bin/gcov" }
   tool_path { name: "ld" path: "C:/Program Files (x86)/LLVM/bin/ld" }
   tool_path { name: "nm" path: "C:/Program Files (x86)/LLVM/bin/nm" }
