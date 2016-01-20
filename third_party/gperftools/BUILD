@@ -22,21 +22,31 @@ AM_CXXFLAGS = [
   "-fno-omit-frame-pointer",
 ]
 
+# Config header plus some internal headers.
+cc_library(
+  name = "config_header",
+  hdrs = [
+    "linux-x86_64/src/config.h",
+    "upstream/src/base/basictypes.h",
+    "upstream/src/base/dynamic_annotations.h",
+    "upstream/src/getenv_safe.h",
+    "upstream/src/third_party/valgrind.h",
+  ],
+)
+
 cc_library(
   name = "logging",
   copts = AM_CXXFLAGS,
   hdrs = [
+    "upstream/src/addressmap-inl.h",
+    "upstream/src/base/logging.h",
   ],
   srcs = [
-    "upstream/src/base/logging.h",
     "upstream/src/base/commandlineflags.h",
-    "upstream/src/base/basictypes.h",
-    "upstream/src/base/dynamic_annotations.h",
-    "upstream/src/third_party/valgrind.h",
     "upstream/src/base/logging.cc",
-    "upstream/src/base/dynamic_annotations.c",
   ],
   deps = [
+    ":config_header",
     ":sysinfo",
   ]
 )
@@ -45,13 +55,19 @@ cc_library(
   name = "sysinfo",
   copts = AM_CXXFLAGS,
   hdrs = [
+    "upstream/src/base/basictypes.h",
     "upstream/src/base/sysinfo.h",
-    "upstream/src/getenv_safe.h",
     "upstream/src/base/cycleclock.h",
   ],
   srcs = [
+    "upstream/src/base/logging.h",
+    "upstream/src/base/commandlineflags.h",
     "upstream/src/base/arm_instruction_set_select.h",
+    "upstream/src/base/dynamic_annotations.c",
     "upstream/src/base/sysinfo.cc",
+  ],
+  deps = [
+    ":config_header",
   ]
 )
 
@@ -76,6 +92,10 @@ cc_library(
     "upstream/src/base/atomicops-internals-windows.h",
     "upstream/src/base/atomicops-internals-gcc.h",
     "upstream/src/base/atomicops-internals-x86.h",
+    "upstream/src/base/atomicops.h",
+    "upstream/src/base/googleinit.h",
+    "upstream/src/base/linux_syscall_support.h",
+    "upstream/src/base/thread_annotations.h",
   ],
   srcs = [
     "upstream/src/base/spinlock.cc",
@@ -91,9 +111,16 @@ cc_library(
 cc_library(
   name = "maybe_threads",
   copts = AM_CXXFLAGS,
+  hdrs = [
+    "upstream/src/maybe_threads.h"
+  ],
   srcs = [
     "upstream/src/maybe_threads.cc"
-  ]
+  ],
+  deps = [
+    ":config_header",
+  ],
+
 )
 
 cc_library(
@@ -104,6 +131,10 @@ cc_library(
   ],
   srcs = [
     "upstream/src/raw_printer.cc"
+  ],
+  deps = [
+    ":logging",
+    ":config_header",
   ]
 )
 
@@ -149,8 +180,10 @@ cc_library(
   visibility = ["//visibility:public"],
   copts = TCMALLOC_CFLAGS,
   hdrs = [
-    "upstream/src/profiledata.h",
+    "upstream/src/getpc.h",
+    "upstream/src/gperftools/profiler.h",
     "upstream/src/profile-handler.h",
+    "upstream/src/profiledata.h",
   ],
   srcs = [
     "upstream/src/profiler.cc",
@@ -158,7 +191,9 @@ cc_library(
     "upstream/src/profiledata.cc",
   ],
   deps = [
+    ":maybe_threads",
     ":spinlock",
+    ":stacktrace",
     ":logging",
   ]
 )
@@ -185,6 +220,7 @@ cc_library(
     "upstream/src/libc_override_osx.h",
     "upstream/src/libc_override_redefine.h",
     "upstream/src/page_heap.h",
+    "upstream/src/gperftools/malloc_extension.h",
     "upstream/src/page_heap_allocator.h",
     "upstream/src/span.h",
     "upstream/src/static_vars.h",
@@ -219,16 +255,26 @@ cc_library(
 
 cc_library(
   name = "thread_lister",
+  hdrs = [
+    "upstream/src/base/linux_syscall_support.h",
+    "upstream/src/base/linuxthreads.h",
+    "upstream/src/base/thread_lister.h",
+  ],
   srcs = [
     "upstream/src/base/thread_lister.c",
     "upstream/src/base/linuxthreads.cc",
+  ],
+  deps = [
+    ":config_header",
   ],
   copts = AM_CXXFLAGS,
 )
 
 HEAP_CHECKER_SRCS = [
+  "upstream/src/gperftools/heap-checker.h",
   "upstream/src/heap-checker.cc",
-  "upstream/src/heap-checker-bcad.cc"
+  "upstream/src/heap-checker-bcad.cc",
+  "upstream/src/base/elfcore.h",
 ]
 
 # Malloc_hook contains some hidden symbols that are accessed by some
@@ -241,17 +287,25 @@ HEAP_CHECKER_SRCS = [
 # shared object
 MALLOC_HOOK_SRCS = [
   "upstream/src/base/low_level_alloc.cc",
+  "upstream/src/base/low_level_alloc.h",
+  "upstream/src/base/stl_allocator.h",
+  "upstream/src/gperftools/heap-profiler.h",
   "upstream/src/gperftools/malloc_extension.h",
   "upstream/src/gperftools/malloc_extension_c.h",
   "upstream/src/gperftools/malloc_hook.h",
   "upstream/src/gperftools/malloc_hook_c.h",
+  "upstream/src/heap-profile-stats.h",
   "upstream/src/heap-profile-table.cc",
+  "upstream/src/heap-profile-table.h",
   "upstream/src/heap-profiler.cc",
   "upstream/src/internal_logging.cc",
   "upstream/src/malloc_extension.cc",
+  "upstream/src/malloc_hook-inl.h",
   "upstream/src/malloc_hook.cc",
+  "upstream/src/malloc_hook_mmap_linux.h",
   "upstream/src/memfs_malloc.cc",
   "upstream/src/memory_region_map.cc",
+  "upstream/src/memory_region_map.h",
 ]
 
 # thread-caching malloc
@@ -279,6 +333,9 @@ cc_library(
 # opt version
 cc_library(
   name = "tcmalloc_opt",
+  hdrs = [
+    "linux-x86_64/src/gperftools/tcmalloc.h",
+  ],
   srcs = [
     "upstream/src/tcmalloc.cc",
   ] + MALLOC_HOOK_SRCS,
@@ -295,6 +352,9 @@ cc_library(
 # tcmalloc with heap checker
 cc_library(
   name = "tcmalloc_opt_heapcheck",
+  hdrs = [
+    "linux-x86_64/src/gperftools/tcmalloc.h",
+  ],
   srcs = [
     "upstream/src/tcmalloc.cc",
   ] + MALLOC_HOOK_SRCS + HEAP_CHECKER_SRCS,
@@ -313,8 +373,13 @@ cc_library(
 # API.  Luckily, we can reuse everything else from tcmalloc_minimal.
 cc_library(
   name = "tcmalloc_debug",
+  hdrs = [
+    "linux-x86_64/src/gperftools/tcmalloc.h",
+    "upstream/src/tcmalloc.cc",
+  ],
   srcs = [
     "upstream/src/debugallocation.cc",
+
   ] +  MALLOC_HOOK_SRCS,
   copts = TCMALLOC_CFLAGS + [
     "-DNO_HEAP_CHECK",
@@ -329,6 +394,10 @@ cc_library(
 
 cc_library(
   name = "tcmalloc_debug_heapcheck",
+  hdrs = [
+    "linux-x86_64/src/gperftools/tcmalloc.h",
+    "upstream/src/tcmalloc.cc",
+  ],
   srcs = [
     "upstream/src/debugallocation.cc",
   ] + MALLOC_HOOK_SRCS + HEAP_CHECKER_SRCS,
@@ -350,9 +419,15 @@ cc_library(
   name = "testutil",
   copts = AM_CXXFLAGS,
   testonly = 1,
+  hdrs = [
+    "upstream/src/config_for_unittests.h",
+  ],
   srcs = [
     "upstream/src/tests/testutil.h",
     "upstream/src/tests/testutil.cc",
+  ],
+  deps = [
+    ":config_header",
   ],
 )
 
@@ -381,6 +456,7 @@ cc_test(
 cc_test(
   name = "current_allocated_bytes_test",
   srcs = [
+    "upstream/src/config_for_unittests.h",
     "upstream/src/tests/current_allocated_bytes_test.cc",
   ],
   copts = AM_CXXFLAGS,
@@ -403,6 +479,7 @@ cc_test(
 cc_test(
   name = "heap-checker_unittest",
   srcs = [
+    "upstream/src/config_for_unittests.h",
     "upstream/src/tests/heap-checker_unittest.cc",
   ],
   copts = AM_CXXFLAGS,
@@ -430,6 +507,7 @@ sh_test(
 cc_test(
   name = "heap-profiler_unittest",
   srcs = [
+    "upstream/src/config_for_unittests.h",
     "upstream/src/tests/heap-profiler_unittest.cc",
   ],
   copts = AM_CXXFLAGS,
@@ -493,6 +571,7 @@ cc_test(
 cc_test(
   name = "malloc_extension_test",
   srcs = [
+    "upstream/src/config_for_unittests.h",
     "upstream/src/tests/malloc_extension_test.cc",
   ],
   copts = AM_CXXFLAGS,
@@ -504,6 +583,7 @@ cc_test(
 cc_test(
   name = "malloc_hook_test",
   srcs = [
+    "upstream/src/base/simple_mutex.h",
     "upstream/src/tests/malloc_hook_test.cc",
   ],
   copts = AM_CXXFLAGS,
@@ -528,6 +608,7 @@ cc_test(
 cc_test(
   name = "memalign_unittest",
   srcs = [
+    "upstream/src/tcmalloc.h",
     "upstream/src/tests/memalign_unittest.cc",
   ],
   copts = AM_CXXFLAGS,
@@ -552,6 +633,7 @@ cc_test(
 cc_test(
   name = "page_heap_test",
   srcs = [
+    "upstream/src/config_for_unittests.h",
     "upstream/src/tests/page_heap_test.cc",
   ],
   copts = AM_CXXFLAGS,
@@ -563,10 +645,12 @@ cc_test(
 cc_test(
   name = "pagemap_unittest",
   srcs = [
+    "upstream/src/config_for_unittests.h",
     "upstream/src/tests/pagemap_unittest.cc",
   ],
   copts = AM_CXXFLAGS,
   deps = [
+    ":testutil",
     ":tcmalloc",
   ],
 )
@@ -586,6 +670,7 @@ cc_test(
 cc_test(
   name = "profile-handler_unittest",
   srcs = [
+    "upstream/src/base/simple_mutex.h",
     "upstream/src/tests/profile-handler_unittest.cc",
   ],
   copts = AM_CXXFLAGS,
@@ -599,6 +684,7 @@ cc_test(
 cc_binary(
   name = "profiler1_unittest",
   srcs = [
+    "upstream/src/base/simple_mutex.h",
     "upstream/src/tests/profiler_unittest.cc",
   ],
   testonly = 1,
@@ -616,6 +702,7 @@ cc_binary(
 cc_binary(
   name = "profiler2_unittest",
   srcs = [
+    "upstream/src/base/simple_mutex.h",
     "upstream/src/tests/profiler_unittest.cc",
   ],
   testonly = 1,
@@ -633,6 +720,7 @@ cc_binary(
 cc_binary(
   name = "profiler3_unittest",
   srcs = [
+    "upstream/src/base/simple_mutex.h",
     "upstream/src/tests/profiler_unittest.cc",
   ],
   testonly = 1,
@@ -650,6 +738,7 @@ cc_binary(
 cc_binary(
   name = "profiler4_unittest",
   srcs = [
+    "upstream/src/base/simple_mutex.h",
     "upstream/src/tests/profiler_unittest.cc",
   ],
   testonly = 1,
@@ -699,6 +788,7 @@ cc_test(
 cc_test(
   name = "realloc_unittest",
   srcs = [
+    "upstream/src/config_for_unittests.h",
     "upstream/src/tests/realloc_unittest.cc",
   ],
   copts = AM_CXXFLAGS,
@@ -711,6 +801,7 @@ cc_test(
   name = "sampler_test",
   srcs = [
     "upstream/src/tests/sampler_test.cc",
+    "upstream/src/config_for_unittests.h",
   ],
   copts = AM_CXXFLAGS,
   deps = [
@@ -723,6 +814,7 @@ cc_binary(
   testonly = 1,
   srcs = [
     "upstream/src/tests/sampling_test.cc",
+    "upstream/src/config_for_unittests.h",
   ],
   copts = AM_CXXFLAGS,
   deps = [
@@ -747,10 +839,17 @@ sh_test(
 
 cc_test(
   name = "simple_compat_test",
-  srcs = [
+  srcs = glob([
+    "upstream/src/google/*.h",
+  ]) + [
+    "upstream/src/gperftools/heap-checker.h",
+    "upstream/src/gperftools/profiler.h",
     "upstream/src/tests/simple_compat_test.cc",
   ],
   copts = AM_CXXFLAGS,
+  includes = [
+    "upstream/src",
+  ],
   deps = [
     ":tcmalloc",
   ]
@@ -760,6 +859,7 @@ cc_test(
   name = "stack_trace_table_test",
   srcs = [
     "upstream/src/tests/stack_trace_table_test.cc",
+    "upstream/src/config_for_unittests.h",
   ],
   copts = AM_CXXFLAGS,
   deps = [
@@ -770,6 +870,7 @@ cc_test(
 cc_test(
   name = "stacktrace_unittest",
   srcs = [
+    "upstream/src/config_for_unittests.h",
     "upstream/src/tests/stacktrace_unittest.cc",
   ],
   copts = AM_CXXFLAGS,
@@ -782,6 +883,7 @@ cc_test(
 cc_test(
   name = "system-alloc_unittest",
   srcs = [
+    "upstream/src/config_for_unittests.h",
     "upstream/src/tests/system-alloc_unittest.cc",
   ],
   copts = AM_CXXFLAGS,
@@ -794,6 +896,8 @@ cc_test(
 cc_test(
   name = "tcmalloc_unittest",
   srcs = [
+    "upstream/src/tcmalloc.h",
+    "upstream/src/base/simple_mutex.h",
     "upstream/src/tests/tcmalloc_unittest.cc",
   ],
   copts = ["-fno-builtin"] + AM_CXXFLAGS,
