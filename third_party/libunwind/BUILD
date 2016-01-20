@@ -9,6 +9,18 @@ cc_library(
     "libunwind_build/k8/include",
   ],
   srcs = [
+    # Private headers
+    "libunwind_build/k8/include/private/config.h",
+    "upstream/include/compiler.h",
+    "upstream/include/dwarf.h",
+    "upstream/include/dwarf_i.h",
+    "upstream/include/libunwind-dynamic.h",
+    "upstream/include/libunwind-x86_64.h",
+    "upstream/include/libunwind_i.h",
+    "upstream/include/tdep-x86_64/dwarf-config.h",
+    "upstream/include/tdep-x86_64/libunwind_i.h",
+    "upstream/src/elfxx.h",
+    # Code
     "upstream/src/dwarf/Gexpr.c",
     "upstream/src/dwarf/Gfde.c",
     "upstream/src/dwarf/Gfind_proc_info-lsb.c",
