@@ -31,12 +31,6 @@
 [submodule "third_party/libevent/upstream"]
 	path = third_party/libevent/upstream
 	url = https://github.com/libevent/libevent.git
-[submodule "third_party/gmock/upstream"]
-	path = third_party/gmock/upstream
-	url = https://chromium.googlesource.com/external/gmock
-[submodule "third_party/gtest/upstream"]
-	path = third_party/gtest/upstream
-	url = https://chromium.googlesource.com/external/googletest
 [submodule "third_party/boost/upstream/algorithm"]
 	path = third_party/boost/upstream/algorithm
 	url = https://github.com/boostorg/algorithm.git
@@ -205,3 +199,7 @@
 [submodule "third_party/java/j2objc/upstream"]
 	path = third_party/java/j2objc/upstream
 	url = https://github.com/google/j2objc.git
+[submodule "third_party/gtest/github"]
+        path = third_party/gtest/github
+        url = https://github.com/google/googletest.git
+
