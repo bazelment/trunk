@@ -9,6 +9,10 @@ cc_library(
     "upstream/src/gflags.cc",
     "upstream/src/gflags_completions.cc",
     "upstream/src/gflags_reporting.cc",
+    # Private headers
+    "gflags_build/k8/include/gflags/config.h",
+    "upstream/src/mutex.h",
+    "upstream/src/util.h",
   ],
   hdrs = [
     "gflags_build/k8/include/gflags/gflags.h",
@@ -28,6 +32,7 @@ cc_library(
 cc_test(
   srcs = [
     "upstream/test/gflags_unittest.cc",
+    "upstream/test/config_for_unittests.h",
   ],
   copts = [
     "-Ithird_party/gflags/gflags_build/k8/include/gflags",  # We need "config.h"
@@ -38,4 +43,3 @@ cc_test(
     ":gflags"
   ],
 )
-
