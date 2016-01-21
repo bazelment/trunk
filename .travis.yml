@@ -1,5 +1,6 @@
 # Use container based environment, slightly faster than standard
 sudo: true
+dist: precise
 
 language: java
 
