@@ -13,11 +13,26 @@ boost_library(
 )
 
 boost_library(
+  name = "align",
+)
+
+boost_library(
   name = "assert",
 )
 
 boost_library(
+  name = "atomic",
+)
+
+boost_library(
   name = "bind",
+)
+
+boost_library(
+  name = "chrono",
+  deps = [
+    ":ratio"
+  ],
 )
 
 boost_library(
@@ -60,7 +75,18 @@ boost_library(
 )
 
 boost_library(
+  name = "date_time",
+)
+
+boost_library(
   name = "detail",
+)
+
+boost_library(
+  name = "exception",
+  defines = [
+    "BOOST_NO_CXX11_RVALUE_REFERENCES",
+  ],
 )
 
 boost_library(
@@ -187,6 +213,10 @@ boost_library(
 )
 
 boost_library(
+  name = "ratio",
+)
+
+boost_library(
   name = "regex",
   defines = [
     "BOOST_FALLTHROUGH"
@@ -214,6 +244,7 @@ boost_library(
 boost_library(
   name = "smart_ptr",
   deps = [
+    ":align",
     ":core",
     ":predef",
     ":throw_exception",
@@ -236,6 +267,23 @@ boost_library(
     ":core",
     ":predef",
   ],
+)
+
+boost_library(
+  name = "thread",
+  defines = [
+    "BOOST_NO_CXX11_RVALUE_REFERENCES",
+    "BOOST_NO_CXX11_SMART_PTR",
+  ],
+  deps = [
+    ":atomic",
+    ":chrono",
+    ":core",
+    ":date_time",
+    ":exception",
+    ":io",
+    ":system",
+  ]
 )
 
 boost_library(
