@@ -487,6 +487,9 @@ cc_test(
     ":tcmalloc_heapcheck",
   ],
   linkstatic = 1,
+  tags = [
+    "no_travis", # Broken on travis
+  ],
 )
 
 sh_test(
@@ -501,7 +504,10 @@ sh_test(
   ],
   args = [
     "heap-checker_unittest.sh",
-  ]
+  ],
+  tags = [
+    "no_travis", # Broken on travis
+  ],
 )
 
 cc_test(
