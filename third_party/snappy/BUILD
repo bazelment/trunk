@@ -7,13 +7,17 @@ cc_library(
   hdrs = [
     "upstream/snappy.h",
     "upstream/snappy-sinksource.h",
-    "upstream/snappy-c.h"
+    "upstream/snappy-c.h",
   ],
   srcs = [
-    "upstream/snappy.cc",
-    "upstream/snappy-sinksource.cc", 
+    "linux-k8/config.h",
+    "linux-k8/snappy-stubs-public.h",
+    "upstream/snappy-c.cc",
+    "upstream/snappy-internal.h",
+    "upstream/snappy-sinksource.cc",
     "upstream/snappy-stubs-internal.cc",
-    "upstream/snappy-c.cc"
+    "upstream/snappy-stubs-internal.h",
+    "upstream/snappy.cc",
   ],
   copts = [
     "-Ithird_party/snappy/linux-k8",
