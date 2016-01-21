@@ -6,6 +6,18 @@ cc_library(
     "linux-k8",
   ],
   srcs = [
+    "linux-k8/event-config.h",
+    "linux-k8/internal/config.h",
+    "upstream/evdns.h",
+    "upstream/evsignal.h",
+    "upstream/log.h",
+    "upstream/evrpc.h",
+    "upstream/evutil.h",
+    "upstream/min_heap.h",
+    "upstream/event-internal.h",
+    "upstream/evrpc-internal.h",
+    "upstream/http-internal.h",
+    "upstream/strlcpy-internal.h",
     "upstream/event.c",
     "upstream/buffer.c",
     "upstream/evbuffer.c",
@@ -32,4 +44,3 @@ cc_library(
     "-Wno-unused-but-set-variable",
   ],
 )
-
