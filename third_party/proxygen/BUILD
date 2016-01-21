@@ -34,6 +34,7 @@ genrule(
     "upstream/proxygen/lib/http/gen_HTTPCommonHeaders.h.sh",
     "upstream/proxygen/lib/http/gen_HTTPCommonHeaders.cpp.sh",
     "upstream/proxygen/lib/http/HTTPCommonHeaders.template.gperf",
+    "upstream/proxygen/lib/http/HTTPCommonHeaders.template.h",
     "upstream/proxygen/lib/http/HTTPCommonHeaders.txt",
   ],
   cmd = "mkdir -p $(GENDIR)/third_party/proxygen/http/proxygen/lib/http && " +
@@ -60,6 +61,14 @@ cc_library(
     "upstream",
     "http",  # bazel also search s $(GENDIR)/third_party/proxygen/http
   ],
+  hdrs = glob([
+    "upstream/proxygen/lib/http/*.h",
+    "upstream/proxygen/lib/http/codec/*.h",
+    "upstream/proxygen/lib/http/codec/compress/*.h",
+    "upstream/proxygen/lib/http/codec/compress/experimental/hpack9/*.h",
+    "upstream/proxygen/lib/http/codec/experimental/*.h",
+    "upstream/proxygen/lib/http/session/*.h",
+  ]),
   srcs = glob([
     "upstream/proxygen/lib/http/*.cpp",
     "upstream/proxygen/lib/http/codec/*.cpp",
