@@ -193,6 +193,7 @@ boost_library(
   ],
   srcs = glob([
     boost_path + "/regex/src/*.cpp",
+    boost_path + "/regex/src/*.hpp",
   ]),
   deps = [
     ":assert",
