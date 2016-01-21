@@ -6,6 +6,7 @@ cc_library(
   includes = [
     "upstream",
   ],
+  hdrs = glob(["upstream/wangle/acceptor/*.h"]),
   srcs = glob(["upstream/wangle/acceptor/*.cpp"]),
   deps = [
     ":ssl",
@@ -21,10 +22,15 @@ cc_library(
   includes = [
     "upstream",
   ],
+  hdrs = glob([
+    "upstream/wangle/bootstrap/*.h"
+  ]),
   srcs = [
     "upstream/wangle/bootstrap/ServerBootstrap.cpp"
   ],
   deps = [
+    ":acceptor",
+    ":channel",
     "//third_party/folly:async",
     "//third_party/folly:futures",
     "//third_party/boost:parameter",
@@ -37,9 +43,13 @@ cc_library(
   includes = [
     "upstream",
   ],
+  hdrs = glob(["upstream/wangle/channel/*.h"]),
   srcs = glob(["upstream/wangle/channel/*.cpp"]),
   deps = [
+    ":acceptor",
+    ":concurrent",
     "//third_party/folly:futures",
+    "//third_party/boost:variant",
   ]
 )
 
@@ -49,6 +59,10 @@ cc_library(
   includes = [
     "upstream",
   ],
+  hdrs = glob([
+    "upstream/wangle/concurrent/*.h",
+    "upstream/wangle/deprecated/rx/*.h",
+  ]),
   srcs = glob(["upstream/wangle/concurrent/*.cpp"]),
   deps = [
     "//third_party/folly:futures",
@@ -61,6 +75,7 @@ cc_library(
   includes = [
     "upstream",
   ],
+  hdrs = glob(["upstream/wangle/ssl/*.h"]),
   srcs = glob(["upstream/wangle/ssl/*.cpp"]),
   deps = [
     "//third_party/folly:ssl",
