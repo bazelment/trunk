@@ -21,9 +21,13 @@ v8_random_seed = "314159265"
 
 cc_library(
   name = "v8",
+  visibility = [ "//visibility:public" ],
   deps = [
     ":v8_snapshot",
     ":v8_base",
+  ],
+  includes = [
+    "upstream/include",
   ],
 )
 
@@ -1065,6 +1069,7 @@ cc_library(
 
 cc_library(
   name = "v8_libplatform",
+  visibility = [ "//visibility:public" ],
   srcs = [
     "upstream/include/v8-platform.h",
     "upstream/include/libplatform/libplatform.h",
