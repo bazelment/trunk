@@ -3,6 +3,9 @@ package(default_visibility = ['//visibility:public'])
 
 java_library(
   name = 'log4j',
+  javacopts = [
+    '-extra_checks:off',
+  ],
   srcs = glob([
     'upstream/src/main/java/org/apache/log4j/*.java',
     'upstream/src/main/java/org/apache/log4j/config/*.java',

@@ -6,6 +6,9 @@ java_library(
   srcs = glob([
     'upstream/slf4j-api/src/main/java/**/*.java'
   ]),
+  javacopts = [
+    '-extra_checks:off',
+  ],
   deps = [
   ],
 )
