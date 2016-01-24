@@ -4,6 +4,9 @@ licenses(['notice'])
 
 java_library(
   name = 'guava',
+  javacopts = [
+    '-extra_checks:off',
+  ],
   srcs = glob([
     'upstream/guava/src/com/google/**/*.java'
   ]),
