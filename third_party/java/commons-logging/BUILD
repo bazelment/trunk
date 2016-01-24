@@ -3,6 +3,9 @@ package(default_visibility = ['//visibility:public'])
 
 java_library(
   name = 'commons-logging',
+  javacopts = [
+    '-extra_checks:off',
+  ],
   srcs = glob([
     'upstream/src/main/**/*.java'
   ], exclude=[
