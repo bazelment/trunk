@@ -1,6 +1,6 @@
 bind(
   name = "libssl",
-  actual = "//third_party/boringssl:ssl",
+  actual = "//third_party/openssl:ssl",
 )
 
 bind(
