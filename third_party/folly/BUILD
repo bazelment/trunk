@@ -302,31 +302,33 @@ cc_library(
   ]
 )
 
-cc_library(
-  name = "symbolizer",
-  visibility = ["//visibility:public"],
-  hdrs = glob([
-    "upstream/folly/experimental/symbolizer/*.h",
-  ]),
-  srcs = glob([
-    "upstream/folly/experimental/symbolizer/*.cpp",
-  ]),
-  copts = [
-    #'-DHAVE_LINK_H=1'
-  ],
-  deps = [
-    ":base",
-    ":folly",
-    "//third_party/boost:assert",
-    "//third_party/boost:container",
-    "//third_party/boost:functional",
-    "//third_party/boost:iterator",
-    "//third_party/boost:intrusive",
-    "//third_party/boost:throw_exception",
-    "//third_party/boost:type_index",
-    "//third_party/boost:variant",
-  ],
-)
+# Broken because missing dwarf.h
+#
+# cc_library(
+#   name = "symbolizer",
+#   visibility = ["//visibility:public"],
+#   hdrs = glob([
+#     "upstream/folly/experimental/symbolizer/*.h",
+#   ]),
+#   srcs = glob([
+#     "upstream/folly/experimental/symbolizer/*.cpp",
+#   ]),
+#   copts = [
+#     #'-DHAVE_LINK_H=1'
+#   ],
+#   deps = [
+#     ":base",
+#     ":folly",
+#     "//third_party/boost:assert",
+#     "//third_party/boost:container",
+#     "//third_party/boost:functional",
+#     "//third_party/boost:iterator",
+#     "//third_party/boost:intrusive",
+#     "//third_party/boost:throw_exception",
+#     "//third_party/boost:type_index",
+#     "//third_party/boost:variant",
+#   ],
+# )
 
 cc_library(
   name = "recordio",
@@ -432,7 +434,7 @@ cc_test(
     ":base",
     ":benchmark",
     "//third_party/gflags",
-    "//third_party/gtest",
+    "//third_party/gtest:gtest_main",
   ]
 )
 
