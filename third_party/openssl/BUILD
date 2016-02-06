@@ -48,10 +48,24 @@ load('BUILD.generated', 'ssl_headers', 'ssl_internal_headers', 'ssl_sources',
      'crypto_headers', 'crypto_internal_headers', 'crypto_sources',
      'crypto_sources_linux_x86_64')
 
+genrule(
+  name = 'buildinfo',
+  srcs = [
+    'src/util/mkbuildinf.pl',
+  ],
+  outs = [
+    # The output directory has to match our include path
+    'linux-x86_64/include/buildinf.h',
+  ],
+  cmd = '/usr/bin/perl $< "' + ' '.join(openssl_copts) + '" "linux-x86_64" > $@'
+)
+
 cc_library(
   name = 'crypto',
   visibility = ["//visibility:public"],
-  hdrs = crypto_headers,
+  hdrs = crypto_headers + [
+    ':buildinfo'
+  ],
   srcs = crypto_internal_headers + crypto_sources + select({
     ":linux_x64": crypto_sources_linux_x86_64,
     "//conditions:default": crypto_sources_linux_x86_64,
@@ -59,7 +73,7 @@ cc_library(
   defines = [
   ],
   includes = [
-    'src/include'
+    'linux-x86_64/include',
   ],
   copts = openssl_copts,
   linkopts = [
@@ -72,11 +86,6 @@ cc_library(
   visibility = ["//visibility:public"],
   hdrs = ssl_headers,
   srcs = ssl_internal_headers + ssl_sources,
-  defines = [
-  ],
-  includes = [
-    'src/include'
-  ],
   copts = openssl_copts,
   linkopts = [
     '-pthread'
