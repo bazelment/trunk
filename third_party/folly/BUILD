@@ -257,6 +257,7 @@ cc_library(
   ],
   deps = [
     ":folly",
+    "//external:libssl",
     "//third_party/libevent",
     "//third_party/boost:iterator",
   ]
