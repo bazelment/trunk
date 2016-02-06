@@ -19,6 +19,7 @@ addons:
       - pkg-config
       - zip
       - zlib1g-dev
+      - gperf  # To build proxygen
 
 install:
   - ./install-bazel.sh
