@@ -71,6 +71,7 @@ cc_library(
     "//conditions:default": crypto_sources_linux_x86_64,
   }),
   defines = [
+    'OPENSSL_NO_STATIC_ENGINE',
   ],
   includes = [
     'linux-x86_64/include',
