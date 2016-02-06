@@ -224,3 +224,6 @@
 [submodule "third_party/boost/upstream/align"]
 	path = third_party/boost/upstream/align
 	url = https://github.com/boostorg/align.git
+[submodule "third_party/openssl/src"]
+	path = third_party/openssl/src
+	url = https://github.com/openssl/openssl.git
