@@ -75,7 +75,9 @@ cc_library(
   includes = [
     "upstream",
   ],
-  hdrs = glob(["upstream/wangle/ssl/*.h"]),
+  hdrs = glob(["upstream/wangle/ssl/*.h"]) + [
+    'upstream/wangle/acceptor/SSLContextSelectionMisc.h'
+  ],
   srcs = glob(["upstream/wangle/ssl/*.cpp"]),
   deps = [
     "//third_party/folly:ssl",

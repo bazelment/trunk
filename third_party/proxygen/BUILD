@@ -18,6 +18,10 @@ cc_library(
 # proxygen/httpserver
 cc_library(
   name = "httpserver",
+  hdrs = glob([
+    "upstream/proxygen/httpserver/*.h",
+    "upstream/proxygen/httpserver/filters/*.h",
+  ]),
   srcs = glob([
     "upstream/proxygen/httpserver/*.cpp",
   ]),
@@ -94,6 +98,9 @@ cc_library(
 # proxygen/lib/services
 cc_library(
   name = "service",
+  hdrs = glob([
+    "upstream/proxygen/lib/services/*.h",
+  ]),
   srcs = glob([
     "upstream/proxygen/lib/services/*.cpp",
   ]),
@@ -165,6 +172,9 @@ cc_library(
 
 cc_library(
   name = "ParseURL",
+  hdrs = [
+    "upstream/proxygen/lib/http/codec/SPDYUtil.h",
+  ],
   srcs = [
     "upstream/proxygen/lib/utils/ParseURL.cpp"
   ],
@@ -209,6 +219,7 @@ cc_library(
   ],
   deps = [
     ":http",
+    ":httpserver",
   ],
 )
 
