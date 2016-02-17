@@ -45,43 +45,43 @@ bind(
 )
 
 maven_jar(
-  name = "apache-commons-lang2-maven",
+  name = "apache_commons_lang2_maven",
   artifact = "commons-lang:commons-lang:2.6"
 )
 
 bind(
-  name = "apache-commons-lang2",
-  actual = "@apache-commons-lang2-maven//jar"
+  name = "apache_commons_lang2",
+  actual = "@apache_commons_lang2_maven//jar"
 )
 
 maven_jar(
-  name = "apache-commons-lang3-maven",
+  name = "apache_commons_lang3_maven",
   artifact = "org.apache.commons:commons-lang3:3.4"
 )
 
 bind(
-  name = "apache-commons-lang3",
-  actual = "@apache-commons-lang3-maven//jar"
+  name = "apache_commons_lang3",
+  actual = "@apache_commons_lang3_maven//jar"
 )
 
 bind(
-  name = "apache-commons-logging",
+  name = "apache_commons_logging",
   actual = "//third_party/java/commons-logging"
 )
 
 bind(
-  name = "apache-log4j",
+  name = "apache_log4j",
   actual = "//third_party/java/log4j"
 )
 
 maven_jar(
-  name = "hpack-maven",
+  name = "hpack_maven",
   artifact = "com.twitter:hpack:v1.0.1"
 )
 
 bind(
   name = "hpack",
-  actual = "@hpack-maven//jar"
+  actual = "@hpack_maven//jar"
 )
 
 bind(
@@ -90,54 +90,54 @@ bind(
 )
 
 maven_jar(
-  name = "jetty-alpn-maven",
+  name = "jetty_alpn_maven",
   artifact = "org.eclipse.jetty.alpn:alpn-api:1.1.2.v20150522"
 )
 
 bind(
-  name = "jetty-alpn",
-  actual = "@jetty-alpn-maven//jar"
+  name = "jetty_alpn",
+  actual = "@jetty_alpn_maven//jar"
 )
 
 maven_jar(
-  name = "jetty-npn-maven",
+  name = "jetty_npn_maven",
   artifact = "org.mortbay.jetty.npn:npn-boot:1.1.11.v20150415"
 )
 
 bind(
-  name = "jetty-npn",
-  actual = "@jetty-npn-maven//jar"
+  name = "jetty_npn",
+  actual = "@jetty_npn_maven//jar"
 )
 
 maven_jar(
-  name = "joda-time-maven",
+  name = "joda_time_maven",
   artifact = "joda-time:joda-time:2.3"
 )
 
 bind(
-  name = "joda-time",
-  actual = "@joda-time-maven//jar"
+  name = "joda_time",
+  actual = "@joda_time_maven//jar"
 )
 
 
 maven_jar(
-  name = "jzlib-maven",
+  name = "jzlib_maven",
   artifact = "com.jcraft:jzlib:1.1.3"
 )
 
 bind(
   name = "jzlib",
-  actual = "@jzlib-maven//jar"
+  actual = "@jzlib_maven//jar"
 )
 
 maven_jar(
-  name = "netty-tcnative-maven",
+  name = "netty_tcnative_maven",
   artifact = "io.netty:netty-tcnative:1.1.33.Fork7"
 )
 
 bind(
-  name = "netty-tcnative",
-  actual = "@netty-tcnative-maven//jar"
+  name = "netty_tcnative",
+  actual = "@netty_tcnative_maven//jar"
 )
 
 bind(
@@ -152,23 +152,23 @@ bind(
 )
 
 maven_jar(
-  name = "google-auth-library-oauth2-http-maven",
+  name = "google_auth_library_oauth2_http_maven",
   artifact = "com.google.auth:google-auth-library-oauth2-http:0.2.0"
 )
 
 bind(
-  name = "google-auth-library-oauth2-http",
-  actual = "@google-auth-library-oauth2-http-maven//jar"
+  name = "google_auth_library_oauth2_http",
+  actual = "@google_auth_library_oauth2_http_maven//jar"
 )
 
 maven_jar(
-  name = "google-auth-library-credentials-maven",
+  name = "google_auth_library_credentials_maven",
   artifact = "com.google.auth:google-auth-library-credentials:0.2.0"
 )
 
 bind(
-  name = "google-auth-library-credentials",
-  actual = "@google-auth-library-credentials-maven//jar"
+  name = "google_auth_library_credentials",
+  actual = "@google_auth_library_credentials_maven//jar"
 )
 
 maven_jar(
@@ -182,13 +182,13 @@ bind(
 )
 
 maven_jar(
-  name = "guice-multibindings_maven",
+  name = "guice_multibindings_maven",
   artifact = "com.google.inject.extensions:guice-multibindings:4.0",
 )
 
 bind(
-  name = "guice-multibindings",
-  actual = "@guice-multibindings_maven//jar"
+  name = "guice_multibindings",
+  actual = "@guice_multibindings_maven//jar"
 )
 
 maven_jar(
@@ -252,13 +252,13 @@ bind(
 )
 
 maven_jar(
-  name = "commons-cli_maven",
+  name = "commons_cli_maven",
   artifact = "commons-cli:commons-cli:1.2",
 )
 
 bind(
-  name = "commons-cli",
-  actual = "@commons-cli_maven//jar"
+  name = "commons_cli",
+  actual = "@commons_cli_maven//jar"
 )
 
 # Disable loading of any android depenedency rule
