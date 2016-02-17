@@ -148,6 +148,9 @@ crypto_headers = [
 ]
 
 crypto_internal_headers = [
+    # To be fixed
+    "src/e_os.h",
+    # Done
     "src/crypto/aes/aes.h",
     "src/crypto/aes/aes_locl.h",
     "src/crypto/arm_arch.h",

@@ -70,6 +70,11 @@ cc_library(
     ":linux_x64": crypto_sources_linux_x86_64,
     "//conditions:default": crypto_sources_linux_x86_64,
   }),
+  textual_hdrs = [
+    "src/crypto/LPdir_unix.c",
+    "src/crypto/ec/ecp_nistz256_table.c",
+    "src/crypto/des/ncbc_enc.c",
+  ],
   defines = [
     'OPENSSL_NO_STATIC_ENGINE',
   ],
