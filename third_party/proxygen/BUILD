@@ -1,5 +1,7 @@
 licenses(["notice"])
 
+package(default_visibility = ["//visibility:public"])
+
 # external/http_parser
 cc_library(
   name = "external_http_parser",
