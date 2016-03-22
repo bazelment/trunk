@@ -54,9 +54,7 @@ int main(int argc, char** argv) {
   google::InstallFailureSignalHandler();
   google::ParseCommandLineFlags(&argc, &argv, false);
   google::InitGoogleLogging(argv[0]);
-  grpc_init();
   examples::RunServer();
 
-  grpc_shutdown();
   return 0;
 }
