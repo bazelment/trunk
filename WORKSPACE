@@ -4,6 +4,11 @@ bind(
 )
 
 bind(
+  name = "nanopb",
+  actual = "//third_party/nanopb",
+)
+
+bind(
   name = "zlib",
   actual = "//third_party/zlib",
 )
@@ -29,7 +34,7 @@ bind(
 
 bind(
   name = "protobuf_java_lib",
-  actual = "//third_party/protobuf/upstream:java_proto",
+  actual = "//third_party/protobuf/upstream:protobuf_java",
 )
 
 # GRPC codegen plugin
