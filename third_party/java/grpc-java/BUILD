@@ -21,7 +21,7 @@ java_library(
   ]),
   deps = [
     ':core',
-    '//external:google-auth-library-credentials',
+    '//external:google_auth_library_credentials',
     '//external:jsr305',
     '//third_party/java/guava',
   ],
@@ -136,7 +136,7 @@ java_library(
     ':grpc-java',
     ':testing',
     ':netty',
-    '//external:google-auth-library-oauth2-http',
+    '//external:google_auth_library_oauth2_http',
     '//external:junit',
     '//external:mockito',
     '//third_party/java/netty',
