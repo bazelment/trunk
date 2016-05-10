@@ -5,8 +5,8 @@ DECLARE_bool(logtostderr);
 int main(int argc, char *argv[]) {
   FLAGS_logtostderr = true;
   google::InstallFailureSignalHandler();
-  google::SetUsageMessage("hello");
-  google::ParseCommandLineFlags(&argc, &argv, false);
+  gflags::SetUsageMessage("hello");
+  gflags::ParseCommandLineFlags(&argc, &argv, false);
   google::InitGoogleLogging(argv[0]);
   LOG(INFO) << "Hello World!";
   return 0;
