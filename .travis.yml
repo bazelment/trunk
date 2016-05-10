@@ -23,7 +23,6 @@ addons:
 
 install:
   - ./install-bazel.sh
-  - cp ~/.bazel/base_workspace/tools/jdk/*.jar tools/jdk
   - wget https://raw.githubusercontent.com/mzhaom/lrte/master/install-release.sh && sudo bash install-release.sh
 
 script:
