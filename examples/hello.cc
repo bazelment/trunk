@@ -17,6 +17,7 @@ int main(int argc, char *argv[]) {
   LOG(INFO) << "Built by " << kBuildUser << "@" << kBuildHost
             << " as " << kBazelTargetName
             << " on " << timestamp 
-            << " as " << kBazelTargetName;
+            << " as " << kBazelTargetName
+            << " with git revision @" << kBuildScmRevision;
   return 0;
 }

@@ -1,3 +1,5 @@
+build --workspace_status_command=tools/buildstamp/get_workspace_status
+
 # Address sanitizer
 # To use it: bazel build --config asan
 build:asan --crosstool_top //tools/lrte:toolchain
