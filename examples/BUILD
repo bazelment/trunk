@@ -6,9 +6,11 @@ cc_binary(
     "hello.cc"
   ],
   deps = [
+    "//base:build_info",
     "//third_party/gflags",
     "//third_party/glog",
   ],
+  stamp = 1,
 )
 
 cc_test(
