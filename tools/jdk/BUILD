@@ -72,8 +72,19 @@ filegroup(
 
 java_toolchain(
     name = "toolchain",
+    bootclasspath = [":bootclasspath"],
     encoding = "UTF-8",
-    jvm_opts = ["-client"],
+    extclasspath = [":extdir"],
+    genclass = ["//tools/jdk:GenClass_deploy.jar"],
+    header_compiler = ["//tools/jdk:turbine_deploy.jar"],
+    ijar = ["//tools/jdk:ijar"],
+    javabuilder = ["//tools/jdk:JavaBuilder_deploy.jar"],
+    javac = ["//third_party/java/jdk/langtools:javac_jar"],
+    jvm_opts = [
+        "-XX:+TieredCompilation",
+        "-XX:TieredStopAtLevel=1",
+    ],
+    singlejar = ["//tools/jdk:SingleJar_deploy.jar"],
     source_version = "7",
     target_version = "7",
     misc = [
