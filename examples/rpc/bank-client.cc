@@ -33,7 +33,7 @@ static void RunClient() {
   if (status.ok()) {
     LOG(INFO) << response.account() << " balance:" << response.balance();
   } else {
-    LOG(INFO) << "Rpc failed";
+    LOG(INFO) << "Rpc failed: " << status.error_code();
   }
 }
 
@@ -41,7 +41,7 @@ static void RunClient() {
 
 int main(int argc, char** argv) {
   google::InstallFailureSignalHandler();
-  google::ParseCommandLineFlags(&argc, &argv, false);
+  gflags::ParseCommandLineFlags(&argc, &argv, false);
   google::InitGoogleLogging(argv[0]);
   examples::RunClient();
 

@@ -227,6 +227,6 @@
 [submodule "third_party/openssl/src"]
 	path = third_party/openssl/src
 	url = https://github.com/openssl/openssl.git
-[submodule "third_party/nanopb/upstream"]
-	path = third_party/nanopb/upstream
-	url = https://github.com/nanopb/nanopb.git
+[submodule "third_party/nanopb"]
+	path = third_party/nanopb
+	url = https://github.com/LuminateWireless/nanopb.git
