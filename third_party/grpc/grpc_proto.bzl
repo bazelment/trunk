@@ -91,20 +91,20 @@ _genproto_attrs = {
   "gen_java": attr.bool(),
 }
 
-def _genproto_outputs(attrs):
+def _genproto_outputs(gen_cc, has_service, gen_java):
   outputs = {}
-  if attrs.gen_cc:
+  if gen_cc:
     outputs += {
       "cc_hdr": "%{src}.pb.h",
       "cc_src": "%{src}.pb.cc"
     }
-    if attrs.has_service:
+    if has_service:
       outputs += {
         "cc_grpc_hdr": "%{src}.grpc.pb.h",
         "cc_grpc_src": "%{src}.grpc.pb.cc"
       }
 
-  if attrs.gen_java:
+  if gen_java:
     outputs += {
       "java_src": "%{src}.srcjar",
     }
