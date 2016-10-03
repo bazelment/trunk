@@ -230,3 +230,6 @@
 [submodule "third_party/nanopb"]
 	path = third_party/nanopb
 	url = https://github.com/LuminateWireless/nanopb.git
+[submodule "third_party/boost/upstream/dynamic_bitset"]
+	path = third_party/boost/upstream/dynamic_bitset
+	url = https://github.com/boostorg/dynamic_bitset
