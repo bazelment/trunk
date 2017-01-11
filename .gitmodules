@@ -7,18 +7,9 @@
 [submodule "third_party/gflags/upstream"]
 	path = third_party/gflags/upstream
 	url = https://github.com/gflags/gflags.git
-[submodule "third_party/bazel/upstream"]
-	path = third_party/bazel/upstream
-	url = https://github.com/google/bazel
-[submodule "third_party/protobuf/upstream"]
-	path = third_party/protobuf/upstream
-	url = https://github.com/google/protobuf.git
 [submodule "third_party/boringssl/src"]
 	path = third_party/boringssl/src
 	url = https://boringssl.googlesource.com/boringssl
-[submodule "third_party/grpc/upstream"]
-	path = third_party/grpc/upstream
-	url = https://github.com/grpc/grpc.git
 [submodule "third_party/folly/upstream"]
 	path = third_party/folly/upstream
 	url = https://github.com/facebook/folly.git
