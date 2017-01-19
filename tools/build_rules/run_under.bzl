@@ -54,14 +54,16 @@ exec %s %s \\
 run_under_attr = {
   "command": attr.label(mandatory=True,
                         allow_files=True,
+                        cfg='target',
                         executable=True),
   "under": attr.label(mandatory=True,
                       allow_files=True,
+                      cfg='target',
                       executable=True),
   # Arguments for the "under" command to setup the environment.
   "under_args": attr.string_list(),
   "data": attr.label_list(allow_files=True,
-                          cfg=DATA_CFG),
+                          cfg='data'),
    # bazel automatically implements "args": attr.string_list()
    # and passes them on invocation
 }
