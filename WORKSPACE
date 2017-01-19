@@ -8,26 +8,10 @@ bind(
   actual = "//third_party/zlib",
 )
 
-bind(
-  name = "protobuf",
-  actual = "//third_party/protobuf:protobuf",
-)
-
-# Protobuf compiler binary
-bind(
-  name = "protocol_compiler",
-  actual = "//third_party/protobuf:protoc",
-)
-
-# Library needed to build protobuf codegen plugin.
-bind(
-  name = "protobuf_clib",
-  actual = "//third_party/protobuf:protoc_lib",
-)
-
-bind(
-  name = "protobuf_java_lib",
-  actual = "//third_party/protobuf:protobuf_java",
+new_local_repository(
+    name = "protobuf",
+    path = "third_party/protobuf",
+    build_file = "third_party/protobuf/BUILD",
 )
 
 new_local_repository(
@@ -41,6 +25,32 @@ bind(
   actual = "@grpc//third_party/nanopb",
 )
 
+# Protobuf compiler binary
+bind(
+  name = "protoc",
+  actual = "@protobuf//:protoc",
+)
+
+bind(
+  name = "protocol_compiler",
+  actual = "@protobuf//:protoc",
+)
+
+# Library needed to build protobuf codegen plugin.
+bind(
+  name = "protobuf_clib",
+  actual = "@protobuf//:protoc_lib",
+)
+
+bind(
+  name = "protobuf_java_lib",
+  actual = "@protobuf//:protobuf_java",
+)
+
+bind(
+  name = "protobuf_java_util",
+  actual = "@protobuf//:protobuf_java_util",
+)
 
 # GRPC codegen plugin
 bind(
@@ -90,6 +100,21 @@ bind(
 )
 
 maven_jar(
+    name = "gson_maven",
+    artifact = "com.google.code.gson:gson:2.7",
+)
+
+bind(
+    name = "gson",
+    actual = "@gson_maven//jar",
+)
+
+bind(
+    name = "guava",
+    actual = "//third_party/java/guava",
+)
+
+maven_jar(
   name = "hpack_maven",
   artifact = "com.twitter:hpack:v1.0.1"
 )
@@ -133,7 +158,6 @@ bind(
   name = "joda_time",
   actual = "@joda_time_maven//jar"
 )
-
 
 maven_jar(
   name = "jzlib_maven",
