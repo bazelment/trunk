@@ -1,11 +1,11 @@
-load("/third_party/grpc/grpc_proto", "proto_library")
+load("//tools/build_rules/grpc:grpc_proto.bzl", "proto_library")
 
 proto_library(
   name = "helloworld",
   src = "helloworld.proto",
   has_service = True,
   generate_cc = True,
-  generate_java = True,
+  # generate_java = True,
 )
 
 cc_binary(
@@ -48,26 +48,27 @@ cc_binary(
   ],
 )
 
-java_binary(
-  name = "greeter_client_java",
-  srcs = [
-    "java/io/grpc/examples/helloworld/HelloWorldClient.java"
-  ],
-  main_class = "io.grpc.examples.helloworld.HelloWorldClient",
-  deps = [
-    ":helloworld_java",
-    "//third_party/java/grpc-java",
-  ]
-)
+# TODO: fix grpc-java
+# java_binary(
+#   name = "greeter_client_java",
+#   srcs = [
+#     "java/io/grpc/examples/helloworld/HelloWorldClient.java"
+#   ],
+#   main_class = "io.grpc.examples.helloworld.HelloWorldClient",
+#   deps = [
+#     ":helloworld_java",
+#     "//third_party/java/grpc-java",
+#   ]
+# )
 
-java_binary(
-  name = "greeter_server_java",
-  srcs = [
-    "java/io/grpc/examples/helloworld/HelloWorldServer.java"
-  ],
-  main_class = "io.grpc.examples.helloworld.HelloWorldServer",
-  deps = [
-    ":helloworld_java",
-    "//third_party/java/grpc-java",
-  ]
-)
+# java_binary(
+#   name = "greeter_server_java",
+#   srcs = [
+#     "java/io/grpc/examples/helloworld/HelloWorldServer.java"
+#   ],
+#   main_class = "io.grpc.examples.helloworld.HelloWorldServer",
+#   deps = [
+#     ":helloworld_java",
+#     "//third_party/java/grpc-java",
+#   ]
+# )
