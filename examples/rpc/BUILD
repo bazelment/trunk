@@ -1,11 +1,10 @@
-load("/third_party/grpc/grpc_proto", "proto_library")
+load("//tools/build_rules/grpc:grpc_build_system.bzl", "grpc_proto_library")
 
-proto_library(
+grpc_proto_library(
   name = "bank",
-  src = "bank.proto",
-  has_service = True,
-  generate_cc = True,
-  generate_java = True,
+  srcs = [
+    "bank.proto",
+  ],
 )
 
 cc_binary(
