@@ -33,6 +33,9 @@ cc_library(
   copts = [
     "-Ithird_party/gtest/github/googletest"
   ],
+  linkopts = [
+    "-pthread"
+  ],
   deps = [
     "//third_party/gflags",
     ":gtest_prod",
