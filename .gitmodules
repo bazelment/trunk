@@ -218,9 +218,6 @@
 [submodule "third_party/openssl/src"]
 	path = third_party/openssl/src
 	url = https://github.com/openssl/openssl.git
-[submodule "third_party/nanopb"]
-	path = third_party/nanopb
-	url = https://github.com/LuminateWireless/nanopb.git
 [submodule "third_party/protobuf"]
 	path = third_party/protobuf
 	url = https://github.com/google/protobuf.git
