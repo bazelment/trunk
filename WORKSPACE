@@ -9,15 +9,17 @@ bind(
 )
 
 new_local_repository(
-    name = "protobuf",
-    path = "third_party/protobuf",
-    build_file = "third_party/protobuf/BUILD",
+  # This one can't be called protobuf because "//external:protobuf" is
+  # depent by grpc
+  name = "protobuf_repo",
+  path = "third_party/protobuf",
+  build_file = "third_party/protobuf/BUILD",
 )
 
 new_local_repository(
-    name = "grpc",
-    path = "third_party/grpc",
-    build_file = "third_party/grpc/BUILD",
+  name = "grpc",
+  path = "third_party/grpc",
+  build_file = "third_party/grpc/BUILD",
 )
 
 bind(
@@ -28,28 +30,34 @@ bind(
 # Protobuf compiler binary
 bind(
   name = "protoc",
-  actual = "@protobuf//:protoc",
+  actual = "@protobuf_repo//:protoc",
 )
 
 bind(
   name = "protocol_compiler",
-  actual = "@protobuf//:protoc",
+  actual = "@protobuf_repo//:protoc",
 )
 
 # Library needed to build protobuf codegen plugin.
 bind(
   name = "protobuf_clib",
-  actual = "@protobuf//:protoc_lib",
+  actual = "@protobuf_repo//:protoc_lib",
+)
+
+# Protobuf runtime
+bind(
+  name = "protobuf",
+  actual = "@protobuf_repo//:protobuf",
 )
 
 bind(
   name = "protobuf_java_lib",
-  actual = "@protobuf//:protobuf_java",
+  actual = "@protobuf_repo//:protobuf_java",
 )
 
 bind(
   name = "protobuf_java_util",
-  actual = "@protobuf//:protobuf_java_util",
+  actual = "@protobuf_repo//:protobuf_java_util",
 )
 
 # GRPC codegen plugin
