@@ -21,7 +21,9 @@ def generate_cc_impl(ctx):
   dir_out = out_files[0].dirname[:-len(protos[0].dirname)]
 
   arguments = []
+  inputs = protos + includes
   if ctx.executable.plugin:
+    inputs += [ctx.executable.plugin]
     arguments += ["--plugin=protoc-gen-PLUGIN=" + ctx.executable.plugin.path]
     arguments += ["--PLUGIN_out=" + ",".join(ctx.attr.flags) + ":" + dir_out]
   else:
@@ -30,7 +32,7 @@ def generate_cc_impl(ctx):
   arguments += [proto.path for proto in protos]
 
   ctx.action(
-      inputs = protos + includes,
+      inputs = inputs,
       outputs = out_files,
       executable = ctx.executable._protoc,
       arguments = arguments,
