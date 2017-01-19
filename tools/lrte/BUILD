@@ -15,13 +15,14 @@ filegroup(
 #   * all file groups that said cc_toolchain might refer to,
 # including the default_grte_top setting in the CROSSTOOL
 # protobuf.
-filegroup(
+
+cc_toolchain_suite(
   name = "toolchain",
-  srcs = [
-    ":cc-compiler-local",
-    ":cc-compiler-k8",
-    ":empty",
-  ],
+  toolchains = {
+    "local|compiler": ":cc-compiler-local",
+    "k8|clang": ":cc-compiler-k8",
+    "k8|gcc": ":cc-compiler-k8",
+  },
 )
 
 # The crosstool is loaded by following --crosstool_top, loading the
