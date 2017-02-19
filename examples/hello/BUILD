@@ -18,6 +18,9 @@ cc_test(
   srcs = [
     "hello_test.cc",
   ],
+  linkopts = [
+    "-lpthread"
+  ],
   deps = [
     "//third_party/gtest:gtest_main",
   ],
