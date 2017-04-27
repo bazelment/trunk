@@ -1,0 +1,3 @@
+Use ICU UnicodeString to convert between different encodings of Unicode strings.
+Mainly, converts UTF8 strings to UTF32 strings and iterate over the resulted
+UTF32 code points.
