@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM mzhaom/lrte:latest
 
 RUN apt-get update && apt-get -y install git
 
