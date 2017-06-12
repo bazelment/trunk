@@ -1,5 +1,8 @@
 FROM ubuntu:16.04
 
-CMD git submodule update --init
+RUN apt-get update && apt-get -y install git
+
 ADD . /trunk
 WORKDIR /trunk
+
+RUN git submodule update --init
