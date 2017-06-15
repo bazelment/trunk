@@ -1,4 +1,4 @@
-FROM mzhaom/lrte:latest
+FROM bazelment/lrte:latest
 
 RUN apt-get update && apt-get -y install git
 
