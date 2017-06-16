@@ -14,7 +14,7 @@ toolchain {
   abi_version: "local"
   abi_libc_version: "local"
 
-  builtin_sysroot: "/usr/lrte/v2"
+  builtin_sysroot: "/usr/lrte/v3"
   compiler: "gcc"
   host_system_name: "local"
   needsPic: true
@@ -30,17 +30,17 @@ toolchain {
   target_system_name: "local"
   toolchain_identifier: "crosstool_v2_gcc"
 
-  tool_path { name: "ar" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/ar" }
-  tool_path { name: "compat-ld" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/ld.bfd" }
-  tool_path { name: "cpp" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/cpp" }
-  tool_path { name: "dwp" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/dwp" }
-  tool_path { name: "gcc" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/gcc" }
-  tool_path { name: "gcov" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/gcov" }
-  tool_path { name: "ld" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/ld.gold" }
-  tool_path { name: "nm" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/nm" }
-  tool_path { name: "objcopy" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/objcopy" }
-  tool_path { name: "objdump" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/objdump" }
-  tool_path { name: "strip" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/strip" }
+  tool_path { name: "ar" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/ar" }
+  tool_path { name: "compat-ld" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/ld.bfd" }
+  tool_path { name: "cpp" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/cpp" }
+  tool_path { name: "dwp" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/dwp" }
+  tool_path { name: "gcc" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/gcc" }
+  tool_path { name: "gcov" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/gcov" }
+  tool_path { name: "ld" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/ld.gold" }
+  tool_path { name: "nm" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/nm" }
+  tool_path { name: "objcopy" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/objcopy" }
+  tool_path { name: "objdump" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/objdump" }
+  tool_path { name: "strip" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/strip" }
 
   # All warnings are enabled
   # TODO: enable -Werror like repobuild
@@ -97,8 +97,8 @@ toolchain {
   # linker_flag: "-B/usr/bin/"
 
   cxx_builtin_include_directory: "%sysroot%/include"
-  cxx_builtin_include_directory: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/lib/gcc/x86_64-unknown-linux-gnu"
-  cxx_builtin_include_directory: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/include/c++"
+  cxx_builtin_include_directory: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/lib/gcc/x86_64-unknown-linux-gnu"
+  cxx_builtin_include_directory: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/include/c++"
 
   unfiltered_cxx_flag: "-isystem%sysroot%/include"
 
@@ -111,7 +111,7 @@ toolchain {
   abi_version: "local"
   abi_libc_version: "local"
 
-  builtin_sysroot: "/usr/lrte/v2"
+  builtin_sysroot: "/usr/lrte/v3"
   compiler: "clang"
   host_system_name: "local"
   needsPic: true
@@ -127,16 +127,16 @@ toolchain {
   target_system_name: "local"
   toolchain_identifier: "crosstool_v2_clang"
 
-  tool_path { name: "ar" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/ar" }
-  tool_path { name: "cpp" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/cpp" }
-  tool_path { name: "dwp" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/llvm-dwarfdump" }
-  tool_path { name: "gcc" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/clang" }
-  tool_path { name: "gcov" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/llvm-cov" }
-  tool_path { name: "ld" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/ld.gold" }
-  tool_path { name: "nm" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/nm" }
-  tool_path { name: "objcopy" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/objcopy" }
-  tool_path { name: "objdump" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/objdump" }
-  tool_path { name: "strip" path: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/bin/strip" }
+  tool_path { name: "ar" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/ar" }
+  tool_path { name: "cpp" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/cpp" }
+  tool_path { name: "dwp" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/llvm-dwarfdump" }
+  tool_path { name: "gcc" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/clang" }
+  tool_path { name: "gcov" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/llvm-cov" }
+  tool_path { name: "ld" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/ld.gold" }
+  tool_path { name: "nm" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/nm" }
+  tool_path { name: "objcopy" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/objcopy" }
+  tool_path { name: "objdump" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/objdump" }
+  tool_path { name: "strip" path: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/bin/strip" }
 
   compiler_flag: "-Wall"
   compiler_flag: "-Wno-sign-compare"
@@ -182,8 +182,8 @@ toolchain {
   linker_flag: "-lstdc++"
 
   cxx_builtin_include_directory: "%sysroot%/include"
-  cxx_builtin_include_directory: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/lib/clang"
-  cxx_builtin_include_directory: "/usr/crosstool/v2/gcc-4.9.2-lrtev2/x86/include/c++"
+  cxx_builtin_include_directory: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/lib/clang"
+  cxx_builtin_include_directory: "/usr/crosstool/v2/gcc-4.9.4-lrtev3/x86/include/c++"
 
   unfiltered_cxx_flag: "-isystem%sysroot%/include"
 
