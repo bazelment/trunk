@@ -1,6 +1,6 @@
-#trunk
+# trunk
 
-[![Build Status](https://travis-ci.org/mzhaom/trunk.svg?branch=master)](https://travis-ci.org/mzhaom/trunk)
+[![Build Status](https://travis-ci.org/bazelment/trunk.svg?branch=master)](https://travis-ci.org/bazelment/trunk)
 
 
 A collection of C++/Java opensource projects with BUILD files so they
@@ -11,12 +11,22 @@ To try:
 ```sh
 $ git clone https://github.com/mzhaom/trunk && cd trunk
 $ git submodule update --init
-$ bazel build examples/...:all
+$ bazel build examples/...
+```
+
+If you have used [docker](https://www.docker.com/) before, there is a
+[docker image](https://hub.docker.com/r/bazelment/trunk/) that has
+bazel installed with all the trunk source checked out, which can be
+tried with:
+
+```sh
+$ docker run --rm -ti bazelment/trunk:lrte -w /trunk
+$ bazel build examples/...
 ```
 
 Currently C++ projects can be only built on Linux x64 system.
 
-##C++
+## C++
   * [gflags](http://gflags.github.io/gflags/)
   * [glog](https://github.com/google/glog)
   * [googlemock](https://code.google.com/p/googlemock/)
@@ -33,7 +43,7 @@ Currently C++ projects can be only built on Linux x64 system.
   * [double-conversion](https://github.com/floitsch/double-conversion/)
   * A selection of [boost](http://www.boost.org/) modules, mostly for building folly.
 
-##Java
+## Java
   * [grpc-java](http://www.grpc.io) gRPC in Java
   * [guava](https://github.com/google/guava) Guava: Google Core Libraries for Java
   * [netty](https://netty.io/) Netty is a NIO client server framework
