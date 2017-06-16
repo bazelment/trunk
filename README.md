@@ -20,7 +20,7 @@ bazel installed with all the trunk source checked out, which can be
 tried with:
 
 ```sh
-$ docker run --rm -ti bazelment/trunk:lrte -w /trunk
+$ docker run --rm -ti bazelment/trunk:lrte
 $ bazel build examples/...
 ```
 
