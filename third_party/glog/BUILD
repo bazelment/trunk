@@ -72,6 +72,12 @@ cc_test(
   srcs = [
     "upstream/src/demangle_unittest.cc",
   ],
+  data = [
+    "upstream/src/demangle_unittest.txt",
+  ],
+  args = [
+    "--test_srcdir=third_party/glog/upstream"
+  ],
 )
 
 cc_test(
@@ -82,6 +88,12 @@ cc_test(
   ],
   srcs = [
     "upstream/src/logging_unittest.cc",
+  ],
+  data = [
+    "upstream/src/logging_unittest.err",
+  ],
+  args = [
+    "--test_srcdir=third_party/glog/upstream"
   ],
 )
 

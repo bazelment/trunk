@@ -31,7 +31,7 @@
 /* Define to 1 if you have the <libunwind.h> header file. */
 #define HAVE_LIBUNWIND_H 1
 
-/* define if you have google gflags library */
+/* Define if you have Google gflags library */
 #define HAVE_LIB_GFLAGS 1
 
 /* define if you have google gmock library */
@@ -127,8 +127,7 @@
 /* define if your compiler has __sync_val_compare_and_swap */
 #define HAVE___SYNC_VAL_COMPARE_AND_SWAP 1
 
-/* Define to the sub-directory in which libtool stores uninstalled libraries.
-   */
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
 #define LT_OBJDIR ".libs/"
 
 /* Name of package */
@@ -141,7 +140,7 @@
 #define PACKAGE_NAME "glog"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "glog 0.3.4"
+#define PACKAGE_STRING "glog 0.3.5"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "glog"
@@ -150,7 +149,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.3.4"
+#define PACKAGE_VERSION "0.3.5"
 
 /* How to access the PC from a struct ucontext */
 #define PC_FROM_UCONTEXT uc_mcontext.gregs[REG_RIP]
@@ -169,10 +168,10 @@
 #define STL_NAMESPACE std
 
 /* location of source code */
-#define TEST_SRC_DIR "../../upstream"
+#define TEST_SRC_DIR ".."
 
 /* Version number of package */
-#define VERSION "0.3.4"
+#define VERSION "0.3.5"
 
 /* Stops putting the code inside the Google namespace */
 #define _END_GOOGLE_NAMESPACE_ }
