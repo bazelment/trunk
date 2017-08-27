@@ -98,6 +98,7 @@ cc_library(
 
 cc_library(
   name = "gmock_main",
+  testonly = 1,
   visibility = ["//visibility:public"],
   deps = [
     ":gmock",
