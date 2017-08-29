@@ -7,8 +7,16 @@ load("//tools:build_rules/boost.bzl", "boost_library")
 boost_library(
   name = "algorithm",
   deps = [
+    ":assert",
+    ":config",
     ":function",
+    ":integer",
+    ":iterator",
+    ":mpl",
     ":range",
+    ":throw_exception",
+    ":type_traits",
+    ":utility",
   ]
 )
 
