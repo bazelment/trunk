@@ -230,3 +230,6 @@
 [submodule "third_party/cares/cares"]
 	path = third_party/cares/cares
 	url = https://github.com/c-ares/c-ares.git
+[submodule "third_party/rapidjson/upstream"]
+	path = third_party/rapidjson/upstream
+	url = https://github.com/miloyip/rapidjson.git
