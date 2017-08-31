@@ -11,13 +11,3 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
 )
-
-cc_binary(
-    name = "rapidjson_example_tutorial",
-    srcs = [
-        "upstream/example/tutorial/tutorial.cpp",
-    ],
-    deps = [
-        ":rapidjson",
-    ],
-)
