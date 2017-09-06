@@ -191,8 +191,8 @@
 	path = third_party/java/j2objc/upstream
 	url = https://github.com/google/j2objc.git
 [submodule "third_party/gtest/github"]
-        path = third_party/gtest/github
-        url = https://github.com/google/googletest.git
+	path = third_party/gtest/github
+	url = https://github.com/google/googletest.git
 
 [submodule "third_party/boost/upstream/thread"]
 	path = third_party/boost/upstream/thread
@@ -235,4 +235,4 @@
 	url = https://github.com/miloyip/rapidjson.git
 [submodule "third_party/pbjson/upstream"]
 	path = third_party/pbjson/upstream
-	url = git@github.com:nofree5th/pbjson.git
+	url = https://github.com:nofree5th/pbjson.git
