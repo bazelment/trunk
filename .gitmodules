@@ -235,4 +235,4 @@
 	url = https://github.com/miloyip/rapidjson.git
 [submodule "third_party/pbjson/upstream"]
 	path = third_party/pbjson/upstream
-	url = https://github.com:nofree5th/pbjson.git
+	url = https://github.com/nofree5th/pbjson.git
