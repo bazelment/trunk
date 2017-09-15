@@ -193,7 +193,6 @@
 [submodule "third_party/gtest/github"]
 	path = third_party/gtest/github
 	url = https://github.com/google/googletest.git
-
 [submodule "third_party/boost/upstream/thread"]
 	path = third_party/boost/upstream/thread
 	url = https://github.com/boostorg/thread.git
@@ -236,3 +235,6 @@
 [submodule "third_party/pbjson/upstream"]
 	path = third_party/pbjson/upstream
 	url = https://github.com/nofree5th/pbjson.git
+[submodule "third_party/boost/upstream/asio"]
+	path = third_party/boost/upstream/asio
+	url = https://github.com/boostorg/asio.git
