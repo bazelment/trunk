@@ -342,3 +342,19 @@ boost_library(
         ":type_index",
     ],
 )
+
+boost_library(
+    name = "asio",
+    deps = [
+        ":bind",
+        ":config",
+        ":date_time",
+        ":filesystem",
+        ":mpl",
+        ":regex",
+        ":smart_ptr",
+        ":static_assert",
+        ":throw_exception",
+        ":type_traits",
+    ],
+)
