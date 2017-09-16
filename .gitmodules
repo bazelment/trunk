@@ -238,3 +238,6 @@
 [submodule "third_party/boost/upstream/asio"]
 	path = third_party/boost/upstream/asio
 	url = https://github.com/boostorg/asio.git
+[submodule "third_party/libco/upstream"]
+	path = third_party/libco/upstream
+	url = https://github.com/nofree5th/libco
