@@ -241,3 +241,6 @@
 [submodule "third_party/libco/upstream"]
 	path = third_party/libco/upstream
 	url = https://github.com/nofree5th/libco
+[submodule "third_party/http-parser/upstream"]
+	path = third_party/http-parser/upstream
+	url = https://github.com/nodejs/http-parser.git
