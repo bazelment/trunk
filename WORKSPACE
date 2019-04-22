@@ -9,6 +9,18 @@ bind(
 )
 
 new_local_repository(
+  name = "com_github_gflags_gflags",
+  path = "third_party/gflags/upstream",
+  build_file = "third_party/gflags/upstream/BUILD",
+)
+
+# So gflags can be accessed via //external:gflags.
+bind(
+  name = "gflags",
+  actual = "@com_github_gflags_gflags//:gflags",
+)
+
+new_local_repository(
   # This one can't be called protobuf because "//external:protobuf" is
   # depent by grpc
   name = "com_google_protobuf",
