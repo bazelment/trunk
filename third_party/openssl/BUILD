@@ -36,15 +36,15 @@ openssl_copts = [
   '-DWHIRLPOOL_ASM',
   '-DGHASH_ASM',
   '-DECP_NISTZ256_ASM',
-  '-I' + PACKAGE_NAME + '/src/crypto',
-  '-I' + PACKAGE_NAME + '/src/crypto/asn1',
-  '-I' + PACKAGE_NAME + '/src/crypto/cmac',
-  '-I' + PACKAGE_NAME + '/src/crypto/evp',
-  '-I' + PACKAGE_NAME + '/src/crypto/modes',
-  '-I' + PACKAGE_NAME + '/src',
+  '-I' + package_name() + '/src/crypto',
+  '-I' + package_name() + '/src/crypto/asn1',
+  '-I' + package_name() + '/src/crypto/cmac',
+  '-I' + package_name() + '/src/crypto/evp',
+  '-I' + package_name() + '/src/crypto/modes',
+  '-I' + package_name() + '/src',
 ]
 
-load('BUILD.generated', 'ssl_headers', 'ssl_internal_headers', 'ssl_sources',
+load(':BUILD.generated.bzl', 'ssl_headers', 'ssl_internal_headers', 'ssl_sources',
      'crypto_headers', 'crypto_internal_headers', 'crypto_sources',
      'crypto_sources_linux_x86_64')
 
