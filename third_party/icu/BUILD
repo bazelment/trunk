@@ -3,11 +3,11 @@ package(default_visibility = ['//visibility:public'])
 
 icu_copts = [
     '-fno-exceptions',
-    '-I' + PACKAGE_NAME + '/github/source/common',
-    '-I' + PACKAGE_NAME + '/github/source/i18n',
-    '-I' + PACKAGE_NAME + '/github/source/io',
-    '-I' + PACKAGE_NAME + '/github/source/tools/ctestfw',
-    '-I' + PACKAGE_NAME + '/github/source/tools/toolutil',
+    '-I' + package_name() + '/github/source/common',
+    '-I' + package_name() + '/github/source/i18n',
+    '-I' + package_name() + '/github/source/io',
+    '-I' + package_name() + '/github/source/tools/ctestfw',
+    '-I' + package_name() + '/github/source/tools/toolutil',
 ]
 
 icu_linkopts = [
