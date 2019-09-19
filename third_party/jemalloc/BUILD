@@ -160,6 +160,9 @@ cc_library(
     linkopts = [
         "-pthread",
     ],
+    deps = [
+        "//third_party/libunwind:libunwind-k8",
+    ],
 )
 
 cc_library(

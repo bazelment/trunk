@@ -140,10 +140,10 @@
 /* #undef JEMALLOC_EXPERIMENTAL_SMALLOCX_API */
 
 /* JEMALLOC_PROF enables allocation profiling. */
-/* #undef JEMALLOC_PROF */
+#define JEMALLOC_PROF 
 
 /* Use libunwind for profile backtracing if defined. */
-/* #undef JEMALLOC_PROF_LIBUNWIND */
+#define JEMALLOC_PROF_LIBUNWIND 
 
 /* Use libgcc for profile backtracing if defined. */
 /* #undef JEMALLOC_PROF_LIBGCC */
