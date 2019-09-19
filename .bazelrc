@@ -1,3 +1,5 @@
 # Use jemalloc as the C++ allocator
 # To use it: bazel build --config jemalloc
 build:jemalloc --custom_malloc=//third_party/jemalloc
+
+build:tcmalloc --custom_malloc=//third_party/gperftools:tcmalloc
