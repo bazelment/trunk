@@ -167,6 +167,18 @@ cc_library(
     ],
 )
 
+genrule(
+    name = "gen_jeprof",
+    srcs = [
+        "upstream/bin/jeprof.in",
+    ],
+    outs = [
+        "jeprof",
+    ],
+    cmd = "sed -e s/@jemalloc_version@/git-trunk/g $< > $@",
+    executable = 1,
+)
+
 cc_library(
     name = "test_common",
     includes = [
@@ -238,4 +250,3 @@ cc_test(
     ],
     malloc = ":jemalloc",
 )
-
