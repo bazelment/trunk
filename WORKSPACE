@@ -7,6 +7,21 @@ local_repository(
   path = "third_party/abseil",
 )
 
+local_repository(
+    name = "com_google_googletest",
+    path = "third_party/gtest/github",
+)
+
+bind(
+  name = "gtest",
+  actual = "@com_google_googletest//:gtest",
+)
+
+bind(
+  name = "gtest_main",
+  actual = "@com_google_googletest//:gtest_main",
+)
+
 bind(
   name = "libssl",
   actual = "//third_party/openssl:ssl",
@@ -15,6 +30,16 @@ bind(
 bind(
   name = "zlib",
   actual = "//third_party/zlib",
+)
+
+local_repository(
+  name = "com_google_glog",
+  path = "third_party/glog/upstream",
+)
+
+bind(
+  name = "glog",
+  actual = "@com_google_glog//:glog",
 )
 
 new_local_repository(
@@ -109,9 +134,13 @@ bind(
   actual = "@grpc//:grpc++_codegen_proto"
 )
 
-maven_jar(
+load("@bazel_tools//tools/build_defs/repo:jvm.bzl", "jvm_maven_import_external")
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+jvm_maven_import_external(
   name = "apache_commons_lang2_maven",
-  artifact = "commons-lang:commons-lang:2.6"
+  artifact = "commons-lang:commons-lang:2.6",
+  server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -119,9 +148,10 @@ bind(
   actual = "@apache_commons_lang2_maven//jar"
 )
 
-maven_jar(
+jvm_maven_import_external(
   name = "apache_commons_lang3_maven",
-  artifact = "org.apache.commons:commons-lang3:3.4"
+  artifact = "org.apache.commons:commons-lang3:3.4",
+  server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -139,9 +169,10 @@ bind(
   actual = "//third_party/java/log4j"
 )
 
-maven_jar(
+jvm_maven_import_external(
     name = "gson_maven",
     artifact = "com.google.code.gson:gson:2.7",
+    server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -154,9 +185,10 @@ bind(
     actual = "//third_party/java/guava",
 )
 
-maven_jar(
-  name = "hpack_maven",
-  artifact = "com.twitter:hpack:v1.0.1"
+jvm_maven_import_external(
+    name = "hpack_maven",
+    artifact = "com.twitter:hpack:v1.0.1",
+    server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -169,9 +201,10 @@ bind(
   actual = "//third_party/java/javassist",
 )
 
-maven_jar(
-  name = "jetty_alpn_maven",
-  artifact = "org.eclipse.jetty.alpn:alpn-api:1.1.2.v20150522"
+jvm_maven_import_external(
+    name = "jetty_alpn_maven",
+    artifact = "org.eclipse.jetty.alpn:alpn-api:1.1.2.v20150522",
+    server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -179,9 +212,10 @@ bind(
   actual = "@jetty_alpn_maven//jar"
 )
 
-maven_jar(
-  name = "jetty_npn_maven",
-  artifact = "org.mortbay.jetty.npn:npn-boot:1.1.11.v20150415"
+jvm_maven_import_external(
+    name = "jetty_npn_maven",
+    artifact = "org.mortbay.jetty.npn:npn-boot:1.1.11.v20150415",
+    server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -189,9 +223,10 @@ bind(
   actual = "@jetty_npn_maven//jar"
 )
 
-maven_jar(
-  name = "joda_time_maven",
-  artifact = "joda-time:joda-time:2.3"
+jvm_maven_import_external(
+    name = "joda_time_maven",
+    artifact = "joda-time:joda-time:2.3",
+    server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -199,9 +234,10 @@ bind(
   actual = "@joda_time_maven//jar"
 )
 
-maven_jar(
-  name = "jzlib_maven",
-  artifact = "com.jcraft:jzlib:1.1.3"
+jvm_maven_import_external(
+    name = "jzlib_maven",
+    artifact = "com.jcraft:jzlib:1.1.3",
+    server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -209,9 +245,10 @@ bind(
   actual = "@jzlib_maven//jar"
 )
 
-maven_jar(
-  name = "netty_tcnative_maven",
-  artifact = "io.netty:netty-tcnative:1.1.33.Fork7"
+jvm_maven_import_external(
+    name = "netty_tcnative_maven",
+    artifact = "io.netty:netty-tcnative:1.1.33.Fork7",
+    server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -230,9 +267,10 @@ bind(
   actual = "//third_party/java/jsr305"
 )
 
-maven_jar(
-  name = "google_auth_library_oauth2_http_maven",
-  artifact = "com.google.auth:google-auth-library-oauth2-http:0.2.0"
+jvm_maven_import_external(
+    name = "google_auth_library_oauth2_http_maven",
+    artifact = "com.google.auth:google-auth-library-oauth2-http:0.2.0",
+    server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -240,9 +278,10 @@ bind(
   actual = "@google_auth_library_oauth2_http_maven//jar"
 )
 
-maven_jar(
-  name = "google_auth_library_credentials_maven",
-  artifact = "com.google.auth:google-auth-library-credentials:0.2.0"
+jvm_maven_import_external(
+    name = "google_auth_library_credentials_maven",
+    artifact = "com.google.auth:google-auth-library-credentials:0.2.0",
+    server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -250,9 +289,10 @@ bind(
   actual = "@google_auth_library_credentials_maven//jar"
 )
 
-maven_jar(
-  name = "guice_maven",
-  artifact = "com.google.inject:guice:4.0",
+jvm_maven_import_external(
+    name = "guice_maven",
+    artifact = "com.google.inject:guice:4.0",
+    server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -260,9 +300,10 @@ bind(
   actual = "@guice_maven//jar"
 )
 
-maven_jar(
-  name = "guice_multibindings_maven",
-  artifact = "com.google.inject.extensions:guice-multibindings:4.0",
+jvm_maven_import_external(
+    name = "guice_multibindings_maven",
+    artifact = "com.google.inject.extensions:guice-multibindings:4.0",
+    server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -270,9 +311,10 @@ bind(
   actual = "@guice_multibindings_maven//jar"
 )
 
-maven_jar(
-  name = "hamcrest_maven",
-  artifact = "org.hamcrest:hamcrest-core:1.3",
+jvm_maven_import_external(
+    name = "hamcrest_maven",
+    artifact = "org.hamcrest:hamcrest-core:1.3",
+    server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -280,9 +322,10 @@ bind(
   actual = "@hamcrest_maven//jar"
 )
 
-maven_jar(
-  name = "junit_maven",
-  artifact = "junit:junit:4.11"
+jvm_maven_import_external(
+    name = "junit_maven",
+    artifact = "junit:junit:4.11",
+    server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -290,9 +333,10 @@ bind(
   actual = "@junit_maven//jar"
 )
 
-maven_jar(
-  name = "objenesis_maven",
-  artifact = "org.objenesis:objenesis:2.1",
+jvm_maven_import_external(
+    name = "objenesis_maven",
+    artifact = "org.objenesis:objenesis:2.1",
+    server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -300,9 +344,10 @@ bind(
   actual = "@objenesis_maven//jar"
 )
 
-maven_jar(
-  name = "mockito_maven",
-  artifact = "org.mockito:mockito-core:1.10.19",
+jvm_maven_import_external(
+    name = "mockito_maven",
+    artifact = "org.mockito:mockito-core:1.10.19",
+    server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -310,9 +355,10 @@ bind(
   actual = "@mockito_maven//jar"
 )
 
-maven_jar(
-  name = "okhttp_maven",
-  artifact = "com.squareup.okhttp:okhttp:2.4.0",
+jvm_maven_import_external(
+    name = "okhttp_maven",
+    artifact = "com.squareup.okhttp:okhttp:2.4.0",
+    server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -320,9 +366,10 @@ bind(
   actual = "@okhttp_maven//jar"
 )
 
-maven_jar(
-  name = "okio_maven",
-  artifact = "com.squareup.okio:okio:1.5.0",
+jvm_maven_import_external(
+    name = "okio_maven",
+    artifact = "com.squareup.okio:okio:1.5.0",
+    server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -330,9 +377,10 @@ bind(
   actual = "@okio_maven//jar"
 )
 
-maven_jar(
-  name = "commons_cli_maven",
-  artifact = "commons-cli:commons-cli:1.2",
+jvm_maven_import_external(
+    name = "commons_cli_maven",
+    artifact = "commons-cli:commons-cli:1.2",
+    server_urls = ["http://central.maven.org/maven2"],
 )
 
 bind(
@@ -345,3 +393,11 @@ bind(name = "android/aar_generator")
 bind(name = "android/incremental_split_stub_application")
 bind(name = "android/incremental_stub_application")
 bind(name = "android/resources_processor")
+
+# Google benchmark.
+http_archive(
+    name = "com_github_google_benchmark",
+    urls = ["https://github.com/google/benchmark/archive/16703ff83c1ae6d53e5155df3bb3ab0bc96083be.zip"],
+    strip_prefix = "benchmark-16703ff83c1ae6d53e5155df3bb3ab0bc96083be",
+    sha256 = "59f918c8ccd4d74b6ac43484467b500f1d64b40cc1010daa055375b322a43ba3",
+)
