@@ -7,8 +7,8 @@ cc_binary(
   ],
   deps = [
     "//base:build_info",
-    "//third_party/gflags",
-    "//third_party/glog",
+    "//base:init",
+    "//external:glog",
   ],
   stamp = 1,
 )
@@ -19,6 +19,6 @@ cc_test(
     "hello_test.cc",
   ],
   deps = [
-    "//third_party/gtest:gtest_main",
+    "//external:gtest_main",
   ],
 )
