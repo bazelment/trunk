@@ -1,15 +1,6 @@
-is_library = False
-
-if is_library:
-  include_path = "@boost/include"
-  library_path = "@boost/lib"
-  includes_pattern = include_path + "/%s/"
-  include_pattern1 = includes_pattern + "**/*.h"
-  include_pattern2 = includes_pattern + "**/*pp" # hpp and ipp
-else:
-  includes_pattern = "upstream/%s/include"
-  include_pattern1 = includes_pattern + "/boost/**/*.h"
-  include_pattern2 = includes_pattern + "/boost/**/*pp"
+includes_pattern = "upstream/%s/include"
+include_pattern1 = includes_pattern + "/boost/**/*.h"
+include_pattern2 = includes_pattern + "/boost/**/*pp"
 
 def includes_list( library_name ):
   return [ includes_pattern % library_name ]
