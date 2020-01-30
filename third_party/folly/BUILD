@@ -116,7 +116,7 @@ cc_library(
     "upstream/folly/Unicode.cpp",
   ],
   deps = [
-    "//third_party/glog",
+    "//external:glog",
     "//third_party/double-conversion",
     "//third_party/boost:config",
     "//third_party/boost:conversion",
@@ -214,7 +214,7 @@ cc_library(
   deps = [
     ":base",
     "//third_party/double-conversion",
-    "//third_party/glog",
+    "//external:glog",
     "//third_party/gflags",
     # "//third_party/libevent:libevent",
     "//third_party/boost:algorithm",  # For boost/non_copyable
@@ -397,7 +397,7 @@ cc_test(
   deps = [
     ":base",
     "//third_party/gflags",
-    "//third_party/gtest",
+    "//external:gtest",
   ]
 )
 
@@ -410,7 +410,7 @@ cc_test(
 #     ":checksum",
 #     ":benchmark",
 #     "//third_party/gflags",
-#     "//third_party/gtest",
+#     "//external:gtest",
 #   ]
 # )
 
@@ -422,7 +422,7 @@ cc_test(
   deps = [
     ":base",
     "//third_party/boost:core",
-    "//third_party/gtest:gtest_main",
+    "//external:gtest_main",
   ]
 )
 
@@ -435,7 +435,7 @@ cc_test(
     ":base",
     ":benchmark",
     "//third_party/gflags",
-    "//third_party/gtest:gtest_main",
+    "//external:gtest_main",
   ]
 )
 
@@ -463,7 +463,7 @@ cc_test(
     ":recordio",
     ":testutil",
     "//third_party/gflags",
-    "//third_party/gtest:gtest_main",
+    "//external:gtest_main",
   ],
   data = [
     ":subprocess_test_parent_death_helper",
@@ -479,7 +479,7 @@ cc_test(
     ":folly",
     ":benchmark",
     "//third_party/gflags",
-    "//third_party/gtest",
+    "//external:gtest",
   ]
 )
 
@@ -492,6 +492,6 @@ cc_test(
     ":folly",
     ":benchmark",
     "//third_party/gflags",
-    "//third_party/gtest",
+    "//external:gtest",
   ]
 )
