@@ -9,11 +9,12 @@
 #include <grpc++/server_builder.h>
 #include <grpc++/server_context.h>
 
-#include "gflags/gflags.h"
+#include "absl/flags/flag.h"
 #include "glog/logging.h"
-// #include "base/strutil.h"
 
-DEFINE_int32(port, 10000, "Listening port of RPC service");
+#include "base/init.h"
+
+ABSL_FLAG(int32_t, port, 10000, "Listening port of RPC service");
 
 namespace examples {
 
@@ -36,7 +37,7 @@ class BankImpl : public Bank::Service {
 
 static void RunServer() {
   std::stringstream server_address;
-  server_address << "0.0.0.0:" << FLAGS_port;
+  server_address << "0.0.0.0:" << absl::GetFlag(FLAGS_port);
   BankImpl service;
 
   LOG(INFO) << "Server listening on " << server_address.str();
@@ -51,9 +52,7 @@ static void RunServer() {
 }  // namespace examples
 
 int main(int argc, char** argv) {
-  google::InstallFailureSignalHandler();
-  gflags::ParseCommandLineFlags(&argc, &argv, false);
-  google::InitGoogleLogging(argv[0]);
+  base::InitProgram(argc, argv);
   examples::RunServer();
 
   return 0;

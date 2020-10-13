@@ -1,8 +1,5 @@
 #include "examples/rpc/bank.grpc.pb.h"
 
-#include "gflags/gflags.h"
-#include "glog/logging.h"
-
 #include <grpc/grpc.h>
 #include <grpc++/channel.h>
 #include <grpc++/client_context.h>
@@ -10,19 +7,26 @@
 #include <grpc++/security/credentials.h>
 #include <grpc++/support/status.h>
 
+#include "absl/flags/flag.h"
+#include "absl/strings/str_format.h"
+#include "glog/logging.h"
+
+#include "base/init.h"
+
 using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
 
-DEFINE_int32(port, 10000, "Listening port of RPC service");
+ABSL_FLAG(int32_t, port, 10000, "Listening port of RPC service");
+ABSL_DECLARE_FLAG(bool, logtostderr);
 
 namespace examples {
 
 static void RunClient() {
   LOG(INFO) << "Start the client.";
   std::shared_ptr<Channel>
-    channel(grpc::CreateChannel("localhost:10000",
-                                grpc::InsecureChannelCredentials()));
+    channel(grpc::CreateChannel(absl::StrFormat("localhost:%d", absl::GetFlag(FLAGS_port)),
+				grpc::InsecureChannelCredentials()));
   std::unique_ptr<Bank::Stub> stub(Bank::NewStub(channel));
   DepositRequest request;
   request.set_account("xucheng");
@@ -33,16 +37,16 @@ static void RunClient() {
   if (status.ok()) {
     LOG(INFO) << response.account() << " balance:" << response.balance();
   } else {
-    LOG(INFO) << "Rpc failed: " << status.error_code();
+    LOG(INFO) << "RPC failed: " << status.error_code();
   }
 }
 
 }  // namespace examples
 
 int main(int argc, char** argv) {
-  google::InstallFailureSignalHandler();
-  gflags::ParseCommandLineFlags(&argc, &argv, false);
-  google::InitGoogleLogging(argv[0]);
+  // Set this to true so that useful logout can be seen.
+  absl::SetFlag(&FLAGS_logtostderr, true);
+  base::InitProgram(argc, argv);
   examples::RunClient();
 
   return 0;

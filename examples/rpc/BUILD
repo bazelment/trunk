@@ -1,4 +1,5 @@
-load("//tools/build_rules/grpc:grpc_build_system.bzl", "grpc_proto_library")
+load("@com_github_grpc_grpc//bazel:grpc_build_system.bzl", "grpc_proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library")
 
 grpc_proto_library(
   name = "bank",
@@ -13,9 +14,11 @@ cc_binary(
     "bank-server.cc"
   ],
   deps = [
-    ":bank",
-    "//third_party/glog",
-    "//third_party/gflags"
+      ":bank",
+      "//base:init",
+      "//external:glog",
+      "//external:grpc++",
+      "@com_google_absl//absl/flags:flag",
   ]
 )
 
@@ -25,8 +28,10 @@ cc_binary(
     "bank-client.cc"
   ],
   deps = [
-    ":bank",
-    "//third_party/glog",
-    "//third_party/gflags"
+      ":bank",
+      "//base:init",
+      "//external:glog",
+      "//external:grpc++",
+      "@com_google_absl//absl/flags:flag",
   ]
 )

@@ -1,3 +1,5 @@
+workspace(name = "com_github_bazelment_trunk")
+
 local_repository(
   # Name of the Abseil repository. This name is defined within Abseil's
   # WORKSPACE file, in its `workspace()` metadata
@@ -27,9 +29,15 @@ bind(
   actual = "//third_party/openssl:ssl",
 )
 
-bind(
+local_repository(
+  name = "com_google_protobuf",
+  path = "third_party/protobuf",
+)
+
+new_local_repository(
   name = "zlib",
-  actual = "//third_party/zlib",
+  path = "third_party/zlib/upstream",
+  build_file = "@com_google_protobuf//:third_party/zlib.BUILD",
 )
 
 local_repository(
@@ -54,13 +62,6 @@ bind(
   actual = "@com_github_gflags_gflags//:gflags",
 )
 
-new_local_repository(
-  # This one can't be called protobuf because "//external:protobuf" is
-  # depent by grpc
-  name = "com_google_protobuf",
-  path = "third_party/protobuf",
-  build_file = "third_party/protobuf/BUILD",
-)
 
 new_local_repository(
     name = "submodule_cares",
@@ -73,66 +74,27 @@ bind(
     actual = "@submodule_cares//:ares",
 )
 
-new_local_repository(
-  name = "grpc",
+# Load grpc and its dependencies
+local_repository(
+  name = "com_github_grpc_grpc",
   path = "third_party/grpc",
-  build_file = "third_party/grpc/BUILD",
+  # build_file = "third_party/grpc/BUILD",
 )
 
-bind(
-  name = "nanopb",
-  actual = "@grpc//third_party/nanopb",
-)
+load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps", "grpc_test_only_deps")
+grpc_deps()
+grpc_test_only_deps()
 
-# Protobuf compiler binary
-bind(
-  name = "protoc",
-  actual = "@com_google_protobuf//:protoc",
-)
-
-bind(
-  name = "protocol_compiler",
-  actual = "@com_google_protobuf//:protoc",
-)
-
-# Library needed to build protobuf codegen plugin.
-bind(
-  name = "protobuf_clib",
-  actual = "@com_google_protobuf//:protoc_lib",
-)
-
-# Protobuf runtime
-bind(
-  name = "protobuf",
-  actual = "@com_google_protobuf//:protobuf",
-)
-
-bind(
-  name = "protobuf_java_lib",
-  actual = "@com_google_protobuf//:protobuf_java",
-)
-
-bind(
-  name = "protobuf_java_util",
-  actual = "@com_google_protobuf//:protobuf_java_util",
-)
-
-# GRPC codegen plugin
-bind(
-  name = "grpc_cpp_plugin",
-  actual = "@grpc//:grpc_cpp_plugin"
-)
+load("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
+grpc_extra_deps()
 
 # GRPC C++ runtime library
 bind(
-  name = "grpc++",
-  actual = "@grpc//:grpc++"
+    name = "grpc++",
+    actual = "@com_github_grpc_grpc//:grpc++"
 )
 
-bind(
-  name = "grpc++_codegen_proto",
-  actual = "@grpc//:grpc++_codegen_proto"
-)
+# End grpc
 
 load("@bazel_tools//tools/build_defs/repo:jvm.bzl", "jvm_maven_import_external")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
