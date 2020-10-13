@@ -41,6 +41,7 @@ cc_binary(
   ],
   deps = [
     ":base",
+    "//external:gflags",
   ],
   name = "GenerateFingerprintTables",
 )
@@ -117,6 +118,7 @@ cc_library(
   ],
   deps = [
     "//external:glog",
+    "//external:gflags",
     "//third_party/double-conversion",
     "//third_party/boost:config",
     "//third_party/boost:conversion",
