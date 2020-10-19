@@ -2,7 +2,7 @@ licenses(["notice"])
 
 boost_path = "upstream"
 
-load("//tools:build_rules/boost.bzl", "boost_library")
+load("//tools/build_rules:boost.bzl", "boost_library")
 
 boost_library(
     name = "algorithm",
