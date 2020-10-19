@@ -5,7 +5,7 @@ py_binary(
   ]
 )
 
-load('/tools/build_rules/run_under', 'run_under_test')
+load('//tools/build_rules:run_under.bzl', 'run_under_test')
 
 run_under_test(
   name = 'hello_test',
