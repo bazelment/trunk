@@ -1,6 +1,6 @@
 [submodule "third_party/libunwind/upstream"]
 	path = third_party/libunwind/upstream
-	url = git://git.sv.gnu.org/libunwind.git
+	url = https://github.com/libunwind/libunwind.git
 [submodule "third_party/glog/upstream"]
 	path = third_party/glog/upstream
 	url = https://github.com/bazelment/glog.git
@@ -162,10 +162,10 @@
 	url = https://github.com/LuminateWireless/netty.git
 [submodule "third_party/java/commons-logging/upstream"]
 	path = third_party/java/commons-logging/upstream
-	url = git://github.com/apache/commons-logging.git
+	url = https://github.com/apache/commons-logging.git
 [submodule "third_party/java/log4j/upstream"]
 	path = third_party/java/log4j/upstream
-	url = git://github.com/apache/log4j.git
+	url = https://github.com/apache/log4j.git
 [submodule "third_party/java/slf4j/upstream"]
 	path = third_party/java/slf4j/upstream
 	url = https://github.com/qos-ch/slf4j.git
