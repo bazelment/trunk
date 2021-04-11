@@ -1,5 +1,9 @@
 workspace(name = "com_github_bazelment_trunk")
 
+# clang compiler setting
+load("//third_party/clang_toolchain:cc_configure_clang.bzl", "cc_download_clang_toolchain")
+cc_download_clang_toolchain(name = "local_config_download_clang")
+
 local_repository(
   # Name of the Abseil repository. This name is defined within Abseil's
   # WORKSPACE file, in its `workspace()` metadata

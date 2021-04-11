@@ -3,3 +3,6 @@
 build:jemalloc --custom_malloc=//third_party/jemalloc
 
 build:tcmalloc --custom_malloc=//third_party/gperftools:tcmalloc
+
+# This build mode switch the compiler to the prebuilt clang downloaded from chromium source tree
+build:clang --repo_env TF_DOWNLOAD_CLANG=1 --crosstool_top=@local_config_download_clang//:toolchain
