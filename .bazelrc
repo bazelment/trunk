@@ -6,3 +6,7 @@ build:tcmalloc --custom_malloc=//third_party/gperftools:tcmalloc
 
 # This build mode switch the compiler to the prebuilt clang downloaded from chromium source tree
 build:clang --repo_env TF_DOWNLOAD_CLANG=1 --crosstool_top=@local_config_download_clang//:toolchain
+
+# Protobuf settings
+# Use fast cpp protos in python protobuf.
+build --define=use_fast_cpp_protos=true
