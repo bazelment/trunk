@@ -84,6 +84,23 @@ cc_library(
   ]
 )
 
+cc_library(
+  name = "codec",
+  visibility = ["//visibility:public"],
+  includes = [
+    "upstream",
+  ],
+  hdrs = glob(["upstream/wangle/codec/*.h"]),
+  srcs = [
+    "upstream/wangle/codec/LineBasedFrameDecoder.cpp",
+    "upstream/wangle/codec/LengthFieldPrepender.cpp",
+    "upstream/wangle/codec/LengthFieldBasedFrameDecoder.cpp"
+  ],
+  deps = [
+    ":channel"
+  ]
+)
+
 # Disabled because dependings on boost/thread
 #
 # cc_test(
@@ -119,5 +136,6 @@ cc_library(
     ":channel",
     ":concurrent",
     ":ssl",
+    ":codec"
   ]
 )
