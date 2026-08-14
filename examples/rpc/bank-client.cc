@@ -18,7 +18,6 @@ using grpc::ClientContext;
 using grpc::Status;
 
 ABSL_FLAG(int32_t, port, 10000, "Listening port of RPC service");
-ABSL_DECLARE_FLAG(bool, logtostderr);
 
 namespace examples {
 
@@ -45,7 +44,7 @@ static void RunClient() {
 
 int main(int argc, char** argv) {
   // Set this to true so that useful logout can be seen.
-  absl::SetFlag(&FLAGS_logtostderr, true);
+  FLAGS_logtostderr = true;
   base::InitProgram(argc, argv);
   examples::RunClient();
 

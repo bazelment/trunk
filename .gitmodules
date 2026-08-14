@@ -3,7 +3,7 @@
 	url = https://github.com/libunwind/libunwind.git
 [submodule "third_party/glog/upstream"]
 	path = third_party/glog/upstream
-	url = https://github.com/bazelment/glog.git
+	url = https://github.com/google/glog.git
 [submodule "third_party/gflags/upstream"]
 	path = third_party/gflags/upstream
 	url = https://github.com/gflags/gflags.git
@@ -12,13 +12,13 @@
 	url = https://boringssl.googlesource.com/boringssl
 [submodule "third_party/folly/upstream"]
 	path = third_party/folly/upstream
-	url = https://github.com/facebook/folly.git
+	url = https://github.com/bazelment/folly.git
 [submodule "third_party/snappy/upstream"]
 	path = third_party/snappy/upstream
 	url = https://github.com/google/snappy.git
 [submodule "third_party/proxygen/upstream"]
 	path = third_party/proxygen/upstream
-	url = https://github.com/facebook/proxygen.git
+	url = https://github.com/bazelment/proxygen.git
 [submodule "third_party/libevent/upstream"]
 	path = third_party/libevent/upstream
 	url = https://github.com/libevent/libevent.git
@@ -180,7 +180,7 @@
 	url = https://github.com/madler/zlib.git
 [submodule "third_party/wangle/upstream"]
 	path = third_party/wangle/upstream
-	url = https://github.com/facebook/wangle.git
+	url = https://github.com/bazelment/wangle.git
 [submodule "third_party/java/grpc-java/upstream"]
 	path = third_party/java/grpc-java/upstream
 	url = https://github.com/grpc/grpc-java.git
@@ -219,7 +219,7 @@
 	url = https://github.com/openssl/openssl.git
 [submodule "third_party/protobuf"]
 	path = third_party/protobuf
-	url = https://github.com/google/protobuf.git
+	url = https://github.com/protocolbuffers/protobuf.git
 [submodule "third_party/grpc"]
 	path = third_party/grpc
 	url = https://github.com/grpc/grpc.git
@@ -250,3 +250,6 @@
 [submodule "third_party/abseil"]
 	path = third_party/abseil
 	url = https://github.com/abseil/abseil-cpp.git
+[submodule "third_party/fizz/upstream"]
+	path = third_party/fizz/upstream
+	url = https://github.com/bazelment/fizz.git

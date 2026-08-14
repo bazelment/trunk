@@ -1,0 +1,15 @@
+# Submodules that MODULE.bazel materializes as Bazel modules through
+# local_path_override.  Their packages belong to their own repository, so
+# Bazel must not also walk them as part of the main repository - doing so
+# makes repo-relative labels such as //:license resolve against this repo and
+# breaks `bazel build //...`.
+third_party/abseil
+third_party/fizz/upstream
+third_party/folly/upstream
+third_party/gflags/upstream
+third_party/glog/upstream
+third_party/grpc
+third_party/gtest/github
+third_party/protobuf
+third_party/proxygen/upstream
+third_party/wangle/upstream

@@ -26,55 +26,63 @@
 # data: list of files that need to be accessed when running the
 # "under" and the "command".
 def _run_under_impl(ctx):
-  bin_dir = ctx.configuration.bin_dir
-  build_directory = str(bin_dir)[:-len('[derived]')] + '/'
-  under = ctx.executable.under
-  under_args = ctx.attr.under_args
-  command = ctx.executable.command
-  exe = ctx.outputs.executable
-  ctx.file_action(output=exe,
-                  content='''#!/bin/bash
-cd %s.runfiles && \\
-exec %s %s \\
-%s "$@"
-''' % (build_directory + exe.short_path,
-       build_directory + under.short_path,
-       " ".join(under_args),
-       build_directory + command.short_path))
-  # The $@ above will pass ctx.attr.args along to the command
-  runfiles = [command, under] + ctx.files.data
-  return struct(
-    runfiles=ctx.runfiles(
-      files=runfiles,
-      collect_data=True,
-      collect_default=True)
-  )
+    under = ctx.executable.under
+    command = ctx.executable.command
+    exe = ctx.outputs.executable
 
+    # Tests and `bazel run` both start with the runfiles directory of the main
+    # repository as the working directory, so short_path is what the wrapper
+    # needs to reference the two binaries.
+    ctx.actions.write(
+        output = exe,
+        is_executable = True,
+        content = """#!/bin/bash
+set -e
+exec ./{under} {under_args} ./{command} "$@"
+""".format(
+            under = under.short_path,
+            under_args = " ".join(ctx.attr.under_args),
+            command = command.short_path,
+        ),
+    )
+
+    # The "$@" above passes ctx.attr.args along to the command.
+    runfiles = ctx.runfiles(files = [command, under] + ctx.files.data)
+    runfiles = runfiles.merge_all([
+        ctx.attr.under[DefaultInfo].default_runfiles,
+        ctx.attr.command[DefaultInfo].default_runfiles,
+    ])
+    return [DefaultInfo(executable = exe, runfiles = runfiles)]
 
 run_under_attr = {
-  "command": attr.label(mandatory=True,
-                        allow_files=True,
-                        cfg='target',
-                        executable=True),
-  "under": attr.label(mandatory=True,
-                      allow_files=True,
-                      cfg='target',
-                      executable=True),
-  # Arguments for the "under" command to setup the environment.
-  "under_args": attr.string_list(),
-  "data": attr.label_list(allow_files=True,
-                          cfg='target'),
-   # bazel automatically implements "args": attr.string_list()
-   # and passes them on invocation
+    "command": attr.label(
+        mandatory = True,
+        allow_files = True,
+        cfg = "target",
+        executable = True,
+    ),
+    "under": attr.label(
+        mandatory = True,
+        allow_files = True,
+        cfg = "target",
+        executable = True,
+    ),
+    # Arguments for the "under" command to setup the environment.
+    "under_args": attr.string_list(),
+    "data": attr.label_list(allow_files = True, cfg = "target"),
+    # bazel automatically implements "args": attr.string_list()
+    # and passes them on invocation
 }
 
 run_under_binary = rule(
-  _run_under_impl,
-  attrs = run_under_attr,
-  executable=True)
+    implementation = _run_under_impl,
+    attrs = run_under_attr,
+    executable = True,
+)
 
 run_under_test = rule(
-  _run_under_impl,
-  test = True,
-  attrs = run_under_attr,
-  executable=True)
+    implementation = _run_under_impl,
+    test = True,
+    attrs = run_under_attr,
+    executable = True,
+)

@@ -1,17 +1,18 @@
+load("@rules_python//python:py_binary.bzl", "py_binary")
+load("//tools/build_rules:run_under.bzl", "run_under_test")
+
 py_binary(
-  name = 'env',
-  srcs = [
-    'env.py'
-  ]
+    name = "env",
+    srcs = [
+        "env.py",
+    ],
 )
 
-load('//tools/build_rules:run_under.bzl', 'run_under_test')
-
 run_under_test(
-  name = 'hello_test',
-  under = ':env',
-  command = '//examples:hello',
-  data = [
-    ':env'
-  ],
+    name = "hello_test",
+    command = "//examples:hello",
+    data = [
+        ":env",
+    ],
+    under = ":env",
 )

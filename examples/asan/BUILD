@@ -1,17 +1,19 @@
+load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
+
 cc_binary(
-  name = "use-after-free",
-  srcs = [
-    "use-after-free.cc"
-  ],
+    name = "use-after-free",
+    srcs = [
+        "use-after-free.cc",
+    ],
 )
 
 cc_binary(
-  name = "leak",
-  srcs = [
-    "leak.cc"
-  ],
-  testonly = 1,
-  deps = [
-    "//third_party/gperftools:tcmalloc_heapcheck",
-  ],
+    name = "leak",
+    testonly = 1,
+    srcs = [
+        "leak.cc",
+    ],
+    deps = [
+        "//third_party/gperftools:tcmalloc_heapcheck",
+    ],
 )
