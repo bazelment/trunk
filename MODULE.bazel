@@ -1,0 +1,158 @@
+# Bzlmod module definition for the trunk mono repo.
+#
+# The philosophy of this repo (see CLAUDE.md) is that dependencies are fully
+# materialized in-tree as git submodules under third_party/ rather than being
+# downloaded as opaque archives.  Bazel >= 9 no longer supports WORKSPACE, so
+# the materialization is expressed with `local_path_override`: every module
+# listed with an override below resolves to the checked out submodule, not to
+# an archive fetched from the Bazel Central Registry.
+#
+# The `bazel_dep(version = ...)` values on overridden modules are ignored by
+# Bazel; they are kept in sync with the submodule tag purely as documentation.
+
+module(
+    name = "com_github_bazelment_trunk",
+    version = "0.1",
+)
+
+# ---------------------------------------------------------------------------
+# Materialized submodules (third_party/*)
+# ---------------------------------------------------------------------------
+
+# third_party/abseil @ 20260526.0
+bazel_dep(
+    name = "abseil-cpp",
+    version = "20260526.0",
+    repo_name = "com_google_absl",
+)
+local_path_override(
+    module_name = "abseil-cpp",
+    path = "third_party/abseil",
+)
+
+# third_party/protobuf @ v35.1
+bazel_dep(
+    name = "protobuf",
+    version = "35.1",
+    repo_name = "com_google_protobuf",
+)
+local_path_override(
+    module_name = "protobuf",
+    path = "third_party/protobuf",
+)
+
+# third_party/grpc @ v1.83.0
+bazel_dep(
+    name = "grpc",
+    version = "1.83.0",
+    repo_name = "com_github_grpc_grpc",
+)
+local_path_override(
+    module_name = "grpc",
+    path = "third_party/grpc",
+)
+
+# third_party/gtest/github @ v1.18.0
+bazel_dep(
+    name = "googletest",
+    version = "1.18.0",
+    repo_name = "com_google_googletest",
+)
+local_path_override(
+    module_name = "googletest",
+    path = "third_party/gtest/github",
+)
+
+# third_party/glog/upstream @ v0.7.1
+bazel_dep(
+    name = "glog",
+    version = "0.7.1",
+    repo_name = "com_google_glog",
+)
+local_path_override(
+    module_name = "glog",
+    path = "third_party/glog/upstream",
+)
+
+# third_party/gflags/upstream @ v2.3.1
+bazel_dep(
+    name = "gflags",
+    version = "2.3.1",
+    repo_name = "com_github_gflags_gflags",
+)
+local_path_override(
+    module_name = "gflags",
+    path = "third_party/gflags/upstream",
+)
+
+# The folly stack.  Upstream ships no Bazel build, so each of these points at a
+# github.com/bazelment fork whose `bazel-<tag>` branch carries the release tag
+# plus the Bazel overlay and patches the Bazel Central Registry maintains for
+# it.  They are version locked to each other and must be bumped as a set.
+
+# third_party/folly/upstream @ v2025.01.13.00 (bazel-v2025.01.13.00)
+bazel_dep(
+    name = "folly",
+    version = "2025.01.13.00",
+)
+local_path_override(
+    module_name = "folly",
+    path = "third_party/folly/upstream",
+)
+
+# third_party/fizz/upstream @ v2025.02.10.00 (bazel-v2025.02.10.00)
+bazel_dep(
+    name = "fizz",
+    version = "2025.02.10.00",
+)
+local_path_override(
+    module_name = "fizz",
+    path = "third_party/fizz/upstream",
+)
+
+# third_party/wangle/upstream @ v2025.02.10.00 (bazel-v2025.02.10.00)
+bazel_dep(
+    name = "wangle",
+    version = "2025.02.10.00",
+)
+local_path_override(
+    module_name = "wangle",
+    path = "third_party/wangle/upstream",
+)
+
+# third_party/proxygen/upstream @ v2025.02.10.00 (bazel-v2025.02.10.00)
+bazel_dep(
+    name = "proxygen",
+    version = "2025.02.10.00",
+)
+local_path_override(
+    module_name = "proxygen",
+    path = "third_party/proxygen/upstream",
+)
+
+# ---------------------------------------------------------------------------
+# Rule sets (fetched from the Bazel Central Registry)
+# ---------------------------------------------------------------------------
+
+bazel_dep(name = "platforms", version = "1.1.0")
+bazel_dep(name = "bazel_skylib", version = "1.9.0")
+bazel_dep(name = "rules_cc", version = "0.2.22")
+bazel_dep(name = "rules_proto", version = "7.1.0")
+bazel_dep(name = "rules_java", version = "9.3.0")
+bazel_dep(name = "rules_python", version = "2.0.2")
+bazel_dep(name = "rules_shell", version = "0.6.1")
+
+# ---------------------------------------------------------------------------
+# Optional clang toolchain (--config=clang)
+# ---------------------------------------------------------------------------
+#
+# This replaces //third_party/clang_toolchain, which downloaded a Chromium
+# prebuilt clang and reconfigured the crosstool through
+# @bazel_tools//tools/cpp:cc_configure.bzl.  Both that helper and the
+# --crosstool_top flag it was selected with were removed in Bazel 9, so the
+# toolchain is now provided by toolchains_llvm instead.
+bazel_dep(name = "toolchains_llvm", version = "1.8.0")
+
+llvm = use_extension("@toolchains_llvm//toolchain/extensions:llvm.bzl", "llvm")
+llvm.toolchain(llvm_version = "20.1.8")
+use_repo(llvm, "llvm_toolchain")

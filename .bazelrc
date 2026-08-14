@@ -1,12 +1,118 @@
+# Bazel 9 removed the native C++/Java/Python/Shell/Android rules from the
+# global BUILD namespace: every BUILD file is now expected to load() them
+# explicitly.  Most of the third_party repositories we materialize (and a fair
+# number of the modules they pull from the registry) still use the bare rule
+# names, so re-inject the symbols from the corresponding rule sets for external
+# repositories only.  Autoloading stays disabled inside this repository (the
+# Bazel 9 default), so our own BUILD files carry explicit load() statements.
+common --incompatible_autoload_externally=+@rules_cc,+@rules_java,+@rules_python,+@rules_shell,+@rules_android,+@com_google_protobuf
+
+# Apply the same shim inside this repository.  New BUILD files here should
+# still load() explicitly - the ones under //base and //examples do - but a
+# large number of the legacy //third_party and //tools packages predate the
+# rule sets entirely and would otherwise all have to be migrated at once.
+common --incompatible_disable_autoloads_in_main_repo=false
+
+# protobuf, abseil and grpc require C++17; folly (and therefore fizz, wangle
+# and proxygen) requires C++20.  It has to be gnu++20 rather than c++20:
+# libstdc++ only gives __int128 the integral type traits outside strict ISO
+# mode, and folly's FOLLY_HAVE_INT128_T code paths (hashing, midpoint, ...)
+# depend on them.
+build --cxxopt=-std=gnu++20
+build --host_cxxopt=-std=gnu++20
+
+# Third party code is not ours to keep warning-clean, and the deprecation
+# warnings it emits bury our own diagnostics.
+build --per_file_copt=external/.*@-w
+build --host_per_file_copt=external/.*@-w
+
+# folly keeps a set of platform features behind opt-in flags that default to
+# off "to be conservative ... [for] the most platforms".  Every one of them is
+# available on linux/x86-64 with gcc >= 11, and they are not cosmetic: without
+# use_dwarf, FOLLY_HAVE_DWARF is unset and folly::symbolizer::Symbolizer - the
+# whole DWARF symbolization path - is compiled out even though libdwarf is
+# linked in.
+common --@folly//folly:use_dwarf=true
+common --@folly//folly:use_libunwind=true
+common --@folly//folly:with_int128=true
+common --@folly//folly:with_getrandom=true
+common --@folly//folly:with_extrandom_sfmt19937=true
+
+# Build protoc from the materialized //third_party/protobuf sources instead of
+# downloading a prebuilt release binary.  Besides matching how this repo treats
+# every other dependency, it is required for correctness: the prebuilt protoc
+# version lives in bazel/private/oss/toolchains/prebuilt/tool_integrity.bzl,
+# which only carries a real pin inside a published release archive.  A git
+# checkout carries a placeholder ("v33.0"), which would generate gencode that
+# the checked out protobuf runtime headers reject.
+common --@com_google_protobuf//bazel/flags:prefer_prebuilt_protoc=false
+
+# ...and for the same reason skip protobuf's protoc authenticity check, which
+# asserts that the protoc in use reports exactly the (placeholder) release
+# version recorded in tool_integrity.bzl.  We deliberately run the protoc built
+# from //third_party/protobuf, so the assertion can never hold here.
+common --@com_google_protobuf//bazel/flags:allow_nonstandard_protoc=true
+
 # Use jemalloc as the C++ allocator
 # To use it: bazel build --config jemalloc
 build:jemalloc --custom_malloc=//third_party/jemalloc
 
 build:tcmalloc --custom_malloc=//third_party/gperftools:tcmalloc
 
-# This build mode switch the compiler to the prebuilt clang downloaded from chromium source tree
-build:clang --repo_env TF_DOWNLOAD_CLANG=1 --crosstool_top=@local_config_download_clang//:toolchain
+# This build mode switches the compiler to a prebuilt clang release, downloaded
+# and registered by the toolchains_llvm module extension in MODULE.bazel.
+# To use it: bazel build --config clang
+build:clang --extra_toolchains=@llvm_toolchain//:cc-toolchain-x86_64-linux
+
+# toolchains_llvm passes -stdlib=libc++ to every C++ action, including
+# compile-only ones where clang considers it unused.  Dependencies that build
+# with -Werror (boringssl, for one) turn that into a hard error.
+build:clang --copt=-Wno-unused-command-line-argument
 
 # Protobuf settings
 # Use fast cpp protos in python protobuf.
 build --define=use_fast_cpp_protos=true
+
+# Stamp binaries built with `stamp = 1` with the git revision of the tree.
+build --workspace_status_command=tools/buildstamp/get_workspace_status
+
+# The sanitizer configs below used to pin //tools/lrte:toolchain through
+# --crosstool_top, which Bazel 9 removed together with the rest of the
+# pre-platforms toolchain selection.  They now run on whatever C++ toolchain is
+# resolved for the target platform; both gcc and clang support these flags.
+
+# Address sanitizer
+# To use it: bazel build --config asan
+build:asan --strip=never
+build:asan --copt -fsanitize=address
+build:asan --copt -DADDRESS_SANITIZER
+build:asan --copt -O1
+build:asan --copt -g
+build:asan --copt -fno-omit-frame-pointer
+build:asan --linkopt -fsanitize=address
+
+# Thread sanitizer
+# bazel build --config tsan
+build:tsan --strip=never
+build:tsan --copt -fsanitize=thread
+build:tsan --copt -DTHREAD_SANITIZER
+build:tsan --copt -DDYNAMIC_ANNOTATIONS_ENABLED=1
+build:tsan --copt -DDYNAMIC_ANNOTATIONS_EXTERNAL_IMPL=1
+build:tsan --copt -O1
+build:tsan --copt -fno-omit-frame-pointer
+build:tsan --linkopt -fsanitize=thread
+
+# --config msan: Memory sanitizer (clang only)
+build:msan --strip=never
+build:msan --copt -fsanitize=memory
+build:msan --copt -DMEMORY_SANITIZER
+build:msan --copt -O1
+build:msan --copt -fno-omit-frame-pointer
+build:msan --linkopt -fsanitize=memory
+
+# --config ubsan: Undefined Behavior Sanitizer
+build:ubsan --strip=never
+build:ubsan --copt -fsanitize=undefined
+build:ubsan --copt -O1
+build:ubsan --copt -fno-omit-frame-pointer
+build:ubsan --linkopt -fsanitize=undefined
