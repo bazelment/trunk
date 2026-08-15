@@ -12,4 +12,6 @@ third_party/grpc
 third_party/gtest/github
 third_party/protobuf
 third_party/proxygen/upstream
+third_party/re2
+third_party/tcmalloc
 third_party/wangle/upstream

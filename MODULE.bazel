@@ -85,6 +85,33 @@ local_path_override(
     path = "third_party/gflags/upstream",
 )
 
+# third_party/tcmalloc @ master.  google/tcmalloc is the maintained successor
+# to gperftools' allocator; it cuts no releases, so upstream and the Bazel
+# Central Registry both track dated snapshots of master and its own
+# MODULE.bazel carries the placeholder version "0".  It selects the allocator
+# behind `--config=tcmalloc` (see .bazelrc).
+bazel_dep(
+    name = "tcmalloc",
+    version = "0",
+    repo_name = "com_google_tcmalloc",
+)
+local_path_override(
+    module_name = "tcmalloc",
+    path = "third_party/tcmalloc",
+)
+
+# third_party/re2 @ 2025-11-05.  Pulled in by tcmalloc above rather than by
+# anything in this repo directly, but materialized here like every other C++
+# dependency instead of being fetched from the registry as an archive.
+bazel_dep(
+    name = "re2",
+    version = "2025-11-05",
+)
+local_path_override(
+    module_name = "re2",
+    path = "third_party/re2",
+)
+
 # The folly stack.  Upstream ships no Bazel build, so each of these points at a
 # github.com/bazelment fork whose `bazel-<tag>` branch carries the release tag
 # plus the Bazel overlay and patches the Bazel Central Registry maintains for
