@@ -57,7 +57,13 @@ common --@com_google_protobuf//bazel/flags:allow_nonstandard_protoc=true
 # To use it: bazel build --config jemalloc
 build:jemalloc --custom_malloc=//third_party/jemalloc
 
-build:tcmalloc --custom_malloc=//third_party/gperftools:tcmalloc
+# Use tcmalloc as the C++ allocator
+# To use it: bazel build --config tcmalloc
+#
+# This is google/tcmalloc (//third_party/tcmalloc), the maintained successor to
+# the allocator in gperftools, not //third_party/gperftools:tcmalloc.  It is
+# built against the same //third_party/abseil this tree already vendors.
+build:tcmalloc --custom_malloc=@com_google_tcmalloc//tcmalloc
 
 # This build mode switches the compiler to a prebuilt clang release, downloaded
 # and registered by the toolchains_llvm module extension in MODULE.bazel.

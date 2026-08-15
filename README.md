@@ -9,9 +9,21 @@ To try:
 $ git clone https://github.com/mzhaom/trunk && cd trunk
 $ git submodule update --init third_party/abseil third_party/protobuf \
     third_party/grpc third_party/gtest/github third_party/glog/upstream \
-    third_party/gflags/upstream
+    third_party/gflags/upstream third_party/gperftools/upstream \
+    third_party/libunwind/upstream
 $ bazel build //examples/...
 ```
+
+Building with [google/tcmalloc](https://github.com/google/tcmalloc) as the
+allocator additionally needs:
+
+```sh
+$ git submodule update --init third_party/tcmalloc third_party/re2
+$ bazel build --config=tcmalloc //examples:hello
+```
+
+Note that `--config=tcmalloc` is incompatible with `//examples/asan:leak`,
+which links gperftools' heap checker and so brings its own allocator.
 
 Building the folly stack additionally needs:
 
@@ -61,7 +73,10 @@ remaining `third_party` projects are ported.
   * [gflags](https://gflags.github.io/gflags/)
   * [glog](https://github.com/google/glog)
   * [googletest](https://github.com/google/googletest) (and googlemock)
-  * [gperftools](https://github.com/gperftools/gperftools) tcmalloc, heap-checker, heap-profiler and cpu-profiler.
+  * [gperftools](https://github.com/gperftools/gperftools) heap-checker, heap-profiler and cpu-profiler.
+    Its tcmalloc is superseded here by google/tcmalloc below.
+  * [google/tcmalloc](https://github.com/google/tcmalloc): the maintained
+    successor to gperftools' allocator, selected by `--config=tcmalloc`.
   * [grpc](https://grpc.io/)
   * [libevent](https://libevent.org/): version 1
   * [libunwind](https://www.nongnu.org/libunwind)
