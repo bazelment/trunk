@@ -129,6 +129,12 @@ cc_library(
   ],
   copts = [
     "-Wno-error",
+    # libunwind 1.1 predates gcc 10 / clang 11, which flipped the default to
+    # -fno-common.  Several of its objects carry tentative definitions of the
+    # same symbol - _U_dyn_info_list is defined in both x86_64/Ginit.c and
+    # mi/dyn-info-list.c - and upstream relies on the linker merging them as
+    # common symbols rather than rejecting them as duplicates.
+    "-fcommon",
     '-DHAVE_CONFIG_H',
     '-D_GNU_SOURCE',
     "-Ithird_party/libunwind/upstream/src",

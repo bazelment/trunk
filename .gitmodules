@@ -253,3 +253,6 @@
 [submodule "third_party/fizz/upstream"]
 	path = third_party/fizz/upstream
 	url = https://github.com/bazelment/fizz.git
+[submodule "third_party/tcmalloc"]
+	path = third_party/tcmalloc
+	url = https://github.com/google/tcmalloc.git

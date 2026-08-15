@@ -1,6 +1,15 @@
 licenses(["notice"])
 
 AM_CXXFLAGS = [
+  # gperftools 2.4 predates C++17, which removed dynamic exception
+  # specifications: the operator new/delete replacements in
+  # libc_override_gcc_and_weak.h are still declared `throw (std::bad_alloc)`.
+  # The tree builds at gnu++20 (see .bazelrc), so pin this package back to
+  # gnu++14, where those declarations are merely deprecated.  copts land after
+  # --cxxopt on the command line, so this wins.  It is confined to gperftools'
+  # own translation units; the public headers under gperftools/ are C++17
+  # clean and still compile at gnu++20 in their includers.
+  "-std=gnu++14",
   # Include the generated headers.
   "-Ithird_party/gperftools/linux-x86_64/src",
   # Include the source directory
